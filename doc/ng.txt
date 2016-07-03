@@ -18,11 +18,11 @@
 
 **	.  Any single character
 
-***	A->a1,  A->a2, etc.
+***	A->a1,  A->a2, ....  A->a1B, A->a2B, ....
 
 ***	Obvious fix:
 
-***	A->.   Syntactic Sutar for the above.
+***	A->., A->.B  Syntactic Sutar for the above.
 
 ***	NDFA gen:
 ****	For each production of the form A->., generate an arc from A to Z, which consumes any single terminal

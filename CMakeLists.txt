@@ -5,18 +5,23 @@ ENABLE_TESTING()
 SET(CMAKE_BUILD_TYPE Debug)
 
 
+####################################
+# DOWNLOAD GOOGLE TEST FROM GITHUB #
+####################################
 CONFIGURE_FILE(gtest-download/CMakeLists.txt.in
-	       gtest-download/CMakeLists.txt)
-
+               gtest-download/CMakeLists.txt)
 EXECUTE_PROCESS(COMMAND ${CMAKE_COMMAND} -G "${CMAKE_GENERATOR}" .
-                WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/gtest-downlaod)
-
+                WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/gtest-download )
+EXECUTE_PROCESS(COMMAND ${CMAKE_COMMAND} --build .
+                WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/gtest-download )
 
 SET(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 
 ADD_SUBDIRECTORY(${CMAKE_BINARY_DIR}/googletest-src
-	         ${CMAKE_BINARY_DIR}/googletest-build )
+                 ${CMAKE_BINARY_DIR}/googletest-build )
 
+
+##################################################
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin)

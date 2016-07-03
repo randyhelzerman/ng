@@ -1,6 +1,11 @@
 #ifndef NG_INTERVAL__H
 #define NG_INTERVAL__H
 
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 typedef struct {
   char    short_word_[10];     // most words fit here
   char*   long_word_;          // if its too long, this is allocaated/populated/non-null
@@ -23,6 +28,10 @@ const char* ng_interval_word(const ng_interval_t* self);
 
 // debugging
 void ng_interval_dump(const ng_interval_t* self);
+
+#ifdef __cplusplus
+};
+#endif
 
 #endif
 

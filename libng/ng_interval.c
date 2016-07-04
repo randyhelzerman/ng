@@ -6,7 +6,7 @@
 
 
 // create a new interval
-ng_interval_t* ng_interval_new(const char* word, const int max_next_states)
+ng_interval_t* ng_interval_eq_new(const char* word, const int max_next_states)
 {
   // calcualte size
   const size_t size = sizeof(ng_interval_t) + max_next_states*sizeof(int);
@@ -28,15 +28,54 @@ ng_interval_t* ng_interval_new(const char* word, const int max_next_states)
   
   self->max_next_states_  = max_next_states;
   self->numb_next_states_ = 0;
-
+  
   return self;
 }
+
+
+// create a new interval-- word is 1 greater than word
+ng_interval_t* ng_interval_gt_new(const char* word, 
+				  const int max_next_state)
+{
+  // create it the normal way
+  self = ng_interval_gt_new(word, max_next_state);
+  if(0x0==self) return 0x0;
+  
+  // then increment the last byte. Works for UTF-8
+  const size_t len = strlen(ng_interval_word(self));
+  if(0x0 != self->long_word_){
+    self->long_word_[len]++;
+  } else {
+    self->short_word_[len]++;
+  }
+  
+  return self;
+}
+  
+
+// free it up again
+void ng_interval_delete(ng_interval_t** selfp)
+{
+  free(*selfp);
+  *selfp = 0x0;
+}
+
 
 // get the word of this interval
 const char* ng_interval_word(const ng_interval_t* self)
 {
   if(self->long_word_) return self->long_word_;
   return self->short_word_;
+}
+
+
+// compare -- suitable for sorting
+int compare(const ng_interval_t* int1,
+	    const ng_interval_t* int2)
+{
+  // sort on the lexicographic ordering of the word
+  return strcmp(ng_interval_word(int1),
+		ng_interval_word(int2));
 }
 
 

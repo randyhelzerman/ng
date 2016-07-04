@@ -113,7 +113,7 @@ We can add 1 to the last byte of any UTF-8 string, and get a value we can make a
 
 
     [00------30)[30-----39)[39---------FF)
-                     B
+                    B-1
 
 
 Now say we do:
@@ -129,6 +129,51 @@ Now say we do:
 
 
     [00------30)[30---3132)[3132----3133)[3133---------39)[39---------FF)
-                    B            B               B
-                                 C
+                    B-1          B-1             B-1
+                                 C-2
+
+
+##  null transitions
+
+How to handle producitons with an empty string of nonterminals?
+
+     A->""B
+
+     B->"c"C
+     B->"d"D
+     B->"e"E       c
+                 ---- C
+                / d
+       A-----> B ---- D
+                \  e
+                 ---- E
+
+
+Well, I can do it.  If the markers get pushed into a priority queue, and we
+pull them off only when the string position is reached, that will work.
+
+
+##  Probably faster alternative -- rule normalization
+
+Its probably faster just t pre-process the rules.
+
+     A->""B
+
+     B->"c"C
+     B->"d"D
+     B->"e"E       
+
+just becomes
+
+     A->"c"C
+     A->"d"D
+     A->"e"E       
+
+This seems a lot better.  Then there is just one char in the interval, one state as the
+color, etc.  
+
+Nah, fork it.  I'm going for the full glory.  This way automatically generalizes to 
+UTF-8, so lets do it.
+
+
 

@@ -38,7 +38,7 @@ ng_interval_t* ng_interval_gt_new(const char* word,
 				  const int max_next_state)
 {
   // create it the normal way
-  self = ng_interval_gt_new(word, max_next_state);
+  ng_interval_t* self = ng_interval_gt_new(word, max_next_state);
   if(0x0==self) return 0x0;
   
   // then increment the last byte. Works for UTF-8

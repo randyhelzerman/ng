@@ -3,6 +3,8 @@ CMAKE_MINIMUM_REQUIRED(VERSION 3.5)
 ADD_EXECUTABLE(ng.t
                ng_color.t.cpp
                ng_interval.t.cpp
+	       ng_rb_tree_node.t.cpp
+	       ng_rb_tree.t.cpp
 )
 
 TARGET_LINK_LIBRARIES(ng.t

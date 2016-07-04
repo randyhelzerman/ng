@@ -34,8 +34,8 @@ extern "C" {
   const char* ng_interval_word(const ng_interval_t* self);
   
   // compare -- suitable for sorting
-  int compare(const ng_interval_t* int1,
-	      const ng_interval_t* int2);
+  int ng_interval_compare(const ng_interval_t* int1,
+			  const ng_interval_t* int2);
   
   // debugging
   void ng_interval_dump(const ng_interval_t* self);

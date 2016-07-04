@@ -4,7 +4,7 @@
 #include <string.h>
 
 
-TEST(NgIntervalAllocTest, Alloc)
+TEST(NgIntervalAllocTest, AllocShort)
 {
   // test creation
   ng_interval_t* interval = 0x0;
@@ -22,8 +22,7 @@ TEST(NgIntervalAllocTest, Alloc)
   EXPECT_EQ(interval,(ng_interval_t*)(0x0));
 }
 
-
-TEST(NgIntervalCompareTest, Compare1)
+TEST(NgIntervalAllocTest, AllocLong)
 {
   // create two intervals to represent the
   // range 0=9 inclusive
@@ -44,4 +43,20 @@ TEST(NgIntervalCompareTest, Compare1)
   const ng_interval_t* int5=ng_interval_eq_new("0",1);
   const int cmp3 = ng_interval_compare(int1, int5);
   EXPECT_EQ(0, cmp3);
+  
+  // test creation
+  ng_interval_t* interval = 0x0;
+  interval = ng_interval_eq_new("supercalifragilisticexpialadotious",5);
+  EXPECT_NE(interval,(ng_interval_t*)(0x0));
+  
+  // test that its initialized ok
+  EXPECT_TRUE(!strcmp("supercalifragilisticexpialadotious", 
+		      ng_interval_word(interval)));
+  EXPECT_NE(interval->long_word_,         (char*)0x0);
+  EXPECT_EQ(interval->max_next_states_,   5);
+  EXPECT_EQ(interval->numb_next_states_,  0);
+  
+  // test deletion.  should zero out the pointer
+  ng_interval_delete(&interval);
+  EXPECT_EQ(interval,(ng_interval_t*)(0x0));
 }

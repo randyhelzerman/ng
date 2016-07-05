@@ -7,12 +7,12 @@
 extern "C" {
 #endif
   
-
+  
   typedef struct ng_rb_tree {
-    ng_rb_tree_node_t* root_;    // root of the rgb tree
-    int count_;                  // total number of items in the tree.  
+    ng_rb_tree_node_t*   root_;     // root of the rgb tree
+    int                  count_;    // total number of items in the tree.  
   } ng_rb_tree_t;
-
+  
   //------------
   // public api
   //------------
@@ -23,17 +23,27 @@ extern "C" {
   // destructor
   void ng_rb_tree_delete(ng_rb_tree_t** self,
 			 void (*delete_fruit)(void**));
-
+  
+  // comparison
+  
+  // returns true if two trees have the same tree structure
+  // if the function pointer "fruit_equal" isn't null,
+  // then the corresponding fruit are also compared for
+  // equality using the supplied function.
+  int ng_rb_tree_structurally_equivalent(const ng_rb_tree_t* t1,
+					 const ng_rb_tree_t* t2,
+					 int(*fruit_equal)(const void*,
+							   const void*));
   
   //------------------
   // private functions
   //------------------
 
   // rotate node rright
-  int ng_rb_tree_rotate_node_right(ng_rb_tree_node_t** root);
+  int ng_rb_tree_rotate_node_right_(ng_rb_tree_node_t** root);
   
   // rotate node left
-  int ng_rb_tree_rotate_node_left(ng_rb_tree_node_t** root);
+  int ng_rb_tree_rotate_node_left_(ng_rb_tree_node_t** root);
   
   
   //--------------

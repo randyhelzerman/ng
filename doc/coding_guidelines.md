@@ -152,4 +152,6 @@ conventions to ape them to make C++ programmers feel more at home.
 
 
 
+#  Most important rule.
 
+Break any of these rules, rather than do something outright barbarious.  -G.W. Orwell.

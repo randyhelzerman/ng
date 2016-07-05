@@ -14,7 +14,8 @@ ng_rb_tree_node_t* ng_rb_tree_node_new(ng_rb_tree_node_t* parent,
 				       void* fruit)
 {
   // allocate the node if we can
-  ng_rb_tree_node_t* self= (ng_rb_tree_node_t*)malloc(sizeof(ng_rb_tree_node_t));
+  ng_rb_tree_node_t* self
+    = (ng_rb_tree_node_t*)malloc(sizeof(ng_rb_tree_node_t));
   if(0x0==self) return 0x0;
   
   // assign the fields
@@ -68,6 +69,42 @@ void ng_rb_tree_node_delete_recursive(ng_rb_tree_node_t** selfp,
   // zero out self
   *selfp = (ng_rb_tree_node_t*)0x0;
 }
+
+
+// returns true if two trees have the same tree structure
+// if the function pointer "fruit_equal" isn't null,
+// then the corresponding fruit are also compared for
+// equality using the supplied function.
+int ng_rb_tree_structurally_equivalent(const ng_rb_tree_node_t* n1,
+				       const ng_rb_tree_noee_t* n2,
+				       int(*fruit_equal)(const void*,
+							 const void*))
+{
+  // handle null case
+  if(0x0 == n1 && 0x0 == n2){ return 1; }
+  if(0x0 == n1 && 0x0 != n2){ return 0; }
+  if(0x0 != n1 && 0x0 == n2){ return 0; }
+  
+  // if we have a fruit equality function, use it
+  // here to see if these two nodes are fruit-equal
+  if(0x0 != fruit_equal){
+    if(!fruit_equal(n1->fruit_,n2->fruit_)) return 0;
+  }
+  
+  // test left branch
+  if(!ng_rb_tree_structurally_equivalent(n1->left_, n2->left_)){
+    return 0;
+  }
+  
+  // test right branch
+  if(!ng_rb_tree_structurally_equivalent(n1->right_, n2->right_)){
+    return 0;
+  }
+  
+  // have to admit it, they are structurally equivalent.
+  return 1;
+}
+    
 
 
 

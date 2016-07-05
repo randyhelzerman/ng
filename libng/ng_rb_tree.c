@@ -38,6 +38,25 @@ void ng_rb_tree_delete(ng_rb_tree_t** selfp,
   *selfp = (ng_rb_tree_t*)0x0;
 }
 
+// comparison
+
+// returns true if two trees have the same tree structure
+// if the function pointer "fruit_equal" isn't null,
+// then the corresponding fruit are also compared for
+// equality using the supplied function.
+int ng_rb_tree_structurally_equivalent(const ng_rb_tree_t* t1,
+				       const ng_rb_tree_t* t2,
+				       int(*fruit_equal)(const void*,
+							 const void*))
+{
+  if(0x0 == t1 && 0x0 == t2) { return 1; }
+  if(0x0 == t1 && 0x0 != t2) { return 0; }
+  if(0x0 != t1 && 0x0 == t2) { return 0; }
+  
+  return ng_rb_tree_node_structurally_equivalent(t1->root_,
+						 t2->root_);
+}
+
 
 //------------------
 // private functions
@@ -53,7 +72,7 @@ void ng_rb_tree_delete(ng_rb_tree_t** selfp,
 //    / \                   / \
 //   A   B                 B   C
 
-int ng_rb_tree_rotate_node_right(ng_rb_tree_node_t** root)
+int ng_rb_tree_rotate_node_right_(ng_rb_tree_node_t** root)
 {
   // insanity check
   if(0x0 == root) return 0;
@@ -88,7 +107,7 @@ int ng_rb_tree_rotate_node_right(ng_rb_tree_node_t** root)
 //    / \                   / \
 //   A   B                 B   C
 
-int ng_rb_tree_rotate_node_left(ng_rb_tree_node_t** root)
+int ng_rb_tree_rotate_node_left_(ng_rb_tree_node_t** root)
 {
   // insanity check
   if(0x0 == root) return 0;
@@ -130,6 +149,8 @@ void ng_rb_tree_dump_aux(const ng_rb_tree_node_t* self,
 			 const int indent,
 			 void (*fruit_dump)(const void*))
 {
+  if(0x0 == self) return;
+  
   // old prolog trick for printing out trees
   
   //dump right tree

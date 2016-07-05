@@ -34,6 +34,16 @@ extern "C" {
 					 const ng_rb_tree_t* t2,
 					 int(*fruit_equal)(const void*,
 							   const void*));
+
+  // insertion/deletion
+  
+  // insertion
+  const ng_rb_tree_node_t*
+  ng_rb_tree_insert(ng_rb_tree_t* self,
+		    void*fruit,
+		    int(*fruit_compare)(const void*,
+					const void*));
+  
   
   //------------------
   // private functions

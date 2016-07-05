@@ -54,8 +54,23 @@ int ng_rb_tree_structurally_equivalent(const ng_rb_tree_t* t1,
   if(0x0 != t1 && 0x0 == t2) { return 0; }
   
   return ng_rb_tree_node_structurally_equivalent(t1->root_,
-						 t2->root_);
+						 t2->root_,
+						 fruit_equal);
 }
+
+// insertion/deletion
+
+// insertion
+const ng_rb_tree_node_t*
+ng_rb_tree_insert(ng_rb_tree_t* self,
+		  void*fruit,
+		  int(*fruit_compare)(const void*,
+				      const void*))
+{
+  //return ng_rb_tree_node_insert(self->root,fruit,fruit_compare);
+  return 0x0;
+}  
+  
 
 
 //------------------

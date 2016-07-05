@@ -5,6 +5,7 @@ ADD_EXECUTABLE(ng.t
                ng_interval.t.cpp
 	       ng_rb_tree_node.t.cpp
 	       ng_rb_tree.t.cpp
+	       ng_c_tricks.t.cpp
 )
 
 TARGET_LINK_LIBRARIES(ng.t

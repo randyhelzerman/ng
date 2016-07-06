@@ -155,3 +155,8 @@ conventions to ape them to make C++ programmers feel more at home.
 #  Most important rule.
 
 Break any of these rules, rather than do something outright barbarious.  -G.W. Orwell.
+
+# Acknowledgements
+
+Thanks to Gyuszi Suto, Mysore Sriram, Eric Todd, Everybody at Synopsys,
+and https://github.com/mcinglis/c-style for inspiration.

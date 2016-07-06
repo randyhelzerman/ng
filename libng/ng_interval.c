@@ -51,13 +51,48 @@ ng_interval_t* ng_interval_gt_new(const char* word,
   
   return self;
 }
+
+
+// copy and init interval into blank memory space.  tgt must be pre-allocated
+// to be large enough.
+ng_interval_t* ng_interval_cp_init(const ng_interval_t* self, ng_interval_t* tgt)
+{
+  // copy over the word
+  if(0x0 != self->long_word_) strcpy(tgs->long_word_, self->long_word_);
+  else {
+    tgt->long_word_ = 0x0;
+    strncpy(tgt->short_word_, self->short_word_, 10);
+  }
   
+  // copy over color info
+  tgt->max_next_states_ = self->max_next_states_;
+  tgt->numb_next_states_ = self->numb_next_states_;
+  ng_color_t* self_colors = (ng_color_t*)self->next_states_;
+  ng_color_t* tgt_colors  = (ng_color_t*)tgt->next_states_;
+  for(int i=0;i<numb_next_states;i++){
+    tgt_colors[i] = self_colors[i];
+  }
+}
+
 
 // free it up again
 void ng_interval_delete(ng_interval_t** selfp)
 {
   free(*selfp);
   *selfp = 0x0;
+}
+
+
+//-----------------
+// access functions
+//-----------------
+
+// get the size of this interval.  Because its expandable,
+// its not just sizeof(rg_interval_t).
+size_t rg_interval_sizeof(const ng_interval_t* self)
+{
+  return (sizeof(ng_interval_t) +
+	  self->max_next_states_ * sizeof(ng_color_t));
 }
 
 
@@ -76,6 +111,18 @@ int ng_interval_compare(const ng_interval_t* int1,
   // sort on the lexicographic ordering of the word
   return strcmp(ng_interval_word(int1),
 		ng_interval_word(int2));
+}
+
+
+// test for semantic equality of the intervals
+int ng_interval_equal(const ng_interval_t* int1,
+		      const ng_interval_t* int2)
+{
+  // compare words for equality
+  if(0 != strcmp(ng_interval_word(int1),
+		 ng_interval_word(int2))){
+    
+  }
 }
 
 

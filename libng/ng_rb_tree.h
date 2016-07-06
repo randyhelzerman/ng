@@ -6,6 +6,9 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+  //  enum {
+  //  };
   
   
   typedef struct ng_rb_tree {
@@ -22,7 +25,7 @@ extern "C" {
   
   // destructor
   void ng_rb_tree_delete(ng_rb_tree_t** self,
-			 void (*delete_fruit)(void**));
+			 void (*uninit_fruit)(void*));
   
   // comparison
   
@@ -50,11 +53,12 @@ extern "C" {
   //------------------
 
   // rotate node rright
-  int ng_rb_tree_rotate_node_right_(ng_rb_tree_node_t** root);
-  
-  // rotate node left
-  int ng_rb_tree_rotate_node_left_(ng_rb_tree_node_t** root);
-  
+  ng_rb_tree_node_t* ng_rb_tree_rotate_(ng_rb_tree_node_t* root,
+					const int dir);
+
+  ng_rb_tree_node_t* ng_rb_tree_rotate_double_(ng_rb_tree_node_t* node,
+					       const int dir);
+
   
   //--------------
   // for debugging

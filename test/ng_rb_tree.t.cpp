@@ -122,15 +122,15 @@ TEST(NgRBTRotateTest, RotRight)
   EXPECT_FALSE(ng_rb_tree_structurally_equivalent(left_tree,right_tree, fruit_equal));
   
   // rotate right!!
-  ng_rb_tree_rotate_node_right_(&left_tree->root_);
+  left_tree->root_ = ng_rb_tree_rotate_(Q1,1);
   
   // print tree out for fun
   printf("after rotation\n");
-  ng_rb_tree_dump(right_tree,fruit_dump);
+  ng_rb_tree_dump(left_tree,fruit_dump);
   
   // print tree out for fun
   printf("right tree\n");
-  ng_rb_tree_dump(left_tree,fruit_dump);
+  ng_rb_tree_dump(right_tree,fruit_dump);
   
   // after rotation, P1 should be the root
   EXPECT_EQ(P1, left_tree->root_);
@@ -191,7 +191,7 @@ TEST(NgRBTRotateTest, RotLeft)
   EXPECT_FALSE(ng_rb_tree_structurally_equivalent(left_tree,right_tree, fruit_equal));
   
   // rotate left!!
-  ng_rb_tree_rotate_node_left_(&right_tree->root_);
+  right_tree->root_ = ng_rb_tree_rotate__(Q,0);
   
   // print tree out for fun
   printf("after rotation\n");
@@ -201,7 +201,7 @@ TEST(NgRBTRotateTest, RotLeft)
   printf("left tree\n");
   ng_rb_tree_dump(left_tree,fruit_dump);
   
-  // after rotation, P1 should be the root
+  // after rotation, Q2 should be the root
   EXPECT_EQ(Q2, right_tree->root_);
   
   // after rotation, left should be strutrually

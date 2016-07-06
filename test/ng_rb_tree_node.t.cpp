@@ -15,8 +15,7 @@ TEST(NgRBAllocTest, Alloc)
   
   // test creation
   ng_rb_tree_node_t* node = 0x0;
-  node = ng_rb_tree_node_new((ng_rb_tree_node_t*)1,
-			     (ng_rb_tree_node_t*)2,
+  node = ng_rb_tree_node_new((ng_rb_tree_node_t*)2,
 			     (ng_rb_tree_node_t*)3,
 			     (void*)interval);
   EXPECT_NE(node,(ng_rb_tree_node_t*)(0x0));
@@ -26,8 +25,8 @@ TEST(NgRBAllocTest, Alloc)
   
   // test that its initialized ok
   EXPECT_EQ(node->parent_, (ng_rb_tree_node_t*)1);
-  EXPECT_EQ(node->left_,   (ng_rb_tree_node_t*)2);
-  EXPECT_EQ(node->right_,  (ng_rb_tree_node_t*)3);
+  EXPECT_EQ(node->kid_[0], (ng_rb_tree_node_t*)2);
+  EXPECT_EQ(node->kid_[1], (ng_rb_tree_node_t*)3);
   EXPECT_EQ(node->fruit_,  (void*)interval);
   
   // test deletion.  should zero out the pointer

@@ -8,12 +8,11 @@
 //------------
 
 // constructor
-ng_rb_tree_node_t* ng_rb_tree_node_new(ng_rb_tree_node_t* parent,
-				       ng_rb_tree_node_t* left,
+ng_rb_tree_node_t* ng_rb_tree_node_new(ng_rb_tree_node_t* left,
 				       ng_rb_tree_node_t* right,
 					 
-				       void* fruit,
 				       const size_t fruit_size,
+				       void* fruit,
 				       void* (*fruit_cp_init)(const void*,
 							      void*))
 {
@@ -21,29 +20,27 @@ ng_rb_tree_node_t* ng_rb_tree_node_new(ng_rb_tree_node_t* parent,
   size_t node_size = sizeof(ng_rb_tree_node_t) + fruit_size;
   ng_rb_tree_node_t* self = (ng_rb_tree_node_t*)malloc(node_size);
   if(0x0==self) return 0x0;
-
+  
   // convert the newly-aquired memory into a tree node.
-  return ng_rb_tree_node_init(self, parent,left,right, fruit_size,fruit,fruit_cp_init);
+  return ng_rb_tree_node_init(self, left,right, fruit_size,fruit,fruit_cp_init);
 }
 
 
-nb_rb_tree_node_t* ng_rb_tree_node_init(nb_rb_tree_node_t*self,
+ng_rb_tree_node_t* ng_rb_tree_node_init(ng_rb_tree_node_t* self,
 					
-					ng_rb_tree_node_t* parent,
 					ng_rb_tree_node_t* left,
 					ng_rb_tree_node_t* right,
 					
-					void* fruit,
 					const size_t fruit_size,
+					void* fruit,
 					void* (*fruit_cp_init)(const void*,
 							       void*))
 {
   // assign the node fields
-  self->parent_ = parent;
-  self->left_ = left;
-  self->right_ = right;
-  
-  // initialize the fruit
+  self->kids_[0] = left;
+  self->kids_[1] = right;
+	      
+	      // initialize the fruit
   fruit_cp_init(fruit, (void*)self->fruit_);
   
   // and return the newly created node
@@ -85,13 +82,22 @@ void ng_rb_tree_node_delete_recursive(ng_rb_tree_node_t** selfp,
   
   // delete the kids recursively.  safe to do this because
   // we just checked above :-)
-  ng_rb_tree_node_delete_recursive(&(*selfp)->left_,   uninit_fruit);
-  ng_rb_tree_node_delete_recursive(&(*selfp)->right_,  uninit_fruit);
-
+  ng_rb_tree_node_delete_recursive(&(*selfp)->kids_[0],  uninit_fruit);
+  ng_rb_tree_node_delete_recursive(&(*selfp)->kids_[1],  uninit_fruit);
+  
   // now delete self
   ng_rb_tree_node_delete(selfp, uninit_fruit);
 }
 
+
+// accessors
+
+// 1 if the node is red, 0 if its black
+int ng_rb_tree_node_is_red(const ng_rb_tree_node_t* self)
+{
+  return 0x0!=self && self->red_==1;
+}
+  
 
 // returns true if two trees have the same tree structure
 // if the function pointer "fruit_equal" isn't null,
@@ -114,20 +120,22 @@ int ng_rb_tree_node_structurally_equivalent(const ng_rb_tree_node_t* n1,
   }
   
   // test left branch
-  if(!ng_rb_tree_node_structurally_equivalent(n1->left_, n2->left_,fruit_equal)){
+  if(!ng_rb_tree_node_structurally_equivalent(n1->kids_[0],
+					      n2->kids_[0],
+					      fruit_equal)){
     return 0;
   }
   
   // test right branch
-  if(!ng_rb_tree_node_structurally_equivalent(n1->right_, n2->right_,fruit_equal)){
+  if(!ng_rb_tree_node_structurally_equivalent(n1->kids_[1],
+					      n2->kids_[1],
+					      fruit_equal)){
     return 0;
   }
   
   // have to admit it, they are structurally equivalent.
   return 1;
 }
-    
-
 
 
 // dumper.  Takes a node, and an optional
@@ -142,8 +150,8 @@ void ng_rb_tree_node_dump(const ng_rb_tree_node_t* self,
   } else {
     printf("node:%p left:%p right %p ", 
 	   (void*)self, 
-	   self->left_, 
-	   self->right_);
+	   self->kids_[0], 
+	   self->kids_[1]);
   }
 }
 

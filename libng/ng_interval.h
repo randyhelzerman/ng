@@ -24,11 +24,19 @@ extern "C" {
   
   // create a new interval-- word is 1 greater than word
   ng_interval_t* ng_interval_gt_new(const char* word, const int max_next_state);
+
+  // copy and init interval into blank memory space.  tgt must be pre-allocated
+  // to be large enough.
+  ng_interval_t* ng_interval_cp_init(const ng_interval_t* self, ng_interval_t* tgt);
   
   // free it up again
   void ng_interval_delete(ng_interval_t** selfp);
   
   // access functions
+
+  // get the size of this interval.  Because its expandable,
+  // its not just sizeof(rg_interval_t).
+  size_t rg_interval_sizeof(const ng_interval_t* self);
   
   // get the word of this interval.
   const char* ng_interval_word(const ng_interval_t* self);

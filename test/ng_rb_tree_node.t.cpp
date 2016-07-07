@@ -4,6 +4,8 @@
 #include <ng_interval.h>
 #include <string.h>
 
+#include<test_fruit.h>
+
 
 TEST(NgRBAllocTest, Alloc)
 {
@@ -39,3 +41,67 @@ TEST(NgRBAllocTest, Alloc)
   ng_interval_delete(&interval);
 }
 
+TEST(NgRBDebugTest, Debug)
+{
+  // Test to see that null node is correct and has height 1
+  EXPECT_EQ(1, ng_rb_tree_node_correct(0x0));
+  
+  // Test to see that single black node has height 2
+  ng_rb_tree_node_t* Q = ng_rb_tree_node_new(0x0, 0x0,
+					     2,(void*)"Q",test_fruit_cp_init);
+  
+  Q->red_ = false;
+  EXPECT_EQ(2, ng_rb_tree_node_correct(Q));
+  
+  // Test to see that single red node has height 1
+  ng_rb_tree_node_t* P = ng_rb_tree_node_new(0x0, 0x0,
+					     2,(void*)"P",test_fruit_cp_init);
+  P->red_ = true;
+  EXPECT_EQ(1, ng_rb_tree_node_correct(P));
+  
+  // Test detection of consecutive red node -- left side
+  ng_rb_tree_node_t* A = ng_rb_tree_node_new(0x0, 0x0,
+					     2,(void*)"A",test_fruit_cp_init);
+  A->red_ = true;
+  P->kids_[0]  = A;
+  EXPECT_EQ(0, ng_rb_tree_node_correct(P));
+
+  // Test detection of consecutive red node -- right side
+  ng_rb_tree_node_t* B = ng_rb_tree_node_new(0x0, 0x0,
+					     2,(void*)"B",test_fruit_cp_init);
+  B->red_ = true;
+  P->kids_[0]  = 0x0;
+  P->kids_[1]  = B;
+  EXPECT_EQ(0, ng_rb_tree_node_correct(P));
+  
+  // Test detection of consecutive red node -- both sides
+  P->kids_[0]  = A;
+  EXPECT_EQ(0, ng_rb_tree_node_correct(P));
+  
+  // Test black height mismatch
+  ng_rb_tree_node_t* C = ng_rb_tree_node_new(0x0, 0x0,
+					     2,(void*)"C",test_fruit_cp_init);
+  
+  Q->kids_[0]  = P;   Q->red_ = false;  P->red_ = false;
+  Q->kids_[1]  = C;   C->red_ = false;
+  P->kids_[0]  = A;   A->red_ = false;
+  P->kids_[1]  = B;   B->red_ = false;
+  
+  EXPECT_EQ(0, ng_rb_tree_node_correct(Q));
+  
+  // Test for correct black-height calculation on valid tree
+  Q->red_ = false;
+  P->red_ = true;
+  A->red_ = false;
+  B->red_ = false;
+  C->red_ = false;
+
+  EXPECT_EQ(3, ng_rb_tree_node_correct(Q));
+
+  // delete everything created in this function
+  ng_rb_tree_node_delete(&Q, test_fruit_deinit);
+  ng_rb_tree_node_delete(&P, test_fruit_deinit);
+  ng_rb_tree_node_delete(&A, test_fruit_deinit);
+  ng_rb_tree_node_delete(&B, test_fruit_deinit);
+  ng_rb_tree_node_delete(&C, test_fruit_deinit);
+}

@@ -6,6 +6,7 @@ ADD_EXECUTABLE(ng.t
 	       ng_rb_tree_node.t.cpp
 	       ng_rb_tree.t.cpp
 	       ng_c_tricks.t.cpp
+	       test_fruit.c
 )
 
 TARGET_LINK_LIBRARIES(ng.t

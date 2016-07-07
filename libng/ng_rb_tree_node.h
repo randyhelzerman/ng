@@ -1,6 +1,7 @@
 #ifndef NG_RB_TREE_NODE__H
 #define NG_RB_TREE_NODE__H
 
+#include<stdbool.h>
 #include<stdlib.h>
 
 #ifdef __cplusplus
@@ -55,21 +56,28 @@ extern "C" {
 
   // accessors
 
-  // 1 if the node is red, 0 if its black
-  int ng_rb_tree_node_is_red(const ng_rb_tree_node_t* self);
+  // true if the node is red, 0 if its black
+  bool ng_rb_tree_node_is_red(const ng_rb_tree_node_t* self);
   
 
+  // debugging
+  
   // comparison
   
   // returns true if two trees have the same tree structure
   // if the function pointer "fruit_equal" isn't null,
   // then the corresponding fruit are also compared for
   // equality using the supplied function.
-  int ng_rb_tree_node_structurally_equivalent(const ng_rb_tree_node_t* n1,
-					      const ng_rb_tree_node_t* n2,
-					      int(*fruit_equal)(const void*,
-								const void*));
-    
+  bool ng_rb_tree_node_structurally_equivalent(const ng_rb_tree_node_t* n1,
+					       const ng_rb_tree_node_t* n2,
+					       int(*fruit_equal)(const void*,
+								 const void*));
+
+  // tests a tree to make sure the rb laws are satisfied
+  // returns red-height of tree if tree is correct; else
+  // returns 0
+  int ng_rb_tree_node_correct(const ng_rb_tree_node_t* node);
+  
   
   void ng_rb_tree_node_dump(const ng_rb_tree_node_t* self,
                             void (*fruit_dump)(const void*));
@@ -80,4 +88,4 @@ extern "C" {
 #endif
 
 
-#endif
+#endif // include file guard

@@ -36,12 +36,17 @@ ng_rb_tree_node_t* ng_rb_tree_node_init(ng_rb_tree_node_t* self,
 					void* (*fruit_cp_init)(const void*,
 							       void*))
 {
+  // nodes default to black
+  self->red_ = false;
+  
   // assign the node fields
   self->kids_[0] = left;
   self->kids_[1] = right;
-	      
-	      // initialize the fruit
-  fruit_cp_init(fruit, (void*)self->fruit_);
+  
+  // initialize the fruit
+  if(0x0!=fruit_cp_init){
+    fruit_cp_init(fruit, (void*)self->fruit_);
+  }
   
   // and return the newly created node
   return self;
@@ -97,7 +102,7 @@ bool ng_rb_tree_node_is_red(const ng_rb_tree_node_t* self)
 {
   return 0x0!=self && self->red_==1;
 }
-  
+
 
 // returns true if two trees have the same tree structure
 // if the function pointer "fruit_equal" isn't null,

@@ -17,20 +17,23 @@ TEST(NgRBAllocTest, Alloc)
   ng_rb_tree_node_t* node = 0x0;
   node = ng_rb_tree_node_new((ng_rb_tree_node_t*)2,
 			     (ng_rb_tree_node_t*)3,
-			     (void*)interval);
+			     
+			     ng_interval_sizeof(interval),
+			     (void*)interval,
+			     (void*(*)(const void*,
+				       void*))ng_interval_cp_init);
   EXPECT_NE(node,(ng_rb_tree_node_t*)(0x0));
   
   // test dumpage...not really a test; have to verify on the screen...
   ng_rb_tree_node_dump(node, (void(*)(const void*))ng_interval_dump);
   
   // test that its initialized ok
-  EXPECT_EQ(node->parent_, (ng_rb_tree_node_t*)1);
-  EXPECT_EQ(node->kid_[0], (ng_rb_tree_node_t*)2);
-  EXPECT_EQ(node->kid_[1], (ng_rb_tree_node_t*)3);
-  EXPECT_EQ(node->fruit_,  (void*)interval);
+  EXPECT_EQ(node->kids_[0], (ng_rb_tree_node_t*)2);
+  EXPECT_EQ(node->kids_[1], (ng_rb_tree_node_t*)3);
+  EXPECT_EQ(true,ng_interval_equal((ng_interval_t*)&node->fruit_, interval));
   
   // test deletion.  should zero out the pointer
-  ng_rb_tree_node_delete(&node, (void(*)(void**))ng_interval_delete);
+  ng_rb_tree_node_delete(&node, (void(*)(void*))ng_interval_deinit);
   EXPECT_EQ(node,(ng_rb_tree_node_t*)(0x0));
 }
 

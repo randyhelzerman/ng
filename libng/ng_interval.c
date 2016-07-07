@@ -5,6 +5,10 @@
 #include<string.h>
 
 
+const size_t NG_INTERVAL_MAX_SHORT_WORD_SIZE  = 10;
+const size_t NG_INTERVAL_MAX_NEXT_STATES_SIZE = 10;
+
+
 // create a new interval
 ng_interval_t* ng_interval_eq_new(const char* word, const int max_next_states)
 {
@@ -58,7 +62,7 @@ ng_interval_t* ng_interval_gt_new(const char* word,
 ng_interval_t* ng_interval_cp_init(const ng_interval_t* self, ng_interval_t* tgt)
 {
   // copy over the word
-  if(0x0 != self->long_word_) strcpy(tgs->long_word_, self->long_word_);
+  if(0x0 != self->long_word_) strcpy(tgt->long_word_, self->long_word_);
   else {
     tgt->long_word_ = 0x0;
     strncpy(tgt->short_word_, self->short_word_, 10);
@@ -69,17 +73,34 @@ ng_interval_t* ng_interval_cp_init(const ng_interval_t* self, ng_interval_t* tgt
   tgt->numb_next_states_ = self->numb_next_states_;
   ng_color_t* self_colors = (ng_color_t*)self->next_states_;
   ng_color_t* tgt_colors  = (ng_color_t*)tgt->next_states_;
-  for(int i=0;i<numb_next_states;i++){
+  for(int i=0;i<self->numb_next_states_;i++){
     tgt_colors[i] = self_colors[i];
   }
+  
+  return tgt;
 }
 
 
 // free it up again
 void ng_interval_delete(ng_interval_t** selfp)
 {
+  // clean up the memory used by this
+  ng_interval_deinit(*selfp);
+
+  // free it
   free(*selfp);
+
+  // set pointer equal to NULL
   *selfp = 0x0;
+}
+
+
+// de-initialzie memory region; no dealllocion.
+void ng_interval_deinit(ng_interval_t* self)
+{
+  if(0x0 != self->long_word_){
+    free(self->long_word_);
+  }
 }
 
 
@@ -89,7 +110,7 @@ void ng_interval_delete(ng_interval_t** selfp)
 
 // get the size of this interval.  Because its expandable,
 // its not just sizeof(rg_interval_t).
-size_t rg_interval_sizeof(const ng_interval_t* self)
+size_t ng_interval_sizeof(const ng_interval_t* self)
 {
   return (sizeof(ng_interval_t) +
 	  self->max_next_states_ * sizeof(ng_color_t));
@@ -115,14 +136,30 @@ int ng_interval_compare(const ng_interval_t* int1,
 
 
 // test for semantic equality of the intervals
-int ng_interval_equal(const ng_interval_t* int1,
-		      const ng_interval_t* int2)
+bool ng_interval_equal(const ng_interval_t* int1,
+		       const ng_interval_t* int2)
 {
   // compare words for equality
   if(0 != strcmp(ng_interval_word(int1),
 		 ng_interval_word(int2))){
-    
+    return false;  // strings are not equal 
   }
+  
+  // must have same number of next states
+  if(int1->numb_next_states_ != int2->numb_next_states_){
+    return false;
+  }
+  
+  // since we maintain them as being sorted,
+  // we can just compare
+  for(int i=0;i<int1->numb_next_states_;i++){
+    if(!ng_color_equal(&int1->next_states_[i],
+		       &int2->next_states_[i])){
+      return false;
+    }
+  }
+
+  return true;
 }
 
 
@@ -140,7 +177,7 @@ void ng_interval_dump(const ng_interval_t* self)
     first=0;
     
     // print the next state
-    printf("%d", self->next_states_[i]);
+    ng_color_dump(&self->next_states_[i]);
   }
   printf("]\n");
 }

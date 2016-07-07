@@ -13,8 +13,8 @@ TEST(NgRBTAllocTest, Alloc0)
   EXPECT_NE(tree,(ng_rb_tree_t*)(0x0));
   
   // test that its initialized ok
-  EXPECT_EQ(tree->root_,     (ng_rb_tree_node_t*)0x0);
-  EXPECT_EQ(tree->count_,    0);
+  EXPECT_EQ(tree->root_,  (ng_rb_tree_node_t*)0x0);
+  EXPECT_EQ(tree->count_, 0);
   
   // test deletion.  should zero out the pointer
   ng_rb_tree_delete(&tree, 0x0);
@@ -28,12 +28,10 @@ TEST(NgRBTAllocTest, Alloc0)
 int numb_deletions = 0; // keep track of the number of node deletions.
 
 // destructor for fruit which is just a c-string.
-void fruit_delete(void** fruit)
+void fruit_deinit(void* fruit)
 {
   numb_deletions++;
-  printf("freeing : %s\n", (char*)(*fruit));
-  free(*fruit);
-  *fruit = 0x0;
+  printf("freeing : %s\n", (char*)(fruit));
 }
 
 void fruit_dump(const void* fruit)
@@ -45,6 +43,12 @@ int fruit_equal(const void* fruit1,
 		const void* fruit2)
 {
   return !strcmp((const char*)fruit1, (const char*)fruit2);
+}
+
+void* fruit_cp_init(const void* src, void* tgt)
+{
+  strcpy((char*)tgt, (const char*)src);
+  return tgt;
 }
 
 
@@ -60,24 +64,29 @@ TEST(NgRBTAllocTest, Alloc1)
   EXPECT_EQ(tree->count_,  0);
   
   // now create some nodes to put in there for it.
-  ng_rb_tree_node_t* A = ng_rb_tree_node_new(0x0, 0x0, 0x0, strdup("A"));
-  ng_rb_tree_node_t* B = ng_rb_tree_node_new(0x0, 0x0, 0x0, strdup("B"));
-  ng_rb_tree_node_t* C = ng_rb_tree_node_new(0x0, 0x0, 0x0, strdup("C"));
-  ng_rb_tree_node_t* Q = ng_rb_tree_node_new(0x0, 0x0, 0x0, strdup("Q"));
-  ng_rb_tree_node_t* P = ng_rb_tree_node_new(0x0, 0x0, 0x0, strdup("P"));
+  ng_rb_tree_node_t* A = ng_rb_tree_node_new(0x0, 0x0,
+					     2,(void*)"A",fruit_cp_init);
+  ng_rb_tree_node_t* B = ng_rb_tree_node_new(0x0, 0x0,
+					     2,(void*)"B",fruit_cp_init);
+  ng_rb_tree_node_t* C = ng_rb_tree_node_new(0x0, 0x0,
+					     2,(void*)"C",fruit_cp_init);
+  ng_rb_tree_node_t* Q = ng_rb_tree_node_new(0x0, 0x0,
+					     2,(void*)"Q",fruit_cp_init);
+  ng_rb_tree_node_t* P = ng_rb_tree_node_new(0x0, 0x0,
+					     2,(void*)"P",fruit_cp_init);
   
-  tree->root_ = Q;
-  Q->left_  = P;   P->parent_ = Q;
-  Q->right_ = C;   C->parent_ = Q;
-  P->left_  = A;   A->parent_ = P;
-  P->right_ = B;   B->parent_ = P;
+  tree->root_  = Q;
+  Q->kids_[0]  = P;
+  Q->kids_[1]  = C; 
+  P->kids_[0]  = A; 
+  P->kids_[1]  = B;
   
   // print tree out for fun
   ng_rb_tree_dump(tree,fruit_dump);
   
   // test deletion.  should zero out the pointer
   numb_deletions = 0;
-  ng_rb_tree_delete(&tree, fruit_delete);
+  ng_rb_tree_delete(&tree, fruit_deinit);
   EXPECT_EQ(tree,(ng_rb_tree_t*)(0x0));
   
   // all 5 nodes should have been deleted
@@ -89,39 +98,52 @@ TEST(NgRBTAllocTest, Alloc1)
 TEST(NgRBTRotateTest, RotRight)
 {
   // now create some equivalent nodes
-  ng_rb_tree_node_t* A1 = ng_rb_tree_node_new(0x0, 0x0, 0x0, strdup("A"));
-  ng_rb_tree_node_t* B1 = ng_rb_tree_node_new(0x0, 0x0, 0x0, strdup("B"));
-  ng_rb_tree_node_t* C1 = ng_rb_tree_node_new(0x0, 0x0, 0x0, strdup("C"));
-  ng_rb_tree_node_t* Q1 = ng_rb_tree_node_new(0x0, 0x0, 0x0, strdup("Q"));
-  ng_rb_tree_node_t* P1 = ng_rb_tree_node_new(0x0, 0x0, 0x0, strdup("P"));
+  ng_rb_tree_node_t* A1 = ng_rb_tree_node_new(0x0, 0x0,
+					     2,(void*)"A",fruit_cp_init);
+  ng_rb_tree_node_t* B1 = ng_rb_tree_node_new(0x0, 0x0,
+					     2,(void*)"B",fruit_cp_init);
+  ng_rb_tree_node_t* C1 = ng_rb_tree_node_new(0x0, 0x0,
+					     2,(void*)"C",fruit_cp_init);
+  ng_rb_tree_node_t* Q1 = ng_rb_tree_node_new(0x0, 0x0,
+					     2,(void*)"Q",fruit_cp_init);
+  ng_rb_tree_node_t* P1 = ng_rb_tree_node_new(0x0, 0x0,
+					     2,(void*)"P",fruit_cp_init);
   
-  ng_rb_tree_node_t* A2 = ng_rb_tree_node_new(0x0, 0x0, 0x0, strdup("A"));
-  ng_rb_tree_node_t* B2 = ng_rb_tree_node_new(0x0, 0x0, 0x0, strdup("B"));
-  ng_rb_tree_node_t* C2 = ng_rb_tree_node_new(0x0, 0x0, 0x0, strdup("C"));
-  ng_rb_tree_node_t* Q2 = ng_rb_tree_node_new(0x0, 0x0, 0x0, strdup("Q"));
-  ng_rb_tree_node_t* P2 = ng_rb_tree_node_new(0x0, 0x0, 0x0, strdup("P"));
+  ng_rb_tree_node_t* A2 = ng_rb_tree_node_new(0x0, 0x0,
+					     2,(void*)"A",fruit_cp_init);
+  ng_rb_tree_node_t* B2 = ng_rb_tree_node_new(0x0, 0x0,
+					     2,(void*)"B",fruit_cp_init);
+  ng_rb_tree_node_t* C2 = ng_rb_tree_node_new(0x0, 0x0,
+					     2,(void*)"C",fruit_cp_init);
+  ng_rb_tree_node_t* Q2 = ng_rb_tree_node_new(0x0, 0x0,
+					     2,(void*)"Q",fruit_cp_init);
+  ng_rb_tree_node_t* P2 = ng_rb_tree_node_new(0x0, 0x0,
+					     2,(void*)"P",fruit_cp_init);
+  
   
   // create left tree
   ng_rb_tree_t* left_tree = ng_rb_tree_new();
-  left_tree->root_ = Q1;    Q1->parent_ = 0x0;
-  Q1->left_        = P1;    P1->parent_ = Q1;
-  Q1->right_       = C1;    C1->parent_ = Q1;
-  P1->left_        = A1;    A1->parent_ = P1;
-  P1->right_       = B1;    B1->parent_ = P1;
+  left_tree->root_ = Q1;;
+  Q1->kids_[0]     = P1;
+  Q1->kids_[1]     = C1;
+  P1->kids_[0]     = A1;
+  P1->kids_[1]     = B1;
   
   // create right tree
   ng_rb_tree_t* right_tree = ng_rb_tree_new();
-  right_tree->root_ = P2;   P2->parent_ = 0x0;
-  P2->left_  = A2;           A2->parent_ = P2;
-  P2->right_ = Q2;           Q2->parent_ = P2;
-  Q2->left_ =  B2;           B2->parent_ = Q2;
-  Q2->right_ = C2;           C2->parent_ = Q2;
-  
+  right_tree->root_ = P2;
+  P2->kids_[0]  = A2;
+  P2->kids_[1]  = Q2;
+  Q2->kids_[0]  = B2;
+  Q2->kids_[1]  = C2;
+	    
   // before rotation, they should not be structurally
   // equivalent
-  EXPECT_FALSE(ng_rb_tree_structurally_equivalent(left_tree,right_tree, fruit_equal));
-  
-  // rotate right!!
+  EXPECT_FALSE(ng_rb_tree_structurally_equivalent(left_tree,
+						  right_tree,
+						  fruit_equal));
+	    
+	    // rotate right!!
   left_tree->root_ = ng_rb_tree_rotate_(Q1,1);
   
   // print tree out for fun
@@ -137,20 +159,22 @@ TEST(NgRBTRotateTest, RotRight)
   
   // after rotation, left should be strutrually
   // equivalent to right.
-  EXPECT_TRUE(ng_rb_tree_structurally_equivalent(left_tree,right_tree, fruit_equal));
+  EXPECT_TRUE(ng_rb_tree_structurally_equivalent(left_tree,
+						 right_tree,
+						 fruit_equal));
   
   // test deletion.  should zero out the pointer
   numb_deletions = 0;
-  ng_rb_tree_delete(&left_tree, fruit_delete);
+  ng_rb_tree_delete(&left_tree, fruit_deinit);
   EXPECT_EQ(left_tree,(ng_rb_tree_t*)(0x0));
   // all 5 nodes should have been deleted
   EXPECT_EQ(numb_deletions, 5);
   
-  // delete right tree--no fruit deletion
+  // delete right tree
   numb_deletions = 0;
-  ng_rb_tree_delete(&right_tree, 0x0);
+  ng_rb_tree_delete(&right_tree, fruit_deinit);
   EXPECT_EQ(left_tree,(ng_rb_tree_t*)(0x0));
-  EXPECT_EQ(numb_deletions, 0);
+  EXPECT_EQ(numb_deletions, 5);
 }
 
 
@@ -158,40 +182,53 @@ TEST(NgRBTRotateTest, RotRight)
 TEST(NgRBTRotateTest, RotLeft)
 {
   // now create some equivalent nodes
-  ng_rb_tree_node_t* A1 = ng_rb_tree_node_new(0x0, 0x0, 0x0, strdup("A"));
-  ng_rb_tree_node_t* B1 = ng_rb_tree_node_new(0x0, 0x0, 0x0, strdup("B"));
-  ng_rb_tree_node_t* C1 = ng_rb_tree_node_new(0x0, 0x0, 0x0, strdup("C"));
-  ng_rb_tree_node_t* Q1 = ng_rb_tree_node_new(0x0, 0x0, 0x0, strdup("Q"));
-  ng_rb_tree_node_t* P1 = ng_rb_tree_node_new(0x0, 0x0, 0x0, strdup("P"));
+  // now create some equivalent nodes
+  ng_rb_tree_node_t* A1 = ng_rb_tree_node_new(0x0, 0x0,
+					      2,(void*)"A",fruit_cp_init);
+  ng_rb_tree_node_t* B1 = ng_rb_tree_node_new(0x0, 0x0,
+					      2,(void*)"B",fruit_cp_init);
+  ng_rb_tree_node_t* C1 = ng_rb_tree_node_new(0x0, 0x0,
+					      2,(void*)"C",fruit_cp_init);
+  ng_rb_tree_node_t* Q1 = ng_rb_tree_node_new(0x0, 0x0,
+					      2,(void*)"Q",fruit_cp_init);
+  ng_rb_tree_node_t* P1 = ng_rb_tree_node_new(0x0, 0x0,
+					      2,(void*)"P",fruit_cp_init);
   
-  ng_rb_tree_node_t* A2 = ng_rb_tree_node_new(0x0, 0x0, 0x0, strdup("A"));
-  ng_rb_tree_node_t* B2 = ng_rb_tree_node_new(0x0, 0x0, 0x0, strdup("B"));
-  ng_rb_tree_node_t* C2 = ng_rb_tree_node_new(0x0, 0x0, 0x0, strdup("C"));
-  ng_rb_tree_node_t* Q2 = ng_rb_tree_node_new(0x0, 0x0, 0x0, strdup("Q"));
-  ng_rb_tree_node_t* P2 = ng_rb_tree_node_new(0x0, 0x0, 0x0, strdup("P"));
+  ng_rb_tree_node_t* A2 = ng_rb_tree_node_new(0x0, 0x0,
+					      2,(void*)"A",fruit_cp_init);
+  ng_rb_tree_node_t* B2 = ng_rb_tree_node_new(0x0, 0x0,
+					      2,(void*)"B",fruit_cp_init);
+  ng_rb_tree_node_t* C2 = ng_rb_tree_node_new(0x0, 0x0,
+					      2,(void*)"C",fruit_cp_init);
+  ng_rb_tree_node_t* Q2 = ng_rb_tree_node_new(0x0, 0x0,
+					      2,(void*)"Q",fruit_cp_init);
+  ng_rb_tree_node_t* P2 = ng_rb_tree_node_new(0x0, 0x0,
+					      2,(void*)"P",fruit_cp_init);
   
   // create left tree
   ng_rb_tree_t* left_tree = ng_rb_tree_new();
-  left_tree->root_ = Q1;    Q1->parent_ = 0x0;
-  Q1->left_        = P1;    P1->parent_ = Q1;
-  Q1->right_       = C1;    C1->parent_ = Q1;
-  P1->left_        = A1;    A1->parent_ = P1;
-  P1->right_       = B1;    B1->parent_ = P1;
+  left_tree->root_   = Q1;
+  Q1->kids_[0]       = P1;
+  Q1->kids_[1]       = C1;
+  P1->kids_[0]       = A1;
+  P1->kids_[1]       = B1;
   
   // create right tree
   ng_rb_tree_t* right_tree = ng_rb_tree_new();
-  right_tree->root_ = P2;   P2->parent_ = 0x0;
-  P2->left_  = A2;           A2->parent_ = P2;
-  P2->right_ = Q2;           Q2->parent_ = P2;
-  Q2->left_ =  B2;           B2->parent_ = Q2;
-  Q2->right_ = C2;           C2->parent_ = Q2;
+  right_tree->root_  = P2;
+  P2->kids_[0]       = A2;
+  P2->kids_[1]       = Q2;
+  Q2->kids_[0]       = B2;
+  Q2->kids_[1]       = C2;
   
   // before rotation, they should not be structurally
   // equivalent
-  EXPECT_FALSE(ng_rb_tree_structurally_equivalent(left_tree,right_tree, fruit_equal));
+  EXPECT_FALSE(ng_rb_tree_structurally_equivalent(left_tree,
+						  right_tree,
+						  fruit_equal));
   
   // rotate left!!
-  right_tree->root_ = ng_rb_tree_rotate__(Q,0);
+  right_tree->root_ = ng_rb_tree_rotate_(P2,0);
   
   // print tree out for fun
   printf("after rotation\n");
@@ -206,20 +243,22 @@ TEST(NgRBTRotateTest, RotLeft)
   
   // after rotation, left should be strutrually
   // equivalent to right.
-  EXPECT_TRUE(ng_rb_tree_structurally_equivalent(left_tree,right_tree, fruit_equal));
+  EXPECT_TRUE(ng_rb_tree_structurally_equivalent(left_tree,
+						 right_tree,
+						 fruit_equal));
   
   // test deletion.  should zero out the pointer
   numb_deletions = 0;
-  ng_rb_tree_delete(&left_tree, fruit_delete);
+  ng_rb_tree_delete(&left_tree, fruit_deinit);
   EXPECT_EQ(left_tree,(ng_rb_tree_t*)(0x0));
   // all 5 nodes should have been deleted
   EXPECT_EQ(numb_deletions, 5);
   
   // delete right tree--no fruit deletion
   numb_deletions = 0;
-  ng_rb_tree_delete(&right_tree, 0x0);
+  ng_rb_tree_delete(&right_tree, fruit_deinit);
   EXPECT_EQ(left_tree,(ng_rb_tree_t*)(0x0));
-  EXPECT_EQ(numb_deletions, 0);
+  EXPECT_EQ(numb_deletions, 5);
 }
 
 

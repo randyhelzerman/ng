@@ -10,7 +10,7 @@ TEST(NgRBAllocTest, Alloc)
   // this is going to be a node containing an ng_interval_t, so make
   // one for it to hold.
   ng_interval_t* interval = 0x0;
-  interval = ng_interval_eq_new("short",5);
+  interval = ng_interval_eq_new("short");
   EXPECT_NE(interval,(ng_interval_t*)(0x0));
   
   // test creation
@@ -18,7 +18,7 @@ TEST(NgRBAllocTest, Alloc)
   node = ng_rb_tree_node_new((ng_rb_tree_node_t*)2,
 			     (ng_rb_tree_node_t*)3,
 			     
-			     ng_interval_sizeof(interval),
+			     sizeof(ng_interval_t),
 			     (void*)interval,
 			     (void*(*)(const void*,
 				       void*))ng_interval_cp_init);
@@ -35,5 +35,7 @@ TEST(NgRBAllocTest, Alloc)
   // test deletion.  should zero out the pointer
   ng_rb_tree_node_delete(&node, (void(*)(void*))ng_interval_deinit);
   EXPECT_EQ(node,(ng_rb_tree_node_t*)(0x0));
+
+  ng_interval_delete(&interval);
 }
 

@@ -10,27 +10,20 @@ const size_t NG_INTERVAL_MAX_NEXT_STATES_SIZE = 10;
 
 
 // create a new interval
-ng_interval_t* ng_interval_eq_new(const char* word, const int max_next_states)
+ng_interval_t* ng_interval_eq_new(const char* word)
 {
-  // calcualte size
-  const size_t size = sizeof(ng_interval_t) + max_next_states*sizeof(int);
-  
   // allocate it
-  ng_interval_t* self = (ng_interval_t*)malloc(size);
+  ng_interval_t* self = (ng_interval_t*)malloc(sizeof(ng_interval_t));
   if(0x0==self) return 0x0;
   
+  return ng_interval_eq_init(self,word);
+}
+
+
+ng_interval_t* ng_interval_eq_init(ng_interval_t* self, const char* word)
+{
   // initialize it
-  const size_t word_length = strlen(word);
-  if(word_length > 9) {
-    // we have to allocated the long word
-    self->long_word_ = strdup(word);
-  } else {
-    // just copy to short word
-    strcpy(self->short_word_, word);
-    self->long_word_ = 0x0;
-  }
-  
-  self->max_next_states_  = max_next_states;
+  strncpy(self->word_, word, 15);
   self->numb_next_states_ = 0;
   
   return self;
@@ -38,20 +31,24 @@ ng_interval_t* ng_interval_eq_new(const char* word, const int max_next_states)
 
 
 // create a new interval-- word is 1 greater than word
-ng_interval_t* ng_interval_gt_new(const char* word, 
-				  const int max_next_state)
+ng_interval_t* ng_interval_gt_new(const char* word)
 {
-  // create it the normal way
-  ng_interval_t* self = ng_interval_eq_new(word, max_next_state);
+  // allocate it
+  ng_interval_t* self = (ng_interval_t*)malloc(sizeof(ng_interval_t));
   if(0x0==self) return 0x0;
+  
+  return ng_interval_gt_init(self,word);
+}
+
+ng_interval_t* ng_interval_gt_init(ng_interval_t* self, const char* word)
+{
+  // initialize it
+  strncpy(self->word_, word, 15);
+  self->numb_next_states_ = 0;
   
   // then increment the last byte. Works for UTF-8
   const size_t len = strlen(ng_interval_word(self));
-  if(0x0 != self->long_word_){
-    self->long_word_[len]++;
-  } else {
-    self->short_word_[len]++;
-  }
+  self->word_[len-1]++;
   
   return self;
 }
@@ -61,24 +58,25 @@ ng_interval_t* ng_interval_gt_new(const char* word,
 // to be large enough.
 ng_interval_t* ng_interval_cp_init(const ng_interval_t* self, ng_interval_t* tgt)
 {
-  // copy over the word
-  if(0x0 != self->long_word_) strcpy(tgt->long_word_, self->long_word_);
-  else {
-    tgt->long_word_ = 0x0;
-    strncpy(tgt->short_word_, self->short_word_, 10);
-  }
+  strncpy(tgt->word_, self->word_, 15);
   
   // copy over color info
-  tgt->max_next_states_ = self->max_next_states_;
   tgt->numb_next_states_ = self->numb_next_states_;
-  ng_color_t* self_colors = (ng_color_t*)self->next_states_;
-  ng_color_t* tgt_colors  = (ng_color_t*)tgt->next_states_;
   for(int i=0;i<self->numb_next_states_;i++){
-    tgt_colors[i] = self_colors[i];
+    ng_color_cp(&self->next_states_[i], &tgt->next_states_[i]);
   }
   
   return tgt;
 }
+
+
+// copy interval into already init-ed memory space
+ng_interval_t* ng_interval_cp(const ng_interval_t* self,
+			      ng_interval_t* tgt)
+{
+  return ng_interval_cp_init(self,tgt);
+}
+
 
 
 // free it up again
@@ -86,7 +84,7 @@ void ng_interval_delete(ng_interval_t** selfp)
 {
   // clean up the memory used by this
   ng_interval_deinit(*selfp);
-
+  
   // free it
   free(*selfp);
 
@@ -98,9 +96,8 @@ void ng_interval_delete(ng_interval_t** selfp)
 // de-initialzie memory region; no dealllocion.
 void ng_interval_deinit(ng_interval_t* self)
 {
-  if(0x0 != self->long_word_){
-    free(self->long_word_);
-  }
+  // nothing yet to do.
+  self->word_[0] = 0x0;
 }
 
 
@@ -108,20 +105,32 @@ void ng_interval_deinit(ng_interval_t* self)
 // access functions
 //-----------------
 
-// get the size of this interval.  Because its expandable,
-// its not just sizeof(rg_interval_t).
-size_t ng_interval_sizeof(const ng_interval_t* self)
-{
-  return (sizeof(ng_interval_t) +
-	  self->max_next_states_ * sizeof(ng_color_t));
-}
-
 
 // get the word of this interval
 const char* ng_interval_word(const ng_interval_t* self)
 {
-  if(self->long_word_) return self->long_word_;
-  return self->short_word_;
+  return self->word_;
+}
+
+
+// push a color
+bool ng_interval_push_color(ng_interval_t* self,
+			    const int state,
+			    const int delta)
+{
+  // see if we have enough room
+  if(self->numb_next_states_ >=16) return false;
+  
+  // copy it onto the apropos place
+  ng_color_init(&self->next_states_[self->numb_next_states_],
+		state,
+		delta);
+  
+  // increment the stack pointer
+  self->numb_next_states_++;
+  
+  // return success
+  return true;
 }
 
 
@@ -167,7 +176,7 @@ bool ng_interval_equal(const ng_interval_t* int1,
 void ng_interval_dump(const ng_interval_t* self)
 {
   // print out the word
-  printf("ng_interval [%s...) next_states[", ng_interval_word(self));
+  printf("ng_interval [\"%s\"...) next_states[", ng_interval_word(self));
   
   // print out the next states
   int first=1;
@@ -179,6 +188,6 @@ void ng_interval_dump(const ng_interval_t* self)
     // print the next state
     ng_color_dump(&self->next_states_[i]);
   }
-  printf("]\n");
+  printf("] ");
 }
 						

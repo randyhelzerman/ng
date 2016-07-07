@@ -10,43 +10,30 @@ extern "C" {
 #endif
   
   typedef struct {
-    // fits most words.
-    union {
-      char word_prefix_[NG_INTERVAL_MAX_WORD_PREFIX_SIZE];
-      
-      struct {
-	// if this is 0x0, then the long word is in use.  
-	char sentinal;
-	char* letters_
-      } long_word_;
-    };
-    
-    // set of next states
-    union {
-      ng_color_t next_states_prefix_[NG_INTERVAL_MAX_NEXT_STATES_PREFIX_SIZE];
-      
-      struct {
-	ng_color_t sentinal_;
-	ng_color_t* next_states_;
-      } long_next_states_;
-    }; 
+    char word_[16];
+    ng_color_t next_states_[16];
+    int numb_next_states_;
   } ng_interval_t;
   
   
   // create a new interval-- word is equal to word
-  ng_interval_t* ng_interval_eq_new(const char* word,
-				    const int max_next_state);
+  ng_interval_t* ng_interval_eq_new(const char* word);
   
   ng_interval_t* ng_interval_eq_init(ng_interval_t* self,
-				     const char* word,
-				     const int max_next_state);
+				     const char* word);
   
   // create a new interval-- word is 1 greater than word
-  ng_interval_t* ng_interval_gt_new(const char* word,
-				    const int max_next_state);
+  ng_interval_t* ng_interval_gt_new(const char* word);
+  
+  ng_interval_t* ng_interval_gt_init(ng_interval_t* self,
+				     const char* word);
   
   // copy and init interval into blank memory space.  tgt must be pre-allocated
   // to be large enough.
+  ng_interval_t* ng_interval_cp_init(const ng_interval_t* self,
+				     ng_interval_t* tgt);
+
+  // copy interval into already init-ed memory space
   ng_interval_t* ng_interval_cp_init(const ng_interval_t* self,
 				     ng_interval_t* tgt);
   
@@ -57,13 +44,14 @@ extern "C" {
   void ng_interval_deinit(ng_interval_t* self);
   
   // access functions
-
-  // get the size of this interval.  Because its expandable,
-  // its not just sizeof(rg_interval_t).
-  size_t ng_interval_sizeof(const ng_interval_t* self);
   
   // get the word of this interval.
   const char* ng_interval_word(const ng_interval_t* self);
+
+  // push a color
+  bool ng_interval_push_color(ng_interval_t* self,
+			      const int state,
+			      const int delta);
   
   // compare -- suitable for sorting
   int ng_interval_compare(const ng_interval_t* int1,

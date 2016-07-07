@@ -16,18 +16,23 @@ extern "C" {
   
   // create a new color
   ng_color_t* ng_color_new(const int state, const int delta);
-
+  
   // for use in, say allocating on the stack
   ng_color_t* ng_color_init(ng_color_t* self,
 			    const int state, const int delta);
   
   ng_color_t* ng_color_cp_init(const ng_color_t* self,ng_color_t* tgt);
-
+  
   
   // free it up again
   void ng_color_delete(ng_color_t** selfp);
 
   void ng_color_deinit(ng_color_t* self);
+
+
+  // copying
+  ng_color_t* ng_color_cp_init(const ng_color_t* self, ng_color_t* tgt);
+  ng_color_t* ng_color_cp(const ng_color_t* self, ng_color_t* tgt);
   
   
   // compare structs -- suitable for use in sorting

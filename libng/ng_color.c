@@ -42,6 +42,12 @@ void ng_color_deinit(ng_color_t* self)
 }
 
 
+ng_color_t* ng_color_cp(const ng_color_t* self, ng_color_t* tgt)
+{
+  return ng_color_cp_init(self,tgt);
+}
+  
+
 // compare structs -- suitable for use in sorting
 // returns  <0 iff c1 < c2
 //           0 iff c1 ==c2
@@ -67,7 +73,7 @@ bool ng_color_equal(const ng_color_t* c1,
 // debugging
 void ng_color_dump(const ng_color_t* self)
 {
-  printf("(color state=%d,delta=%d)  ", 
+  printf("color(state=%d,delta=%d)  ", 
 	 self->state_,
 	 self->delta_);
 }

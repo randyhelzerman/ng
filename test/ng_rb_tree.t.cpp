@@ -51,6 +51,11 @@ void* fruit_cp_init(const void* src, void* tgt)
   return tgt;
 }
 
+int fruit_compare(const void* src, const void* tgt)
+{
+  return strcmp((char*)src,(char*)tgt);
+}
+
 
 TEST(NgRBTAllocTest, Alloc1)
 {
@@ -638,4 +643,21 @@ TEST(NgRBTRotateTest, RotLeftDouble)
   ng_rb_tree_node_delete(&m4, fruit_deinit);
   ng_rb_tree_node_delete(&m5, fruit_deinit);
   ng_rb_tree_node_delete(&m6, fruit_deinit);
+}
+
+
+// Test left rotation of node
+TEST(NgRBTInsertTest, emptyTreeInsert)
+{
+  // test initialization of tree is ok
+  ng_rb_tree_t tree;
+  ng_rb_tree_init(&tree);
+  EXPECT_EQ(0,tree.count_);
+  EXPECT_EQ(0x0,tree.root_);
+  
+  // insert one fruit:
+  const char* x="X";
+  ng_rb_tree_insert(&tree, 2,(void*)x, fruit_cp_init,fruit_compare);
+  EXPECT_EQ(1,tree.count_);
+  EXPECT_NE((const ng_rb_tree_node_t*)0x0,tree.root_);
 }

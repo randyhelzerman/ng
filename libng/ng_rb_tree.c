@@ -16,14 +16,22 @@ ng_rb_tree_t* ng_rb_tree_new()
   // allocate space for the new tree
   ng_rb_tree_t* self = (ng_rb_tree_t*)malloc(sizeof(ng_rb_tree_t));
   if(0x0 == self) return 0x0;
+  
+  // initialize the fields
+  return ng_rb_tree_init(self);
+}
 
+
+ng_rb_tree_t* ng_rb_tree_init(ng_rb_tree_t* self)
+{
   // initialize the fields
   self->root_ = 0x0;
   self->count_ = 0;
-
+  
   return self;
 }
-  
+
+
 // destructor
 void ng_rb_tree_delete(ng_rb_tree_t** selfp,
 		       void (*uninit_fruit)(void*))
@@ -62,7 +70,6 @@ int ng_rb_tree_structurally_equivalent(const ng_rb_tree_t* t1,
 // insertion/deletion
 
 // insertion
-/*
 const ng_rb_tree_node_t*
 ng_rb_tree_insert(ng_rb_tree_t* self,
 		  
@@ -78,15 +85,19 @@ ng_rb_tree_insert(ng_rb_tree_t* self,
     self->root_ = ng_rb_tree_node_new(0x0,0x0,
 				      fruit_size,fruit,fruit_cp_init);
     // no need to blacken: the nodes are by default black.
+    if(0x0!=self->root_) self->count_ = 1;
     return self->root_;
   }
-
+  
+  // return value found deep in loop; cache here
+  ng_rb_tree_node_t* returner;
+  
   // sentinal
   ng_rb_tree_node_t dummy_node;
   ng_rb_tree_node_init(&dummy_node, 0x0,0x0, 0,0x0,0x0);
   
-  ng_rb_tree_node_t* grandparent;
   ng_rb_tree_node_t* great_grandparent;
+  ng_rb_tree_node_t* grandparent;
   
   ng_rb_tree_node_t* parent;  
   ng_rb_tree_node_t* me;
@@ -98,16 +109,19 @@ ng_rb_tree_insert(ng_rb_tree_t* self,
   great_grandparent = &dummy_node;
   grandparent = 0x0;
   parent      = 0x0;
-  me      = self->root_;
-  great_grandparent->kids_[1] = me;
+  me          = self->root_;
+  great_grandparent->kids_[1] = me;  // parent and grandparent are null?  
   
   // search down the tree.
   for(;;) {
     if(0x0==me){
-      // we've found our way to the leaves of the tree.  So just add the new node
+      // we've found our way to the leaves of the tree.  So add the new node
       me = ng_rb_tree_node_new(0x0,0x0, fruit_size, fruit,fruit_cp_init);
+      // don't forget to color it red
+      me->red_ = true;
       parent->kids_[dir] = me;
       if(0x0==me) return 0x0;
+      returner = me;
     } else {
       // if the kids are both red, swap color.  Note, every
       // node always has two children.  Nulls are children too.
@@ -115,7 +129,7 @@ ng_rb_tree_insert(ng_rb_tree_t* self,
 	 &&
 	 ng_rb_tree_node_is_red(me->kids_[1])){
 	// make this one red, and its kids black
-	me->red_ = true;
+	me->red_ = true;  // might introduce red-violation with parent.
 	// note, we know both kids are non-null, because
 	// they are red.
 	me->kids_[0]->red_ = false;
@@ -124,43 +138,57 @@ ng_rb_tree_insert(ng_rb_tree_t* self,
     }
     
     // fix red violation
-    if(me->red_ && parent->red_){
+    if(ng_rb_tree_node_is_red(me) && ng_rb_tree_node_is_red(parent)){
       // the direction  is based on where the grandparent is.
       const int dir2 = (great_grandparent->kids_[1] == grandparent);
       
-      if(q == p->kids_[last]){
-	great_grandparent->kids_[dir2] = ng_rg_tree_rotate_(grandparent, !last);
+      if(me == parent->kids_[last]){
+	great_grandparent->kids_[dir2] = ng_rb_tree_rotate_(grandparent, !last);
       } else {
-	great_grandparent->kids_[dir2] = ng_rg_tree_rotate_double_(grandparent, !last);
+	great_grandparent->kids_[dir2] = ng_rb_tree_rotate_double_(grandparent, !last);
       }
     }
     
     // compare fruit with we are
-    const int cmp = fruit_compare(q->fruit, fruit);
+    const int cmp = fruit_compare(me->fruit_, fruit);
     
     // stop if we find it already in the tree
-    if(0==cmp) break;
+    if(0==cmp){
+      returner = me;
+      break;
+    }
     
     last = dir;
     dir  = (cmp < 0);
     
     // update helpers
     if(0x0 != grandparent){
+      // this fixes the null parent and grandparent we
+      // initialized with
       great_grandparent=grandparent;
     }
     
-    grandparent = great_grandparent;
-    great_grandparent = q;
-    q = q->kids_[dir];
+    // let a new generation take over ;-)
+    grandparent = parent;
+    parent = me;
+    me = me->kids_[dir];
     
     // update sentinal
-    self->root_ = dummy_node->kids_[1];
+    self->root_ = dummy_node.kids_[1];
   }
   
   // blacken the root node
-  tree->root_->red_ = false;
+  self->root_->red_ = false;
+  
+  // since we are returning something,
+  // increment the count
+  self->count_ = self->count_ + 1;
+  
+  // and return the node we just inserted,
+  // or found.
+  return returner;
 }
-*/
+
 
 
 //------------------

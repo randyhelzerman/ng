@@ -22,6 +22,8 @@ extern "C" {
   
   // constructor
   ng_rb_tree_t* ng_rb_tree_new();
+
+  ng_rb_tree_t* ng_rb_tree_init(ng_rb_tree_t* self);
   
   // destructor
   void ng_rb_tree_delete(ng_rb_tree_t** self,

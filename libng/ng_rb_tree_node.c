@@ -108,15 +108,19 @@ bool ng_rb_tree_node_is_red(const ng_rb_tree_node_t* self)
 // if the function pointer "fruit_equal" isn't null,
 // then the corresponding fruit are also compared for
 // equality using the supplied function.
-bool ng_rb_tree_node_structurally_equivalent(const ng_rb_tree_node_t* n1,
-					     const ng_rb_tree_node_t* n2,
-					     int(*fruit_equal)(const void*,
-							       const void*))
+bool
+ng_rb_tree_node_structurally_equivalent(const ng_rb_tree_node_t* n1,
+					const ng_rb_tree_node_t* n2,
+					int(*fruit_equal)(const void*,
+							  const void*))
 {
   // handle null case
-  if(0x0 == n1 && 0x0 == n2){ return 1; }
-  if(0x0 == n1 && 0x0 != n2){ return 0; }
-  if(0x0 != n1 && 0x0 == n2){ return 0; }
+  if(0x0 == n1 && 0x0 == n2){ return true; }
+  if(0x0 == n1 && 0x0 != n2){ return false; }
+  if(0x0 != n1 && 0x0 == n2){ return false; }
+  
+  // colors have to be equal:
+  if(n1->red_ != n2->red_) return false;
   
   // if we have a fruit equality function, use it
   // here to see if these two nodes are fruit-equal
@@ -185,8 +189,8 @@ void ng_rb_tree_node_dump(const ng_rb_tree_node_t* self,
 			  void (*fruit_dump)(const void*))
 {
   if(0x0 != fruit_dump){
-    printf("fruit:");
     fruit_dump(self->fruit_);
+    printf("(%c)", self->red_ ? 'r' : 'b');
   } else {
     printf("node:%p left:%p right %p ", 
 	   (void*)self, 

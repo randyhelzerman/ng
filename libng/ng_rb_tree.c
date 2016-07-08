@@ -33,7 +33,7 @@ void ng_rb_tree_delete(ng_rb_tree_t** selfp,
   
   // free self
   free(*selfp);
-
+  
   // and zero out
   *selfp = (ng_rb_tree_t*)0x0;
 }
@@ -62,6 +62,7 @@ int ng_rb_tree_structurally_equivalent(const ng_rb_tree_t* t1,
 // insertion/deletion
 
 // insertion
+/*
 const ng_rb_tree_node_t*
 ng_rb_tree_insert(ng_rb_tree_t* self,
 		  
@@ -70,7 +71,7 @@ ng_rb_tree_insert(ng_rb_tree_t* self,
 		  void*(*fruit_cp_init)(const void*,
 					void*),
 		  int(*fruit_compare)(const void*,
-				      const void*));
+				      const void*))
 {
   // see if the tree is empty
   if(0x0==self->root_){
@@ -97,33 +98,33 @@ ng_rb_tree_insert(ng_rb_tree_t* self,
   great_grandparent = &dummy_node;
   grandparent = 0x0;
   parent      = 0x0;
-  me      = tree->root_;
+  me      = self->root_;
   great_grandparent->kids_[1] = me;
   
   // search down the tree.
   for(;;) {
     if(0x0==me){
       // we've found our way to the leaves of the tree.  So just add the new node
-      me = ng_rb_tree_node_new(0x0,0x0, fruit_size, fruit_cp_init);
+      me = ng_rb_tree_node_new(0x0,0x0, fruit_size, fruit,fruit_cp_init);
       parent->kids_[dir] = me;
-      if(0x0==q) return 0x0;
+      if(0x0==me) return 0x0;
     } else {
       // if the kids are both red, swap color.  Note, every
       // node always has two children.  Nulls are children too.
-      if(ng_rb_tree_node_is_red(q->kids_[0])
+      if(ng_rb_tree_node_is_red(me->kids_[0])
 	 &&
-	 ng_rb_tree_node_is_red(q->kids_[1])){
+	 ng_rb_tree_node_is_red(me->kids_[1])){
 	// make this one red, and its kids black
-	q->red_ = true;
+	me->red_ = true;
 	// note, we know both kids are non-null, because
 	// they are red.
-	q->kids_[0]->red_ = false;
-	q->kids_[1]->red_ = false;
+	me->kids_[0]->red_ = false;
+	me->kids_[1]->red_ = false;
       }
     }
     
     // fix red violation
-    if(q->red_ && p->red_){
+    if(me->red_ && parent->red_){
       // the direction  is based on where the grandparent is.
       const int dir2 = (great_grandparent->kids_[1] == grandparent);
       
@@ -159,7 +160,7 @@ ng_rb_tree_insert(ng_rb_tree_t* self,
   // blacken the root node
   tree->root_->red_ = false;
 }
-
+*/
 
 
 //------------------
@@ -180,8 +181,9 @@ ng_rb_tree_node_t* ng_rb_tree_rotate_(ng_rb_tree_node_t* PQ,
   // do the rotation
   ng_rb_tree_node_t* QP  =  PQ->kids_[!dir];
   ng_rb_tree_node_t* B   =  QP->kids_[dir];
-  PQ->kids_[!dir]        =  B;
+
   QP->kids_[dir]         =  PQ;
+  PQ->kids_[!dir]        =  B;
 
   // change the colors
   PQ->red_ = 1;
@@ -192,7 +194,7 @@ ng_rb_tree_node_t* ng_rb_tree_rotate_(ng_rb_tree_node_t* PQ,
 
 
 ng_rb_tree_node_t* ng_rb_tree_rotate_double_(ng_rb_tree_node_t* node,
-					    const int dir)
+					     const int dir)
 {
   node->kids_[!dir] = ng_rb_tree_rotate_(node->kids_[!dir], !dir);
   return ng_rb_tree_rotate_(node,dir);

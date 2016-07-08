@@ -41,6 +41,9 @@ TEST(NgRBAllocTest, Alloc)
   ng_interval_delete(&interval);
 }
 
+
+// tests some of the debugging facilities; structural
+// equivalecne, validity of rb tree, etc.
 TEST(NgRBDebugTest, Debug)
 {
   // Test to see that null node is correct and has height 1
@@ -104,4 +107,30 @@ TEST(NgRBDebugTest, Debug)
   ng_rb_tree_node_delete(&A, test_fruit_deinit);
   ng_rb_tree_node_delete(&B, test_fruit_deinit);
   ng_rb_tree_node_delete(&C, test_fruit_deinit);
+}
+
+
+// test to see if the ng_rb_tree_node_is_red() function
+// works correctly.
+TEST(NgRBAccessTest, IsRed)
+{
+  // A null node is colored black
+  ng_rb_tree_node_t* node = 0x0;
+  EXPECT_FALSE(ng_rb_tree_node_is_red(node));
+
+  // when created, by default, a node is black
+  node = ng_rb_tree_node_new(0x0, 0x0,
+			     5,(void*)"node",test_fruit_cp_init);
+  EXPECT_FALSE(ng_rb_tree_node_is_red(node));
+
+  // when a node's red member is set to true, its red 
+  node->red_ = true;
+  EXPECT_TRUE(ng_rb_tree_node_is_red(node));
+  
+  // when we set it back to false, it is black
+  node->red_ = false;
+  EXPECT_FALSE(ng_rb_tree_node_is_red(node));
+  
+  // free up memory.
+  ng_rb_tree_node_delete(&node, test_fruit_deinit);
 }

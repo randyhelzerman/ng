@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 
 #include <ng_rb_tree.h>
-
+#include <math.h>
 
 // test creation/destruction of an empty rb tree.
 
@@ -31,7 +31,7 @@ int numb_deletions = 0; // keep track of the number of node deletions.
 void fruit_deinit(void* fruit)
 {
   numb_deletions++;
-  printf("freeing : %s\n", (char*)(fruit));
+  // printf("freeing : %s\n", (char*)(fruit));
 }
 
 void fruit_dump(const void* fruit)
@@ -646,8 +646,8 @@ TEST(NgRBTRotateTest, RotLeftDouble)
 }
 
 
-// Test left rotation of node
-TEST(NgRBTInsertTest, emptyTreeInsert)
+// Test single insertion/deletion
+TEST(NgRBTInsertTest, emptyTreeInsertDelete)
 {
   // test initialization of tree is ok
   ng_rb_tree_t tree;
@@ -660,4 +660,107 @@ TEST(NgRBTInsertTest, emptyTreeInsert)
   ng_rb_tree_insert(&tree, 2,(void*)x, fruit_cp_init,fruit_compare);
   EXPECT_EQ(1,tree.count_);
   EXPECT_NE((const ng_rb_tree_node_t*)0x0,tree.root_);
+  EXPECT_EQ(0, fruit_compare(tree.root_->fruit_, x));
+  
+  // now delete it.
+  ng_rb_tree_remove(&tree, 2,(void*)x,fruit_cp_init,fruit_deinit,fruit_compare);
+  EXPECT_EQ((const ng_rb_tree_node_t*)0x0,tree.root_);
+  EXPECT_EQ(0,tree.count_);
+  
+  // free memory
+  ng_rb_tree_deinit(&tree,fruit_deinit);
+}
+
+
+// Test random insertion/deletion
+TEST(NgRBTInsertTest, randomTreeInsertDelete)
+{
+  // keeps track of whether this is in the set or not
+  bool set[26];
+  for(int i=0;i<26;i++){
+    set[i] = false;
+  }
+  
+  // test initialization of tree is ok
+  ng_rb_tree_t tree;
+  ng_rb_tree_init(&tree);
+  EXPECT_EQ(0,tree.count_);
+  EXPECT_EQ(0x0,tree.root_);
+  
+  // insert or delete fruit
+  bool inserting = true;
+  
+  char x[2];
+  x[1] = 0x0;
+  for(int i=0;i<9999;i++){
+    // generate a random lower-case letter
+    x[0] = rand() % 26 + 'a';
+    
+    // save old count so we can test if its being
+    // maintained correctly through insert and delete
+    const int save_count = tree.count_;
+    const bool in_set = set[x[0]];
+    
+    if(inserting){
+      // we are inserting
+      ng_rb_tree_insert(&tree, 2,(void*)x, fruit_cp_init,fruit_compare);
+      // tree should at least correct after insertint
+      EXPECT_GT(ng_rb_tree_node_correct(tree.root_),0);
+      
+      if(in_set){
+	EXPECT_EQ(tree.count_,save_count);
+	if(tree.count_ != save_count){
+	  printf("break here 1");
+	}
+      } else {
+	EXPECT_EQ(tree.count_,save_count+1);
+	set[x[0]] = true;
+	if(tree.count_ != save_count+1){
+	  printf("break here 2");
+	}
+      }
+    } else {
+      // we are deleting
+      ng_rb_tree_remove(&tree, 2,(void*)x,fruit_cp_init,fruit_deinit,fruit_compare);
+      // tree should at least be correct after deleting
+      EXPECT_GT(ng_rb_tree_node_correct(tree.root_),0);
+      
+      if(in_set) {
+	EXPECT_EQ(tree.count_, save_count-1);
+	set[x[0]] = false;
+	if(tree.count_ != save_count-1){
+	  printf("break here 3");
+	}
+      } else {
+	EXPECT_EQ(tree.count_,save_count);
+	if(tree.count_ != save_count){
+	  printf("break here 4");
+	}
+      }
+    }
+    
+    // if we don't have anything in the tree, change to
+    // inserting mode.
+    if(0==tree.count_){
+      inserting = true;
+    }
+    
+    //  If the tree is full, change to deleting mode
+    if(26==tree.count_){
+      inserting=false;
+    }
+  }
+  
+  // verify that the tree has the correct stuffs in it 
+  for(int i=0;i<26;i++){
+    x[0] = i+'a';
+    EXPECT_EQ(set[i], ng_rb_tree_member(&tree, x,fruit_compare));
+  }
+
+  
+  printf("random tree:\n");
+  ng_rb_tree_dump(&tree, fruit_dump);
+  
+  // free memory
+  ng_rb_tree_deinit(&tree,fruit_deinit);
 }

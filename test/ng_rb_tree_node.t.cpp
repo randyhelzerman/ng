@@ -98,9 +98,9 @@ TEST(NgRBDebugTest, Debug)
   A->red_ = false;
   B->red_ = false;
   C->red_ = false;
-
+  
   EXPECT_EQ(3, ng_rb_tree_node_correct(Q));
-
+  
   // delete everything created in this function
   ng_rb_tree_node_delete(&Q, test_fruit_deinit);
   ng_rb_tree_node_delete(&P, test_fruit_deinit);

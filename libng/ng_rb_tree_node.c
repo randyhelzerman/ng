@@ -104,18 +104,36 @@ bool ng_rb_tree_node_is_red(const ng_rb_tree_node_t* self)
 }
 
 
+// returns true if in tree
+bool ng_rb_tree_node_member(const ng_rb_tree_node_t* node,
+			    void* fruit,
+			    int(*fruit_compare)(const void*,
+						const void*))
+{
+  while(0x0 != node){
+    const int cmp = fruit_compare(fruit, node->fruit_);
+    if(0x0==cmp) return true;
+    node = node->kids_[cmp<0];
+  }
+  
+  // reached tip--not in tree
+  return false;
+}
+
+
 // returns true if two trees have the same tree structure
 // if the function pointer "fruit_equal" isn't null,
 // then the corresponding fruit are also compared for
 // equality using the supplied function.
 bool
 ng_rb_tree_node_structurally_equivalent(const ng_rb_tree_node_t* n1,
+					
 					const ng_rb_tree_node_t* n2,
 					int(*fruit_equal)(const void*,
 							  const void*))
 {
   // handle null case
-  if(0x0 == n1 && 0x0 == n2){ return true; }
+  if(0x0 == n1 && 0x0 == n2){ return true;  }
   if(0x0 == n1 && 0x0 != n2){ return false; }
   if(0x0 != n1 && 0x0 == n2){ return false; }
   

@@ -113,7 +113,7 @@ bool ng_rb_tree_node_member(const ng_rb_tree_node_t* node,
   while(0x0 != node){
     const int cmp = fruit_compare(fruit, node->fruit_);
     if(0x0==cmp) return true;
-    node = node->kids_[cmp<0];
+    node = node->kids_[cmp>0];
   }
   
   // reached tip--not in tree

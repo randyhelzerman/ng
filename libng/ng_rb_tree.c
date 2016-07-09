@@ -123,12 +123,20 @@ ng_rb_tree_insert(ng_rb_tree_t* self,
   // search down the tree.
   for(;;) {
     if(0x0==me){
-      // we've found our way to the leaves of the tree.  So add the new node
-      me = ng_rb_tree_node_new(0x0,0x0, fruit_size, fruit,fruit_cp_init);
+      // we've found our way to the leaves of the tree.
+      // So add the new node
+      me = ng_rb_tree_node_new(0x0,0x0,
+			       fruit_size,fruit,fruit_cp_init);
+      if(0x0==me) return 0x0;
+      
       // don't forget to color it red
       me->red_ = true;
+      
+      // link it in
       parent->kids_[dir] = me;
-      if(0x0==me) return 0x0;
+      self->count_ = self->count_ + 1;
+      
+      // this is the one we want to return.
       returner = me;
     } else {
       // if the kids are both red, swap color.  Note, every
@@ -151,9 +159,11 @@ ng_rb_tree_insert(ng_rb_tree_t* self,
       const int dir2 = (great_grandparent->kids_[1] == grandparent);
       
       if(me == parent->kids_[prev_dir]){
-        great_grandparent->kids_[dir2] = ng_rb_tree_rotate_(grandparent, !prev_dir);
+        great_grandparent->kids_[dir2]
+	  = ng_rb_tree_rotate_(grandparent, !prev_dir);
       } else {
-        great_grandparent->kids_[dir2] = ng_rb_tree_rotate_double_(grandparent, !prev_dir);
+        great_grandparent->kids_[dir2]
+	  = ng_rb_tree_rotate_double_(grandparent, !prev_dir);
       }
     }
     
@@ -188,10 +198,6 @@ ng_rb_tree_insert(ng_rb_tree_t* self,
   // blacken the root node
   self->root_->red_ = false;
   
-  // since we are returning something,
-  // increment the count
-  self->count_ = self->count_ + 1;
-  
   // and return the node we just inserted,
   // or found.
   return returner;
@@ -218,12 +224,12 @@ ng_rb_tree_remove(ng_rb_tree_t* self,
   // Keep track of ancestor nodes up the tree
   ng_rb_tree_node_t* grandparent = 0x0;
   ng_rb_tree_node_t* parent      = 0x0;  
-  ng_rb_tree_node_t* me          = &dummy_node;   // we start on sentinal node
-  me->kids_[true]                = self->root_;   // sentinal node's right kid is root
+  ng_rb_tree_node_t* me          = &dummy_node; // we start on sentinal node
+  me->kids_[true]                = self->root_; // sentinal's right kid is root
   
   // save the deleted node for copying into later
   ng_rb_tree_node_t *found_node = 0x0;
-
+  
   // curr_dir is the direction of the kid I'm going to
   // traverse down.  Since my only kid right now is
   // on the right side, because we set it to the root
@@ -246,15 +252,15 @@ ng_rb_tree_remove(ng_rb_tree_t* self,
     // Now we have to find the new value of curr_dir.
     // We do this by comparing the fruit to be deleted
     // with my fruit.
-    const int cmp = fruit_compare((void*)&me->fruit_,fruit);
-    
-    // if my fruit is less than the fruit to be deleted,
-    // then search on the right kid.  Else search on left kid
-    curr_dir = (cmp>=0);
+    const int cmp = fruit_compare(fruit,me->fruit_);
     
     // If my fruit is equal to the fruit to be deleted,
     // then cache the found node for future recycling.
-    if(0 == cmp)  found_node = me;
+    if(0 == cmp) found_node = me;
+    
+    // if the fruit to be deleted is less than my fruit,
+    // then search on the left kid.  Else search on the right.
+    curr_dir = (cmp>=0);
     
     // Push the red node down.  I.E., don't leave this
     // loop until either: "me" is a red node or
@@ -292,6 +298,10 @@ ng_rb_tree_remove(ng_rb_tree_t* self,
       //
       parent->kids_[prev_dir] = ng_rb_tree_rotate_(me, curr_dir);
       // note black height of tree is unchanged.
+
+      // parent doesn't point at me anymore after the rotation;
+      // fix this.
+      parent = parent->kids_[prev_dir];
       
       // I'm red, tree is correct, mission accomplished, so continue.
       continue;
@@ -356,7 +366,8 @@ ng_rb_tree_remove(ng_rb_tree_t* self,
     const bool prev_prev_dir = grandparent->kids_[true] == parent;
     
     if (ng_rb_tree_node_is_red(sibling->kids_[prev_dir])) {
-      grandparent->kids_[prev_prev_dir] = ng_rb_tree_rotate_double_(parent, prev_dir);
+      grandparent->kids_[prev_prev_dir]
+	= ng_rb_tree_rotate_double_(parent, prev_dir);
     } else {
       if (ng_rb_tree_node_is_red(sibling->kids_[!prev_dir])) {
         //   say curr_dir is right; prev_dir = left; prev_prev_dir is right;
@@ -369,7 +380,8 @@ ng_rb_tree_remove(ng_rb_tree_t* self,
         //  Kid1  Kid2     Kid3   kid4     Me    Kid3     
         //                                / \
         //                              Kid1 Kid2       
-        grandparent->kids_[prev_prev_dir] = ng_rb_tree_rotate_(parent, prev_dir);
+        grandparent->kids_[prev_prev_dir]
+	  = ng_rb_tree_rotate_(parent, prev_dir);
       }
     }
     
@@ -378,7 +390,7 @@ ng_rb_tree_remove(ng_rb_tree_t* self,
     // scrambled due to rotation.
 
     //   say curr_dir is right; prev_dir = left; prev_prev_dir is right;
-    //    [Gg]randparent              [Gg]randparent          [Gg]randparent          
+    //    [Gg]randparent              [Gg]randparent*         [Gg]randparent*
     //        \                              \                     \
     //         parent          ===>         Sibling*    ===>      sibling*
     //       /         \                    /     \                /   \
@@ -396,10 +408,12 @@ ng_rb_tree_remove(ng_rb_tree_t* self,
   //  Replace and remove if found
   if(0x0!=found_node){
     // copy my fruit into the node which would have been deleted
-    if(me != found_node) fruit_cp_init(&me->fruit_, &found_node->fruit_);
+    if(me != found_node) fruit_cp_init(&me->fruit_,
+				       &found_node->fruit_);
     
     // splice myself out of the tree
-    parent->kids_[parent->kids_[1] == me] = me->kids_[0x0 == me->kids_[0]];
+    parent->kids_[parent->kids_[true] == me]
+      = me->kids_[0x0 == me->kids_[0]];
     
     // release my memory.
     ng_rb_tree_node_delete(&me, uninit_fruit);

@@ -663,7 +663,8 @@ TEST(NgRBTInsertTest, emptyTreeInsertDelete)
   EXPECT_EQ(0, fruit_compare(tree.root_->fruit_, x));
   
   // now delete it.
-  ng_rb_tree_remove(&tree, 2,(void*)x,fruit_cp_init,fruit_deinit,fruit_compare);
+  ng_rb_tree_remove(&tree,
+		    2,(void*)x,fruit_cp_init,fruit_deinit,fruit_compare);
   EXPECT_EQ((const ng_rb_tree_node_t*)0x0,tree.root_);
   EXPECT_EQ(0,tree.count_);
   
@@ -678,6 +679,7 @@ TEST(NgRBTInsertTest, randomTreeInsertDelete)
   // keeps track of whether this is in the set or not
   bool set[26];
   for(int i=0;i<26;i++){
+    // in the beginning, none of them are in the set
     set[i] = false;
   }
   
@@ -689,6 +691,8 @@ TEST(NgRBTInsertTest, randomTreeInsertDelete)
   
   // insert or delete fruit
   bool inserting = true;
+
+  char bluf[2048];
   
   char x[2];
   x[1] = 0x0;
@@ -699,11 +703,18 @@ TEST(NgRBTInsertTest, randomTreeInsertDelete)
     // save old count so we can test if its being
     // maintained correctly through insert and delete
     const int save_count = tree.count_;
-    const bool in_set = set[x[0]];
+    const bool in_set = set[x[0]-'a'];
     
     if(inserting){
+      printf("dump before insert\n");
+      ng_rb_tree_dump(&tree, fruit_dump);
+      
       // we are inserting
       ng_rb_tree_insert(&tree, 2,(void*)x, fruit_cp_init,fruit_compare);
+      
+      //printf("dump after insert\n");
+      //ng_rb_tree_dump(&tree, fruit_dump);
+      
       // tree should at least correct after insertint
       EXPECT_GT(ng_rb_tree_node_correct(tree.root_),0);
       
@@ -714,20 +725,22 @@ TEST(NgRBTInsertTest, randomTreeInsertDelete)
 	}
       } else {
 	EXPECT_EQ(tree.count_,save_count+1);
-	set[x[0]] = true;
+	set[x[0]-'a'] = true;
 	if(tree.count_ != save_count+1){
 	  printf("break here 2");
 	}
       }
     } else {
       // we are deleting
-      ng_rb_tree_remove(&tree, 2,(void*)x,fruit_cp_init,fruit_deinit,fruit_compare);
+      ng_rb_tree_remove(&tree,
+			2,(void*)x,
+			fruit_cp_init,fruit_deinit,fruit_compare);
       // tree should at least be correct after deleting
       EXPECT_GT(ng_rb_tree_node_correct(tree.root_),0);
       
       if(in_set) {
 	EXPECT_EQ(tree.count_, save_count-1);
-	set[x[0]] = false;
+	set[x[0]-'a'] = false;
 	if(tree.count_ != save_count-1){
 	  printf("break here 3");
 	}
@@ -756,7 +769,6 @@ TEST(NgRBTInsertTest, randomTreeInsertDelete)
     x[0] = i+'a';
     EXPECT_EQ(set[i], ng_rb_tree_member(&tree, x,fruit_compare));
   }
-
   
   printf("random tree:\n");
   ng_rb_tree_dump(&tree, fruit_dump);

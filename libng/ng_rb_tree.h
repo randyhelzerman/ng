@@ -66,10 +66,11 @@ extern "C" {
 
 
   // returns true if in tree
-  bool ng_rb_tree_member(const ng_rb_tree_t* self,
-			 void* fruit,
-			 int(*fruit_compare)(const void*,
-					     const void*));
+  bool
+  ng_rb_tree_member(const ng_rb_tree_t* self,
+		    void* fruit,
+		    int(*fruit_compare)(const void*,
+					const void*));
   
   
   //------------------
@@ -96,6 +97,8 @@ extern "C" {
   void ng_rb_tree_dump_aux(const ng_rb_tree_node_t* self,
 			   const int indent,
 			   void (*fruit_dump)(const void*));
+
+  int ng_rb_tree_count_nodes(const ng_rb_tree_t* self);
   
   
 #ifdef __cplusplus

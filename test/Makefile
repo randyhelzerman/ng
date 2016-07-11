@@ -180,6 +180,60 @@ ng.t/fast:
 	cd /Users/randallhelzerman/projects/src/ng && $(MAKE) -f test/CMakeFiles/ng.t.dir/build.make test/CMakeFiles/ng.t.dir/build
 .PHONY : ng.t/fast
 
+ng_c_tricks.t.o: ng_c_tricks.t.cpp.o
+
+.PHONY : ng_c_tricks.t.o
+
+# target to build an object file
+ng_c_tricks.t.cpp.o:
+	cd /Users/randallhelzerman/projects/src/ng && $(MAKE) -f test/CMakeFiles/ng.t.dir/build.make test/CMakeFiles/ng.t.dir/ng_c_tricks.t.cpp.o
+.PHONY : ng_c_tricks.t.cpp.o
+
+ng_c_tricks.t.i: ng_c_tricks.t.cpp.i
+
+.PHONY : ng_c_tricks.t.i
+
+# target to preprocess a source file
+ng_c_tricks.t.cpp.i:
+	cd /Users/randallhelzerman/projects/src/ng && $(MAKE) -f test/CMakeFiles/ng.t.dir/build.make test/CMakeFiles/ng.t.dir/ng_c_tricks.t.cpp.i
+.PHONY : ng_c_tricks.t.cpp.i
+
+ng_c_tricks.t.s: ng_c_tricks.t.cpp.s
+
+.PHONY : ng_c_tricks.t.s
+
+# target to generate assembly for a file
+ng_c_tricks.t.cpp.s:
+	cd /Users/randallhelzerman/projects/src/ng && $(MAKE) -f test/CMakeFiles/ng.t.dir/build.make test/CMakeFiles/ng.t.dir/ng_c_tricks.t.cpp.s
+.PHONY : ng_c_tricks.t.cpp.s
+
+ng_color.t.o: ng_color.t.cpp.o
+
+.PHONY : ng_color.t.o
+
+# target to build an object file
+ng_color.t.cpp.o:
+	cd /Users/randallhelzerman/projects/src/ng && $(MAKE) -f test/CMakeFiles/ng.t.dir/build.make test/CMakeFiles/ng.t.dir/ng_color.t.cpp.o
+.PHONY : ng_color.t.cpp.o
+
+ng_color.t.i: ng_color.t.cpp.i
+
+.PHONY : ng_color.t.i
+
+# target to preprocess a source file
+ng_color.t.cpp.i:
+	cd /Users/randallhelzerman/projects/src/ng && $(MAKE) -f test/CMakeFiles/ng.t.dir/build.make test/CMakeFiles/ng.t.dir/ng_color.t.cpp.i
+.PHONY : ng_color.t.cpp.i
+
+ng_color.t.s: ng_color.t.cpp.s
+
+.PHONY : ng_color.t.s
+
+# target to generate assembly for a file
+ng_color.t.cpp.s:
+	cd /Users/randallhelzerman/projects/src/ng && $(MAKE) -f test/CMakeFiles/ng.t.dir/build.make test/CMakeFiles/ng.t.dir/ng_color.t.cpp.s
+.PHONY : ng_color.t.cpp.s
+
 ng_interval.t.o: ng_interval.t.cpp.o
 
 .PHONY : ng_interval.t.o
@@ -207,6 +261,141 @@ ng_interval.t.cpp.s:
 	cd /Users/randallhelzerman/projects/src/ng && $(MAKE) -f test/CMakeFiles/ng.t.dir/build.make test/CMakeFiles/ng.t.dir/ng_interval.t.cpp.s
 .PHONY : ng_interval.t.cpp.s
 
+ng_rb_tree.t.o: ng_rb_tree.t.cpp.o
+
+.PHONY : ng_rb_tree.t.o
+
+# target to build an object file
+ng_rb_tree.t.cpp.o:
+	cd /Users/randallhelzerman/projects/src/ng && $(MAKE) -f test/CMakeFiles/ng.t.dir/build.make test/CMakeFiles/ng.t.dir/ng_rb_tree.t.cpp.o
+.PHONY : ng_rb_tree.t.cpp.o
+
+ng_rb_tree.t.i: ng_rb_tree.t.cpp.i
+
+.PHONY : ng_rb_tree.t.i
+
+# target to preprocess a source file
+ng_rb_tree.t.cpp.i:
+	cd /Users/randallhelzerman/projects/src/ng && $(MAKE) -f test/CMakeFiles/ng.t.dir/build.make test/CMakeFiles/ng.t.dir/ng_rb_tree.t.cpp.i
+.PHONY : ng_rb_tree.t.cpp.i
+
+ng_rb_tree.t.s: ng_rb_tree.t.cpp.s
+
+.PHONY : ng_rb_tree.t.s
+
+# target to generate assembly for a file
+ng_rb_tree.t.cpp.s:
+	cd /Users/randallhelzerman/projects/src/ng && $(MAKE) -f test/CMakeFiles/ng.t.dir/build.make test/CMakeFiles/ng.t.dir/ng_rb_tree.t.cpp.s
+.PHONY : ng_rb_tree.t.cpp.s
+
+ng_rb_tree_node.t.o: ng_rb_tree_node.t.cpp.o
+
+.PHONY : ng_rb_tree_node.t.o
+
+# target to build an object file
+ng_rb_tree_node.t.cpp.o:
+	cd /Users/randallhelzerman/projects/src/ng && $(MAKE) -f test/CMakeFiles/ng.t.dir/build.make test/CMakeFiles/ng.t.dir/ng_rb_tree_node.t.cpp.o
+.PHONY : ng_rb_tree_node.t.cpp.o
+
+ng_rb_tree_node.t.i: ng_rb_tree_node.t.cpp.i
+
+.PHONY : ng_rb_tree_node.t.i
+
+# target to preprocess a source file
+ng_rb_tree_node.t.cpp.i:
+	cd /Users/randallhelzerman/projects/src/ng && $(MAKE) -f test/CMakeFiles/ng.t.dir/build.make test/CMakeFiles/ng.t.dir/ng_rb_tree_node.t.cpp.i
+.PHONY : ng_rb_tree_node.t.cpp.i
+
+ng_rb_tree_node.t.s: ng_rb_tree_node.t.cpp.s
+
+.PHONY : ng_rb_tree_node.t.s
+
+# target to generate assembly for a file
+ng_rb_tree_node.t.cpp.s:
+	cd /Users/randallhelzerman/projects/src/ng && $(MAKE) -f test/CMakeFiles/ng.t.dir/build.make test/CMakeFiles/ng.t.dir/ng_rb_tree_node.t.cpp.s
+.PHONY : ng_rb_tree_node.t.cpp.s
+
+ng_vector.t.o: ng_vector.t.cpp.o
+
+.PHONY : ng_vector.t.o
+
+# target to build an object file
+ng_vector.t.cpp.o:
+	cd /Users/randallhelzerman/projects/src/ng && $(MAKE) -f test/CMakeFiles/ng.t.dir/build.make test/CMakeFiles/ng.t.dir/ng_vector.t.cpp.o
+.PHONY : ng_vector.t.cpp.o
+
+ng_vector.t.i: ng_vector.t.cpp.i
+
+.PHONY : ng_vector.t.i
+
+# target to preprocess a source file
+ng_vector.t.cpp.i:
+	cd /Users/randallhelzerman/projects/src/ng && $(MAKE) -f test/CMakeFiles/ng.t.dir/build.make test/CMakeFiles/ng.t.dir/ng_vector.t.cpp.i
+.PHONY : ng_vector.t.cpp.i
+
+ng_vector.t.s: ng_vector.t.cpp.s
+
+.PHONY : ng_vector.t.s
+
+# target to generate assembly for a file
+ng_vector.t.cpp.s:
+	cd /Users/randallhelzerman/projects/src/ng && $(MAKE) -f test/CMakeFiles/ng.t.dir/build.make test/CMakeFiles/ng.t.dir/ng_vector.t.cpp.s
+.PHONY : ng_vector.t.cpp.s
+
+test_fruit.o: test_fruit.c.o
+
+.PHONY : test_fruit.o
+
+# target to build an object file
+test_fruit.c.o:
+	cd /Users/randallhelzerman/projects/src/ng && $(MAKE) -f test/CMakeFiles/ng.t.dir/build.make test/CMakeFiles/ng.t.dir/test_fruit.c.o
+.PHONY : test_fruit.c.o
+
+test_fruit.i: test_fruit.c.i
+
+.PHONY : test_fruit.i
+
+# target to preprocess a source file
+test_fruit.c.i:
+	cd /Users/randallhelzerman/projects/src/ng && $(MAKE) -f test/CMakeFiles/ng.t.dir/build.make test/CMakeFiles/ng.t.dir/test_fruit.c.i
+.PHONY : test_fruit.c.i
+
+test_fruit.s: test_fruit.c.s
+
+.PHONY : test_fruit.s
+
+# target to generate assembly for a file
+test_fruit.c.s:
+	cd /Users/randallhelzerman/projects/src/ng && $(MAKE) -f test/CMakeFiles/ng.t.dir/build.make test/CMakeFiles/ng.t.dir/test_fruit.c.s
+.PHONY : test_fruit.c.s
+
+test_fruit_int.o: test_fruit_int.c.o
+
+.PHONY : test_fruit_int.o
+
+# target to build an object file
+test_fruit_int.c.o:
+	cd /Users/randallhelzerman/projects/src/ng && $(MAKE) -f test/CMakeFiles/ng.t.dir/build.make test/CMakeFiles/ng.t.dir/test_fruit_int.c.o
+.PHONY : test_fruit_int.c.o
+
+test_fruit_int.i: test_fruit_int.c.i
+
+.PHONY : test_fruit_int.i
+
+# target to preprocess a source file
+test_fruit_int.c.i:
+	cd /Users/randallhelzerman/projects/src/ng && $(MAKE) -f test/CMakeFiles/ng.t.dir/build.make test/CMakeFiles/ng.t.dir/test_fruit_int.c.i
+.PHONY : test_fruit_int.c.i
+
+test_fruit_int.s: test_fruit_int.c.s
+
+.PHONY : test_fruit_int.s
+
+# target to generate assembly for a file
+test_fruit_int.c.s:
+	cd /Users/randallhelzerman/projects/src/ng && $(MAKE) -f test/CMakeFiles/ng.t.dir/build.make test/CMakeFiles/ng.t.dir/test_fruit_int.c.s
+.PHONY : test_fruit_int.c.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -221,9 +410,30 @@ help:
 	@echo "... test"
 	@echo "... install/local"
 	@echo "... ng.t"
+	@echo "... ng_c_tricks.t.o"
+	@echo "... ng_c_tricks.t.i"
+	@echo "... ng_c_tricks.t.s"
+	@echo "... ng_color.t.o"
+	@echo "... ng_color.t.i"
+	@echo "... ng_color.t.s"
 	@echo "... ng_interval.t.o"
 	@echo "... ng_interval.t.i"
 	@echo "... ng_interval.t.s"
+	@echo "... ng_rb_tree.t.o"
+	@echo "... ng_rb_tree.t.i"
+	@echo "... ng_rb_tree.t.s"
+	@echo "... ng_rb_tree_node.t.o"
+	@echo "... ng_rb_tree_node.t.i"
+	@echo "... ng_rb_tree_node.t.s"
+	@echo "... ng_vector.t.o"
+	@echo "... ng_vector.t.i"
+	@echo "... ng_vector.t.s"
+	@echo "... test_fruit.o"
+	@echo "... test_fruit.i"
+	@echo "... test_fruit.s"
+	@echo "... test_fruit_int.o"
+	@echo "... test_fruit_int.i"
+	@echo "... test_fruit_int.s"
 .PHONY : help
 
 

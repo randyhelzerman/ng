@@ -1,7 +1,10 @@
 #include <gtest/gtest.h>
 
+#include <stdbool.h>
 #include <ng_interval.h>
 #include <string.h>
+
+static const bool do_print = false;
 
 
 TEST(NgIntervalAllocTest, AllocShort)
@@ -73,43 +76,43 @@ TEST(NgIntervalAccessTest, Equality)
   ng_interval_t* int2=ng_interval_eq_new("9");
   ng_interval_t* int3=ng_interval_eq_new("0");
   
-  ng_interval_dump(int1);
-  printf("\n");
-  ng_interval_dump(int3);
-  printf("\n");
+  if(do_print) ng_interval_dump(int1);
+  if(do_print) printf("\n");
+  if(do_print) ng_interval_dump(int3);
+  if(do_print) printf("\n");
   EXPECT_TRUE(ng_interval_equal(int1,int3));
-  printf("\n");
+  if(do_print) printf("\n");
   
   ng_interval_dump(int2);
-  printf("\n");
+  if(do_print) printf("\n");
   ng_interval_dump(int3);
-  printf("\n");
+  if(do_print) printf("\n");
   EXPECT_FALSE(ng_interval_equal(int2,int3));
-  printf("\n");
+  if(do_print) printf("\n");
   
   // now push some stuffs
   ng_interval_push_color(int1, 1,2);
   ng_interval_push_color(int2, 1,2);
   ng_interval_push_color(int3, 1,2);
   
-  ng_interval_dump(int1);
-  printf("\n");
-  ng_interval_dump(int3);
-  printf("\n");
+  if(do_print) ng_interval_dump(int1);
+  if(do_print) printf("\n");
+  if(do_print) ng_interval_dump(int3);
+  if(do_print) printf("\n");
   EXPECT_TRUE(ng_interval_equal(int1,int3));
-  printf("\n");
+  if(do_print) printf("\n");
   
-  ng_interval_dump(int2);
-  printf("\n");
-  ng_interval_dump(int3);
-  printf("\n");
+  if(do_print) ng_interval_dump(int2);
+  if(do_print) printf("\n");
+  if(do_print) ng_interval_dump(int3);
+  if(do_print) printf("\n");
   EXPECT_FALSE(ng_interval_equal(int2,int3));
   
   // now push more stuffs
   ng_interval_push_color(int3, 3,4);
-  ng_interval_dump(int1);
-  printf("\n");
-  ng_interval_dump(int3);
+  if(do_print) ng_interval_dump(int1);
+  if(do_print) printf("\n");
+  if(do_print) ng_interval_dump(int3);
   printf("\n");
   EXPECT_FALSE(ng_interval_equal(int1,int3));
   

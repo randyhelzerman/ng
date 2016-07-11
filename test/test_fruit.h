@@ -22,6 +22,7 @@ extern "C" {
   int test_fruit_equal(const void* fruit1,
 		       const void* fruit2);
 
+
 #ifdef __cplusplus
 };
 #endif

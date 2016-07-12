@@ -167,6 +167,9 @@ ng_rb_tree_insert(ng_rb_tree_t* self,
       }
     }
     
+    // update sentinal
+    self->root_ = dummy_node.kids_[1];
+    
     // compare fruit with we are
     const int cmp = fruit_compare(me->fruit_, fruit);
     
@@ -190,9 +193,6 @@ ng_rb_tree_insert(ng_rb_tree_t* self,
     grandparent = parent;
     parent = me;
     me = me->kids_[dir];
-    
-    // update sentinal
-    self->root_ = dummy_node.kids_[1];
   }
   
   // blacken the root node
@@ -516,4 +516,7 @@ void ng_rb_tree_dump_aux(const ng_rb_tree_node_t* self,
   // and finally dump left tree
   ng_rb_tree_dump_aux(self->kids_[0], indent+5, fruit_dump);
 }
-   
+
+int ng_rb_tree_count_nodes_recursive(const ng_rb_tree_t* self){
+  return ng_rb_tree_node_count_nodes_recursive(self->root_);
+}

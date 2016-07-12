@@ -98,7 +98,7 @@ extern "C" {
 			   const int indent,
 			   void (*fruit_dump)(const void*));
 
-  int ng_rb_tree_count_nodes(const ng_rb_tree_t* self);
+  int ng_rb_tree_count_nodes_recursive(const ng_rb_tree_t* self);
   
   
 #ifdef __cplusplus

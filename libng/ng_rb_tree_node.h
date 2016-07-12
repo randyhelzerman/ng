@@ -88,6 +88,10 @@ extern "C" {
   
   void ng_rb_tree_node_dump(const ng_rb_tree_node_t* self,
                             void (*fruit_dump)(const void*));
+
+  int ng_rb_tree_node_count_nodes_recursive(const ng_rb_tree_node_t* self);
+
+
   
   
 #ifdef __cplusplus

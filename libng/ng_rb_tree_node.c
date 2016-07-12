@@ -217,3 +217,11 @@ void ng_rb_tree_node_dump(const ng_rb_tree_node_t* self,
   }
 }
 
+int ng_rb_tree_node_count_nodes_recursive(const ng_rb_tree_node_t* self)
+{
+  if(0x0==self) return 0;
+  
+  return
+    1 + ng_rb_tree_node_count_nodes_recursive(self->kids_[0])
+    + ng_rb_tree_node_count_nodes_recursive(self->kids_[1]);
+}

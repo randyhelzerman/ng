@@ -4,7 +4,9 @@
 #include<stdlib.h>
 #include<stdbool.h>
 
+// forward declarations
 typedef struct ng_vector ng_vector_t;
+typedef struct ng_interval ng_interval_t;
 
 #ifdef __cplusplus
 extern "C" {
@@ -25,9 +27,9 @@ extern "C" {
   
   // access
   
-  // adds a a transition to a state.  This is a very low-level
-  // function, probably not the one you want.
-  void ng_nfa_state_add_transition(const char*);
+  // adds an interval
+  void ng_nfa_state_add_interval(ng_nfa_state_t* self,
+				 const ng_interval_t* interval);
   
   // debugging
   void ng_nfa_state_dump(const ng_nfa_state_t* self);

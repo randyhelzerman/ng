@@ -120,6 +120,3 @@ TEST(NgIntervalAccessTest, Equality)
   ng_interval_delete(&int2);
   ng_interval_delete(&int3);
 }
-  
-
-  

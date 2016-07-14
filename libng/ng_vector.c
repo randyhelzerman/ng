@@ -117,7 +117,7 @@ void* ng_vector_back(ng_vector_t* self, const int fruit_size)
 // add an element to the end of the vector
 void
 ng_vector_push_back(ng_vector_t** selfp,
-		    const int fruit_size, void* fruit,
+		    const int fruit_size, const void* fruit,
 		    void*(*fruit_cp_init)(const void*,
 					  void*),
 		    void(*fruit_deinit)(void*))

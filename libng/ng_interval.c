@@ -176,7 +176,8 @@ bool ng_interval_equal(const ng_interval_t* int1,
 void ng_interval_dump(const ng_interval_t* self)
 {
   // print out the word
-  printf("ng_interval [\"%s\"...) next_states[", ng_interval_word(self));
+  printf("ng_interval [\"%s\"...) next_states[",
+	 ng_interval_word(self));
   
   // print out the next states
   int first=1;

@@ -9,7 +9,7 @@
 extern "C" {
 #endif
   
-  typedef struct {
+  typedef struct ng_interval {
     char word_[16];
     ng_color_t next_states_[16];
     int numb_next_states_;

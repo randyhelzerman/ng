@@ -16,11 +16,14 @@ extern "C" {
   
   // constructors
   ng_vector_t* ng_vector_new(const size_t fruit_size, const int max);
-  ng_vector_t* ng_vector_init(ng_vector_t* self, const size_t fruit_size, const int max);
+  ng_vector_t* ng_vector_init(ng_vector_t* self,
+			      const size_t fruit_size, const int max);
   
   // destructors
-  void ng_vector_delete(ng_vector_t** selfp, const int fruit_size, void(*fruit_uninit)(void*));
-  void ng_vector_uninit(ng_vector_t* self,   const int fruit_size, void(*fruit_uninit)(void*));
+  void ng_vector_delete(ng_vector_t** selfp,
+			const int fruit_size, void(*fruit_uninit)(void*));
+  void ng_vector_uninit(ng_vector_t* self,
+			const int fruit_size, void(*fruit_uninit)(void*));
   
   // accesss
 
@@ -36,7 +39,7 @@ extern "C" {
   // add an element to the end of the vector
   void
   ng_vector_push_back(ng_vector_t** selfp,
-		      const int fruit_size, void* fruit,
+		      const int fruit_size, const void* fruit,
 		      void*(*fruit_cp_init)(const void*,
 					    void*),
 		      void(*fruit_uninit)(void*));

@@ -4,6 +4,8 @@
 #include<stdlib.h>
 #include<stdbool.h>
 
+typedef struct ng_vector ng_vector_t;
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -11,24 +13,24 @@ extern "C" {
   typedef struct ng_nfa_state {
     void* action_;  // whatever action we should taek in this state
     ng_vector_t* arcs_;
-  } ng_nfa_state_tt;
+  } ng_nfa_state_t;
   
   // constructors
-  ng_nfa_t* ng_nfa_state_new();
-  ng_nfa_t* ng_nfa_state_init(ng_nfa_t* self);
+  ng_nfa_state_t* ng_nfa_state_new();
+  ng_nfa_state_t* ng_nfa_state_init(ng_nfa_state_t* self);
   
   // destructors
-  void ng_nfa_state_delete(ng_nfa_t** selfp);
-  void ng_fa_state_deinit(ng_nfa_t* self);
+  void ng_nfa_state_delete(ng_nfa_state_t** selfp);
+  void ng_nfa_state_uninit(ng_nfa_state_t* self);
   
   // access
   
-  // adds a a transition to a state.  This is a very
-  // low-level function, probably not the one you want.
+  // adds a a transition to a state.  This is a very low-level
+  // function, probably not the one you want.
   void ng_nfa_state_add_transition(const char*);
   
   // debugging
-  void ng_nfa_state_dump(const ng_nfa_t* self);
+  void ng_nfa_state_dump(const ng_nfa_state_t* self);
   
 #ifdef __cplusplus
 };

@@ -177,3 +177,94 @@ UTF-8, so lets do it.
 
 
 
+**  Next ultra-cool idea
+
+Use the other parser which is in prolog! The expression parser.
+
+Its just a simple enhancement of the infix-to-postfix algorithm.
+
+### syntax is the only thing which needs to be workedout....
+
+Specify tokens with re's
+
+PLUS -> "+"
+MINUS -> "-"
+
+LPAREN -> "("
+RPAREN -> ")"
+
+Then give them a precidence and associativity:
+
+:-op(800,xfy,PLUS)
+
+
+lol yeah right. I still don't know a good way to do this.
+
+
+###  Relationship with CCG
+
+     (E/E)\E
+
+((1 + 2) + 3)
+
+
+E    (E/E)\E   E     (E/E)\E  E
+
+1        +     2         +    3
+
+
+Weeeeelll.....
+
+
+E = E  < + E
+
+
+### Prolog operator precidence table
+
+
+Priority     Specifier      Operators
+-------------------------------------
+1200          xfx           :-   -->
+1200           fx           :-   ?-
+1100          xfy           ;
+1050          xfy           ->
+1000          xfy           ,
+ 900           fy           \+   (proposed)
+ 700          xfx           = \= == \== @<  @=<   @>   @>=   is   =:=  =\
+ 	      		     =  < =< >  >= =..
+ 500          yfx           +  -  /\    \/
+ 400          yfx           *  /  //  rem mod << >>
+ 200          xfx           **
+ 200          xfy           ^
+ 200           fy           \  -
+ 100          xfx           @
+  50          xfx           :
+
+
+Terms which are no operators have priority 0
+
+To avoid the need for unlimited lookahed, the same atom cannot be both
+an infix operator and a postfix operator.
+
+
+### better syntax?
+
+Its hard to think there would be a better way to do it. :(
+Prolog has been beaten up for 40 years now.
+
+But I don't like it.  I've been programming in prolog for 30 years
+and I still have to look up what yfx means.
+
+
+
+ADD -> "+"  :  E <- (E + E) + E     # Addition 
+SUB -> "-"  :  E <- (E - E) - E     # Subtraction
+ 
+MUL -> "*"  :  E <- (E * E) * E     # Multiplication
+DIV -> "/"  :  E <- (E / E) / E     # Division
+
+EXP -> "^"  :  E <- E ^ (E ^ E)     # Exponentiation
+
+NEG -> "-"  :  E <- -(-E)           # unary minus
+
+

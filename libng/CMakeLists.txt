@@ -6,6 +6,7 @@ SET(LIBNG_SRCS
     ng_rb_tree_node.h  ng_rb_tree_node.c
     ng_rb_tree.h       ng_rb_tree.c
     ng_vector.h        ng_vector.c
+    ng_nfa_state.h     ng_nfa_state.c
 )
 
 ADD_LIBRARY(ng STATIC

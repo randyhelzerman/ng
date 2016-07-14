@@ -35,7 +35,7 @@ TEST(NgRBAllocTest, Alloc)
   EXPECT_EQ(true,ng_interval_equal((ng_interval_t*)&node->fruit_, interval));
   
   // test deletion.  should zero out the pointer
-  ng_rb_tree_node_delete(&node, (void(*)(void*))ng_interval_deinit);
+  ng_rb_tree_node_delete(&node, (void(*)(void*))ng_interval_uninit);
   EXPECT_EQ(node,(ng_rb_tree_node_t*)(0x0));
 
   ng_interval_delete(&interval);

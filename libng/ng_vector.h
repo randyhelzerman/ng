@@ -39,13 +39,13 @@ extern "C" {
 		      const int fruit_size, void* fruit,
 		      void*(*fruit_cp_init)(const void*,
 					    void*),
-		      void(*fruit_deinit)(void*));
+		      void(*fruit_uninit)(void*));
   
   // remove an element from the end of the vector
   void
   ng_vector_pop_back(ng_vector_t* self,
 		     const int fruit_size,
-		     void(*fruit_deinit)(void*));
+		     void(*fruit_uninit)(void*));
 
   // binary search.  Equivalent to upper_bound in c++ STL
   int

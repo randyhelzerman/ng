@@ -41,7 +41,7 @@ extern "C" {
   void ng_interval_delete(ng_interval_t** selfp);
 
   // de-initialzie memory region; no dealllocion.
-  void ng_interval_deinit(ng_interval_t* self);
+  void ng_interval_uninit(ng_interval_t* self);
   
   // access functions
   

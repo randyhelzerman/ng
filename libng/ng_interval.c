@@ -83,7 +83,7 @@ ng_interval_t* ng_interval_cp(const ng_interval_t* self,
 void ng_interval_delete(ng_interval_t** selfp)
 {
   // clean up the memory used by this
-  ng_interval_deinit(*selfp);
+  ng_interval_uninit(*selfp);
   
   // free it
   free(*selfp);
@@ -94,7 +94,7 @@ void ng_interval_delete(ng_interval_t** selfp)
 
 
 // de-initialzie memory region; no dealllocion.
-void ng_interval_deinit(ng_interval_t* self)
+void ng_interval_uninit(ng_interval_t* self)
 {
   // nothing yet to do.
   self->word_[0] = 0x0;

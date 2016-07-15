@@ -9,7 +9,7 @@ extern "C" {
 #endif
   
   typedef struct ng_nfa {
-    ng_vector_t* states;
+    ng_vector_t* states_;
   } ng_nfa_t;
   
   // constructors
@@ -22,8 +22,8 @@ extern "C" {
   
   // access
 
-  // adds a new state. Returns its state number
-  int ng_nfa_add_state(ng_nfa_t* self);
+  // adds a new state. 
+  void ng_nfa_batch_add_state(ng_nfa_t* self, ng_nfa_state_t* state);
 
   // adds a a transition to a state.  This is a very
   // low-level function, probably not the one you want.

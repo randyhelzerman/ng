@@ -13,13 +13,14 @@ extern "C" {
 #endif
   
   typedef struct ng_nfa_state {
-    void* action_;  // whatever action we should taek in this state
+    char*    name_;       // name of this stae
+    void*    action_;     // whatever action we should taek in this state
     ng_vector_t* arcs_;
   } ng_nfa_state_t;
   
   // constructors
-  ng_nfa_state_t* ng_nfa_state_new();
-  ng_nfa_state_t* ng_nfa_state_init(ng_nfa_state_t* self);
+  ng_nfa_state_t* ng_nfa_state_new(const char* name);
+  ng_nfa_state_t* ng_nfa_state_init(ng_nfa_state_t* self, const char* name);
   
   // destructors
   void ng_nfa_state_delete(ng_nfa_state_t** selfp);

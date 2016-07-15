@@ -169,12 +169,12 @@ TEST(NgRBTRotateTest, RotRight)
   left_tree->root_ = ng_rb_tree_rotate_(Q1,1);
   
   // print tree out for fun
-  printf("after rotation\n");
+  if (do_print) printf("after rotation\n");
   if (do_print) ng_rb_tree_dump(left_tree,fruit_dump);
   
   // print tree out for fun
-  printf("right tree\n");
-  if(do_print) ng_rb_tree_dump(right_tree,fruit_dump);
+  if (do_print) printf("right tree\n");
+  if (do_print) ng_rb_tree_dump(right_tree,fruit_dump);
   
   // after rotation, P1 should be the root
   EXPECT_EQ(P1, left_tree->root_);
@@ -271,9 +271,9 @@ TEST(NgRBTRotateTest, RotLeft)
   right_tree->root_ = ng_rb_tree_rotate_(P2,0);
   
   // print tree out for fun
-  printf("after rotation\n");
+  if (do_print) printf("after rotation\n");
   // print tree out for fun
-  printf("right tree\n");
+  if (do_print) printf("right tree\n");
   if(do_print) ng_rb_tree_dump(right_tree,fruit_dump);
   
   // after rotation, Q2 should be the root
@@ -699,7 +699,7 @@ TEST(NgRBTInsertTest, trickyCaseTreeInsertDelete)
   ng_rb_tree_insert(&tree, 2,(void*)p, fruit_cp_init,fruit_compare);
   ng_rb_tree_insert(&tree, 2,(void*)d, fruit_cp_init,fruit_compare);
   if(do_print) if(do_print) printf("before:\n");
-  ng_rb_tree_dump(&tree, fruit_dump);
+  if(do_print) ng_rb_tree_dump(&tree, fruit_dump);
   if(do_print) printf("after before:\n");
   
   ng_rb_tree_insert(&tree, 2,(void*)i, fruit_cp_init,fruit_compare);
@@ -802,7 +802,6 @@ TEST(NgRBTInsertTest, randomTreeInsertDelete)
     if(26==tree.count_){
       inserting=false;
     }
-    
   }
   
   // verify that the tree has the correct stuffs in it 

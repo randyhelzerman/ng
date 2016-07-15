@@ -7,18 +7,21 @@
 #include <ng_interval.h>
 
 // constructors
-ng_nfa_state_t* ng_nfa_state_new()
+ng_nfa_state_t* ng_nfa_state_new(const char* name)
 {
   // allocate the memory
   ng_nfa_state_t* self = (ng_nfa_state_t*)malloc(sizeof(ng_nfa_state_t));
   
   // initialize it
-  return ng_nfa_state_init(self);
+  return ng_nfa_state_init(self, name);
 }
 
 
-ng_nfa_state_t* ng_nfa_state_init(ng_nfa_state_t* self)
+ng_nfa_state_t* ng_nfa_state_init(ng_nfa_state_t* self, const char* name)
 {
+  // copy over the name
+  self->name_ = strdup(name);
+  
   // initialize the action...nothing for now
   self->action_ = 0x0;
   
@@ -41,6 +44,9 @@ void ng_nfa_state_delete(ng_nfa_state_t** selfp)
 
 void ng_nfa_state_uninit(ng_nfa_state_t* self)
 {
+  free(self->name_);
+  self->name_ = 0x0;
+  
   ng_vector_delete(&(self->arcs_),
 		   sizeof(ng_interval_t),
 		   (void(*)(void*))ng_interval_uninit);
@@ -57,7 +63,15 @@ void ng_nfa_state_add_interval(ng_nfa_state_t* self,
 		      sizeof(ng_interval_t), (const void*)interval,
 		      (void *(*)(const void *, void *))ng_interval_cp_init,
 		      (void (*)(void *))ng_interval_uninit);
-}		      
+}
+
+
+// for sorting and searching
+int ng_nfa_state_compare(const ng_nfa_state_t*s1,
+			 const ng_nfa_state_t*s2)
+{
+  return strcmp(s1->name_, s2->name_);
+}
 
 
 // debuggingb
@@ -69,10 +83,10 @@ void ng_nfa_state_dump(const ng_nfa_state_t* self)
     const ng_interval_t* interval
       = (ng_interval_t* )ng_vector_at(self->arcs_,sizeof(ng_interval_t),i);
     
-    printf("[%s--------)", interval->word_);
+    printf("[%s------------)", interval->word_);
   }
   printf("\n");
-
+  
   // now print out the associated next states
   bool moreToPrint=true;
   int nextStateIndex = 0;
@@ -98,12 +112,12 @@ void ng_nfa_state_dump(const ng_nfa_state_t* self)
 	printf("%3d-%2d",
 	       interval->next_states_[nextStateIndex].state_,
 	       interval->next_states_[nextStateIndex].delta_);
-
+	
 	// space over the rest of the way
-	printf("    ");
+	printf("     ");
       } else {
 	// no more states to print on this one, so just space over
-	printf("            ");
+	printf("           ");
       }
     }
     printf("\n");

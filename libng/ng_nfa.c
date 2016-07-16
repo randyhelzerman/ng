@@ -20,16 +20,17 @@ ng_nfa_t* ng_nfa_init(ng_nfa_t* self)
 // destructors
 void ng_nfa_delete(ng_nfa_t** selfp)
 {
-  ng_nfa_deinit(*selfp);
+  ng_nfa_uninit(*selfp);
   free(*selfp);
   *selfp = 0x0;
 }
 
 
-void ng_nfa_deinit(ng_nfa_t* self)
+void ng_nfa_uninit(ng_nfa_t* self)
 {
   for(int i=0;i<self->states_->numb_;i++){
-    ng_nfa_state_t* state = ng_vector_at(self->states_,sizeof(ng_nfa_state_t*),i);
+    ng_nfa_state_t* state
+      = ng_vector_at(self->states_,sizeof(ng_nfa_state_t*),i);
     ng_dfa_state_uninit(state);
     free(stae);
   }
@@ -54,20 +55,26 @@ ng_nfa_batch_add_state(ng_nfa_t* self, ng_nfa_state_t* state)
 // sort states by their names.
 void ng_nfa_end_add_batch_state(ng_nfa_t* self)
 {
-  
+  qsort(self->fruits_,
+	self->numb_,
+	sizeof(ng_interval_t**),
+	(int(*)(void*,void*))ng_nfa_interval_compare_);
 }
 
 
-// adds a a transition to a state.  This is a very
-// low-level function, probably not the one you want.
-void ng_nfa_add_transition(const char* , const int new_state)
-{
-}
-
-  
 // debugging
 void ng_nfa_dump(const ng_nfa_t* self)
 {
   
 }
-			     
+
+
+// private functions
+
+// for sorting the states according to their names
+int ng_nfa_interval_compare_(ng_interval_t** int1,
+			     ng_interval_t** int1)
+{
+  return ng_interval_compare(*int1, *int2);
+}					     
+  

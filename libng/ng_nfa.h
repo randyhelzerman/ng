@@ -18,7 +18,7 @@ extern "C" {
   
   // destructors
   void ng_nfa_delete(ng_nfa_t** selfp);
-  void ng_fa_deinit(ng_nfa_t* self);
+  void ng_nfa_uninit(ng_nfa_t* self);
   
   // access
 
@@ -27,12 +27,19 @@ extern "C" {
 
   // adds a a transition to a state.  This is a very
   // low-level function, probably not the one you want.
-  void ng_nfa_add_transition(const char* , const int new_state);
-
+  void ng_nfa_add_transition(const char* ,
+			     const int new_state);
+  
   
   // debugging
   void ng_nfa_dump(const ng_nfa_t* self);
-			     
+  
+  // private functions
+
+  // for sorting the states according to their names
+  int ng_nfa_interval_compare_(ng_interval_t** int1,
+			       ng_interval_t** int1);
+  
   
 #ifdef __cplusplus
 };

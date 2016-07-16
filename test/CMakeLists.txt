@@ -7,6 +7,7 @@ ADD_EXECUTABLE(ng.t
                ng_interval.t.cpp
                ng_rb_tree_node.t.cpp
                ng_rb_tree.t.cpp
+	       ng_nfa.t.cpp
 	       ng_nfa_state.t.cpp
                test_fruit.c
                test_fruit_int.c

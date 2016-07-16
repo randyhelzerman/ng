@@ -75,7 +75,7 @@ int ng_nfa_state_compare(const ng_nfa_state_t*s1,
 
 
 // debuggingb
-void ng_nfa_state_dump(const ng_nfa_state_t* self)
+void ng_nfa_state_dump(const ng_nfa_state_t* self, const int indent)
 {
   // first, print out a graphical representation of the intervals
   for(int i=0;i<self->arcs_->numb_;i++){
@@ -86,12 +86,17 @@ void ng_nfa_state_dump(const ng_nfa_state_t* self)
     printf("[%s------------)", interval->word_);
   }
   printf("\n");
-  
+
   // now print out the associated next states
   bool moreToPrint=true;
   int nextStateIndex = 0;
   while(moreToPrint){
     bool foundMoreToPrint = false;
+    
+    // indent for arc
+    for(int i=0;i<indent;i++){
+      printf(" ");
+    }
     
     for(int i=0;i<self->arcs_->numb_;i++){
       // grab the arc at the position

@@ -34,13 +34,16 @@ ng_interval_t* ng_interval_eq_init(ng_interval_t* self, const char* word)
 ng_interval_t* ng_interval_gt_new(const char* word)
 {
   // allocate it
-  ng_interval_t* self = (ng_interval_t*)malloc(sizeof(ng_interval_t));
+  ng_interval_t* self
+    = (ng_interval_t*)malloc(sizeof(ng_interval_t));
   if(0x0==self) return 0x0;
   
   return ng_interval_gt_init(self,word);
 }
 
-ng_interval_t* ng_interval_gt_init(ng_interval_t* self, const char* word)
+
+ng_interval_t* ng_interval_gt_init(ng_interval_t* self,
+				   const char* word)
 {
   // initialize it
   strncpy(self->word_, word, 15);
@@ -56,7 +59,9 @@ ng_interval_t* ng_interval_gt_init(ng_interval_t* self, const char* word)
 
 // copy and init interval into blank memory space.  tgt must be pre-allocated
 // to be large enough.
-ng_interval_t* ng_interval_cp_init(const ng_interval_t* self, ng_interval_t* tgt)
+ng_interval_t*
+ng_interval_cp_init(const ng_interval_t* self,
+		    ng_interval_t* tgt)
 {
   strncpy(tgt->word_, self->word_, 15);
   
@@ -76,7 +81,6 @@ ng_interval_t* ng_interval_cp(const ng_interval_t* self,
 {
   return ng_interval_cp_init(self,tgt);
 }
-
 
 
 // free it up again

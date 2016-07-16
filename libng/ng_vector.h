@@ -16,14 +16,18 @@ extern "C" {
   
   // constructors
   ng_vector_t* ng_vector_new(const size_t fruit_size, const int max);
+  
   ng_vector_t* ng_vector_init(ng_vector_t* self,
 			      const size_t fruit_size, const int max);
   
   // destructors
   void ng_vector_delete(ng_vector_t** selfp,
-			const int fruit_size, void(*fruit_uninit)(void*));
+			const int fruit_size,
+			void(*fruit_uninit)(void*));
+  
   void ng_vector_uninit(ng_vector_t* self,
-			const int fruit_size, void(*fruit_uninit)(void*));
+			const int fruit_size,
+			void(*fruit_uninit)(void*));
   
   // accesss
 
@@ -67,6 +71,9 @@ extern "C" {
 				      const void* fruit,
 				      int(*fruit_compare)(const void*,
 							  const void*));
+  
+  // private functions
+  
   
   // debugging
   void ng_vector_dump(const ng_vector_t* self, const int fruit_size,

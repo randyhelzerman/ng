@@ -4,7 +4,7 @@
 #include <ng_interval.h>
 #include <ng_nfa_state.h>
 
-static const bool do_print = true;
+static const bool do_print = false;
 
 
 TEST(NgNfaStateTest, AllocShort)
@@ -15,7 +15,7 @@ TEST(NgNfaStateTest, AllocShort)
   EXPECT_NE(state->arcs_,   (ng_vector_t*)(0x0));
   EXPECT_EQ(state->action_, (void*)0x0);
   
-  if(do_print) ng_nfa_state_dump(state);
+  if(do_print) ng_nfa_state_dump(state,0);
   
   // test de-alloc
   ng_nfa_state_delete(&state);
@@ -42,7 +42,7 @@ TEST(NgNfaStateTest, AddArcs)
   ng_interval_push_color(arc3, 7,8);
   ng_nfa_state_add_interval(state,arc3);
   
-  if(do_print) ng_nfa_state_dump(state);
+  if(do_print) ng_nfa_state_dump(state,0);
   
   // deallocate everything
   ng_interval_delete(&arc1);
@@ -61,8 +61,8 @@ TEST(NgNfaStateTest, Compare)
   ng_nfa_state_t* state3 = ng_nfa_state_new("C");
   ng_nfa_state_t* state4 = ng_nfa_state_new("C");
   
-  EXPECT_LT(0, ng_nfa_state_compare(state1, state2));
-  EXPECT_GT(0, ng_nfa_state_compare(state3, state1));
+  EXPECT_GT(0, ng_nfa_state_compare(state1, state2));
+  EXPECT_LT(0, ng_nfa_state_compare(state3, state1));
   EXPECT_EQ(0, ng_nfa_state_compare(state3, state4));
   
   // deallocate everything

@@ -7,6 +7,10 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+  // forward declarations
+  typedef struct ng_vector ng_vector_t;
+  typedef struct ng_nfa_state ng_nfa_state_t;
   
   typedef struct ng_nfa {
     ng_vector_t* states_;
@@ -21,24 +25,25 @@ extern "C" {
   void ng_nfa_uninit(ng_nfa_t* self);
   
   // access
-
-  // adds a new state. 
-  void ng_nfa_batch_add_state(ng_nfa_t* self, ng_nfa_state_t* state);
-
-  // adds a a transition to a state.  This is a very
-  // low-level function, probably not the one you want.
-  void ng_nfa_add_transition(const char* ,
-			     const int new_state);
   
+  // adds a new state. 
+  void
+  ng_nfa_batch_add_state(ng_nfa_t* self,
+			 ng_nfa_state_t* state);
+  
+  // sort states by their names. Call after
+  // adding all the states
+  void
+  ng_nfa_end_batch_add_state(ng_nfa_t* self);
   
   // debugging
   void ng_nfa_dump(const ng_nfa_t* self);
   
   // private functions
-
+  
   // for sorting the states according to their names
-  int ng_nfa_interval_compare_(ng_interval_t** int1,
-			       ng_interval_t** int1);
+  int ng_nfa_state_p_compare_(ng_nfa_state_t** state1,
+			      ng_nfa_state_t** state2);
   
   
 #ifdef __cplusplus

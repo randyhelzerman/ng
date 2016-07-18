@@ -65,10 +65,6 @@ extern "C" {
   bool ng_interval_equal(const ng_interval_t* int1,
 			 const ng_interval_t* int2);
   
-  // debugging
-  void ng_interval_dump(const ng_interval_t* self);
-  
-  
 #ifdef __cplusplus
 };
 #endif

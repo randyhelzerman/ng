@@ -1,6 +1,5 @@
 #include <ng_vector.h>
 
-#include<stdio.h>
 #include<stdlib.h>
 #include<string.h>
 
@@ -14,7 +13,10 @@ ng_vector_t* ng_vector_new(const size_t fruit_size, const int max)
 }
 
 
-ng_vector_t* ng_vector_init(ng_vector_t* self, const size_t fruit_size, const int max)
+ng_vector_t* ng_vector_init(ng_vector_t* self,
+			    const size_t
+			    fruit_size,
+			    const int max)
 {
   self->max_ = max;
   self->numb_ = 0;
@@ -206,23 +208,4 @@ int ng_vector_binary_search_lower_bound(const ng_vector_t* v,
   }
   
   return low[0];
-}
-
-
-// debugging
-void ng_vector_dump(const ng_vector_t* self, const int fruit_size, void(*fruit_dump)(const void*))
-{
-  // print out basic stats
-  printf("vector: numb=%d  max=%d ", self->numb_, self->max_);
-  
-  // if we have a dump function, dump the contents
-  if(0x0 != fruit_dump){
-    printf("[ ");
-    for(int i=0;i<self->numb_;i++){
-      const void* position = (const void*)(self->fruits_ + i*fruit_size);
-      fruit_dump(position);
-      printf(" ");
-    }
-    printf("] ");
-  }
 }

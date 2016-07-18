@@ -1,7 +1,6 @@
 #include <ng_token_array.h>
 
 #include<stdlib.h>
-#include<stdio.h>
 
 #include <ng_vector.h>
 #include <ng_token_array_entry.h>

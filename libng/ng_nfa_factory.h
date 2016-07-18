@@ -9,9 +9,9 @@ extern "C" {
 #endif
   
   // forward declarations
-  typedef ng_symbol_table ng_symbol_table_t;
-  typedef ng_token_array ng_token_array_t;
-  typedef ng_nfa ng_nfa_t;
+  typedef struct  ng_symbol_table  ng_symbol_table_t;
+  typedef struct  ng_token_array   ng_token_array_t;
+  typedef struct  ng_nfa           ng_nfa_t;
   
   enum NG_NFA_FACTORY_TYPES {
     NG_NFA_FACTORY_NON_TERMINAL,
@@ -21,7 +21,7 @@ extern "C" {
   
   
   typedef struct ng_nfa_factory {
-    ng_token_array_t*    tokens_         // tokenized input
+    ng_token_array_t*    tokens_;        // tokenized input
     ng_symbol_table_t*   symbol_table_;  // symbol table
   } ng_nfa_factory_t;
   

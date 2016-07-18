@@ -46,10 +46,6 @@ extern "C" {
   bool ng_symbol_table_entry_equal(const ng_symbol_table_entry_t* e1,
 				   const ng_symbol_table_entry_t* e2);
 
-  // debugging
-  void ng_symbol_table_entry_dump(const ng_symbol_table_entry_t* self);
-  
-
 #ifdef __cplusplus
 };
 #endif

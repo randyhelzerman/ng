@@ -8,7 +8,7 @@ extern "C" {
 #endif
 
 
-  typedef struct {
+  typedef struct ng_color {
     int     state_;              // which state to go to next
     int     delta_;              // how many bytes to consume when you go there
   } ng_color_t;

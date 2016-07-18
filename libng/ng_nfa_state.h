@@ -36,9 +36,6 @@ extern "C" {
   int ng_nfa_state_compare(const ng_nfa_state_t* state1,
 			   const ng_nfa_state_t* state2);
   
-  // debugging
-  void ng_nfa_state_dump(const ng_nfa_state_t* self, const int indent);
-  
 #ifdef __cplusplus
 };
 #endif

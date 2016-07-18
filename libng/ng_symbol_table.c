@@ -1,7 +1,4 @@
 #include <ng_symbol_table.h>
-
-#include <stdio.h>
-
 #include <ng_symbol_table_entry.h>
 
 
@@ -87,13 +84,4 @@ ng_symbol_table_lookup(ng_symbol_table_t* self,
   ng_symbol_table_entry_delete(&entry1);
   
   return entry2;
-}
-
-
-// debgugging
-void ng_symbol_table_dump(const ng_symbol_table_t* self)
-{
-  printf("Symbol table:\n");
-  ng_rb_tree_visit(self->tree_,
-		   (void(*)(const void*))ng_symbol_table_entry_dump);
 }

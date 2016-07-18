@@ -40,9 +40,6 @@ extern "C" {
   ng_symbol_table_lookup(ng_symbol_table_t* self,
 			 const char* name);
   
-  // debgugging
-  void ng_symbol_table_dump(const ng_symbol_table_t* self);
-  
 #ifdef __cplusplus
 };
 #endif

@@ -36,18 +36,15 @@ extern "C" {
   void
   ng_nfa_end_batch_add_state(ng_nfa_t* self);
   
-  // debugging
-  void ng_nfa_dump(const ng_nfa_t* self);
-  
   // private functions
   
   // for sorting the states according to their names
   int ng_nfa_state_p_compare_(ng_nfa_state_t** state1,
 			      ng_nfa_state_t** state2);
   
-  
 #ifdef __cplusplus
 };
 #endif
 
 #endif  // end of include guard
+

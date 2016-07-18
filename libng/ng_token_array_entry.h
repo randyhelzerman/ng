@@ -12,7 +12,7 @@ extern "C" {
   typedef struct ng_token_array_entry {
     const char*       begin_;        // Beginning of token chars
     const char*       end_;          // One past ending of token chars
-    long int    type_;         // type of token this is
+    long int          type_;         // type of token this is
   } ng_token_array_entry_t;
   
   
@@ -42,9 +42,6 @@ extern "C" {
   ng_token_array_entry_cp_to_buf(const ng_token_array_entry_t* self,
 				 char* buf,
 				 const int max);
-  
-  void ng_token_array_entry_dump(const ng_token_array_entry_t* self);
-  
   
 #ifdef __cplusplus
 };

@@ -1,6 +1,5 @@
 #include <ng_rb_tree_node.h>
 
-#include<stdio.h>
 #include<stdlib.h>
 
 //------------

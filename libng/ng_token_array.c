@@ -66,15 +66,3 @@ void ng_token_array_push_back(ng_token_array_t* self,
 		      &entry,
 		      0x0,0x0);
 }
-
-
-// debugging
-
-void ng_token_array_dump(const ng_token_array_t* self)
-{
-  for(int i=0;i<self->tokens_->numb_;i++){
-    ng_token_array_entry_dump(ng_vector_at(self->tokens_,
-					   i,
-					   sizeof(ng_token_array_entry_t)));
-  }
-}

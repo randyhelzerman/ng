@@ -33,9 +33,6 @@ extern "C" {
 				const int end,
 				const long int type);
 
-  // debugging
-
-  void ng_token_array_dump(const ng_token_array_t* self);
   
 #ifdef __cplusplus
 };

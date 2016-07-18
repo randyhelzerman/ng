@@ -1,5 +1,7 @@
 #include <ng_symbol_table.h>
 
+#include <stdio.h>
+
 #include <ng_symbol_table_entry.h>
 
 

@@ -6,7 +6,7 @@
 
 #include<stdbool.h>
 
-const bool do_print= true;
+const bool do_print= false;
 
 TEST(NgSymbolTableTest, Alloc)
 {
@@ -22,7 +22,7 @@ TEST(NgSymbolTableTest, Alloc)
 TEST(NgSymbolTableTest, TestInsertLookup)
 {
   ng_symbol_table_t* symbol_table = ng_symbol_table_new();
-
+  
   // test that we can insert a new symbol ok.
   if(ng_symbol_table_insert(symbol_table,"foo", 1)){
     EXPECT_EQ(1,0);

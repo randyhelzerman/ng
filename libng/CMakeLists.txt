@@ -10,6 +10,8 @@ SET(LIBNG_SRCS
     ng_nfa.h                   ng_nfa.c
     ng_symbol_table_entry.h    ng_symbol_table_entry.c
     ng_symbol_table.h          ng_symbol_table.c
+    ng_token_array_entry.h     ng_token_array_entry.c
+    ng_token_array.h           ng_token_array.c
 )
 
 ADD_LIBRARY(ng STATIC

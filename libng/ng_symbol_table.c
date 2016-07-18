@@ -5,7 +5,8 @@
 // constructor
 ng_symbol_table_t* ng_symbol_table_new()
 {
-  ng_symbol_table_t* self = (ng_symbol_table_t*)malloc(sizeof(ng_symbol_table_t));
+  ng_symbol_table_t* self
+    = (ng_symbol_table_t*)malloc(sizeof(ng_symbol_table_t));
   return ng_symbol_table_init(self);
 }
 
@@ -51,7 +52,8 @@ ng_symbol_table_insert(ng_symbol_table_t* self,
 		      (void*(*)(const void*,
 				void*))ng_symbol_table_entry_cp_init,
 		      (int(*)(const void*,
-			      const void*))ng_symbol_table_entry_compare)->fruit_;
+			      const void*)
+		       )ng_symbol_table_entry_compare)->fruit_;
   
   // ensure that the entries are equal to each other
   bool returner

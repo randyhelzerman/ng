@@ -121,13 +121,42 @@ bool ng_rb_tree_node_member(const ng_rb_tree_node_t* node,
 }
 
 
+ng_rb_tree_node_t*
+ng_rb_tree_node_lookup(ng_rb_tree_node_t* node,
+		       void* fruit,
+		       int(*fruit_compare)(const void*,
+					   const void*))
+{
+  while(0x0 != node){
+    const int cmp = fruit_compare(fruit, node->fruit_);
+    if(0x0==cmp) return node;
+    node = node->kids_[cmp>0];
+  }
+  
+  // reached tip--not in tree
+  return 0x0;
+}
+
+
+// do an in-order recursive visit to each node in the tree and call
+// the visitor function on each of the fruits
+void ng_rb_tree_node_visit(const ng_rb_tree_node_t* self,
+			   void(*visitor)(const void*))
+{
+  if(0x0==self) return;
+  
+  ng_rb_tree_node_visit(self->kids_[0],visitor);
+  visitor(self->fruit_);
+  ng_rb_tree_node_visit(self->kids_[1],visitor);
+}
+
+
 // returns true if two trees have the same tree structure
 // if the function pointer "fruit_equal" isn't null,
 // then the corresponding fruit are also compared for
 // equality using the supplied function.
 bool
 ng_rb_tree_node_structurally_equivalent(const ng_rb_tree_node_t* n1,
-					
 					const ng_rb_tree_node_t* n2,
 					int(*fruit_equal)(const void*,
 							  const void*))
@@ -195,7 +224,7 @@ int ng_rb_tree_node_correct(const ng_rb_tree_node_t* node)
   if(lh!=0 && rh!=0){
     return ng_rb_tree_node_is_red(node) ? lh : lh+1;
   }
-
+  
   return 0;
 }
     

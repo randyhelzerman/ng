@@ -255,8 +255,8 @@ Prolog has been beaten up for 40 years now.
 But I don't like it.  I've been programming in prolog for 30 years
 and I still have to look up what yfx means.
 
-
-
+<PRE>
+	
 ADD -> "+"  :  E <- (E + E) + E     # Addition 
 SUB -> "-"  :  E <- (E - E) - E     # Subtraction
  
@@ -268,3 +268,4 @@ EXP -> "^"  :  E <- E ^ (E ^ E)     # Exponentiation
 NEG -> "-"  :  E <- -(-E)           # unary minus
 
 
+</PRE>

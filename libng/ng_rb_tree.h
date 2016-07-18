@@ -63,7 +63,11 @@ extern "C" {
 		    void (*uninit_fruit)(void*),
 		    int(*fruit_compare)(const void*,
 					const void*));
-
+  
+  
+  //-------
+  // access
+  //-------
 
   // returns true if in tree
   bool
@@ -72,19 +76,33 @@ extern "C" {
 		    int(*fruit_compare)(const void*,
 					const void*));
   
+  // returns a pointer to the fruit if it
+  // is in there, 0x0 if not.  Allows for use as a map.
+  const void*
+  ng_rb_tree_lookup(const ng_rb_tree_t* self,
+		    void* fruit,
+		    int(*fruit_compare)(const void*,
+					const void*));
+
+  
+  // do an in-order recursive visit to each node in the tree
+  // and call the visitor function on each of the
+  // fruits
+  void ng_rb_tree_visit(const ng_rb_tree_t* self,
+			void(*visitor)(const void*));
+  
   
   //------------------
   // private functions
   //------------------
   
-  // rotate node rright
+  // rotate node right
   ng_rb_tree_node_t* ng_rb_tree_rotate_(ng_rb_tree_node_t* root,
 					const int dir);
   
   ng_rb_tree_node_t* ng_rb_tree_rotate_double_(ng_rb_tree_node_t* node,
 					       const int dir);
   
-
   //--------------
   // for debugging
   //--------------
@@ -97,7 +115,7 @@ extern "C" {
   void ng_rb_tree_dump_aux(const ng_rb_tree_node_t* self,
 			   const int indent,
 			   void (*fruit_dump)(const void*));
-
+  
   int ng_rb_tree_count_nodes_recursive(const ng_rb_tree_t* self);
   
   

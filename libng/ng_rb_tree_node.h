@@ -31,7 +31,7 @@ extern "C" {
                                          void* fruit,
 					 void* (*fruit_cp_init)(const void*,
 								void*));
-
+  
   ng_rb_tree_node_t* ng_rb_tree_node_init(ng_rb_tree_node_t*self,
 					  
 					  ng_rb_tree_node_t* left,
@@ -66,6 +66,21 @@ extern "C" {
 			      int(*fruit_compare)(const void*,
 						  const void*));
   
+  // allows for use as a map.  Note that "member" is 100% constipated,
+  // this one is a non-const operation, because we want to be able to
+  // allow update to fruit (but not updates which would change
+  // how the fruit would compare)
+  ng_rb_tree_node_t*
+  ng_rb_tree_node_lookup(ng_rb_tree_node_t* self,
+			 void* fruit,
+			 int(*fruit_compare)(const void*,
+					     const void*));
+  
+  // do an in-order recursive visit to each node in the tree and call
+  // the visitor function on each of the fruits
+  void ng_rb_tree_node_visit(const ng_rb_tree_node_t* self,
+			     void(*visitor)(const void*));
+  
   // debugging
   
   // comparison
@@ -88,10 +103,8 @@ extern "C" {
   
   void ng_rb_tree_node_dump(const ng_rb_tree_node_t* self,
                             void (*fruit_dump)(const void*));
-
+  
   int ng_rb_tree_node_count_nodes_recursive(const ng_rb_tree_node_t* self);
-
-
   
   
 #ifdef __cplusplus

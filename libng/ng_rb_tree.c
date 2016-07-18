@@ -75,6 +75,7 @@ int ng_rb_tree_structurally_equivalent(const ng_rb_tree_t* t1,
                                                  fruit_equal);
 }
 
+
 // insertion/deletion
 
 // insertion
@@ -434,6 +435,10 @@ ng_rb_tree_remove(ng_rb_tree_t* self,
 }
 
 
+//-------
+// access
+//-------
+
 // returns true if in tree
 bool ng_rb_tree_member(const ng_rb_tree_t* self,
 		       void* fruit,
@@ -442,7 +447,25 @@ bool ng_rb_tree_member(const ng_rb_tree_t* self,
 {
   return ng_rb_tree_node_member(self->root_,fruit,fruit_compare);
 }
-  
+
+
+const void* ng_rb_tree_lookup(const ng_rb_tree_t* self,
+			      void* fruit,
+			      int(*fruit_compare)(const void*,
+						  const void*))
+{
+  return ng_rb_tree_node_lookup(self->root_,fruit,fruit_compare)->fruit_;
+}
+
+
+// do an in-order recursive visit to each node in the tree and call
+// the visitor function on each of the fruits
+void ng_rb_tree_visit(const ng_rb_tree_t* self,
+		      void(*visitor)(const void*))
+{
+  return ng_rb_tree_node_visit(self->root_,visitor);
+}
+
 
 //------------------
 // private functions

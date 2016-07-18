@@ -57,6 +57,28 @@ ng_interval_t* ng_interval_gt_init(ng_interval_t* self,
 }
 
 
+// last possible interval
+ng_interval_t*
+ng_interval_end_new()
+{
+  // allocate it
+  ng_interval_t* self = (ng_interval_t*)malloc(sizeof(ng_interval_t));
+  if(0x0==self) return 0x0;
+  
+  return ng_interval_end_init(self);
+}
+
+
+ng_interval_t*
+ng_interval_end_init(ng_interval_t* self)
+{
+  self->word_[0] = 255;
+  self->word_[1] = 0x0;
+  self->numb_next_states_ = 0;
+  return self;
+}
+
+
 // copy and init interval into blank memory space.  tgt must be pre-allocated
 // to be large enough.
 ng_interval_t*

@@ -83,6 +83,7 @@ ng_nfa_dump(const ng_nfa_t* self)
     ng_nfa_state_dump(*(ng_nfa_state_t**)ng_vector_at((void*)self->states_,
 						      i,
 						      sizeof(ng_nfa_state_t*)),
+		      // indent the arcs by 3 spaces
 		      3);
   }
 }

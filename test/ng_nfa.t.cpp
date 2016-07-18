@@ -67,7 +67,29 @@ TEST(NgNfaTest, AddArcs)
   ng_interval_delete(&arc1);
   ng_interval_delete(&arc2);
   ng_interval_delete(&arc3);
-  
-
-
 }
+
+
+// Ok, see if we can recognize a dorky little language
+//
+//  A -> "a"B
+//  B -> "b"C
+//  C -> "c"
+
+// TEST(NgNfaTest, SmallTest)
+// {
+//   // make an nfa
+//   ng_nfa_t* nfa = ng_nfa_new();
+  
+//   // beginning and ending arcs for every state
+//   ng_interval_t* beg = ng_interval_eq_new("");
+//   ng_interval_t* end = ng_interval_end_new();
+  
+//   // make a state for A
+//   ng_nfa_state_t* state = ng_nfa_state_new("A");
+//   ng_interval_t* arc1 = ng_interval_eq_new("a");
+
+  
+//   ng_nfa_state_t* state = ng_nfa_state_new("A");
+  
+// }

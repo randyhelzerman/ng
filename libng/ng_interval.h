@@ -27,6 +27,11 @@ extern "C" {
   
   ng_interval_t* ng_interval_gt_init(ng_interval_t* self,
 				     const char* word);
+
+  // creates an "end" interval, i.e. one which compares as
+  // greater than any UTF-8 string
+  ng_interval_t* ng_interval_end_new();
+  ng_interval_t* ng_interval_end_init(ng_interval_t* self);
   
   // copy and init interval into blank memory space.  tgt must be pre-allocated
   // to be large enough.

@@ -9,6 +9,8 @@ ADD_EXECUTABLE(ng.t
                ng_rb_tree.t.cpp
 	       ng_nfa.t.cpp
 	       ng_nfa_state.t.cpp
+	       ng_symbol_table_entry.t.cpp
+	       ng_symbol_table.t.cpp
                test_fruit.c
                test_fruit_int.c
 )

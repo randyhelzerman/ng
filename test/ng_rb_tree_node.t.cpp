@@ -1,6 +1,8 @@
 #include <gtest/gtest.h>
 
 #include <ng_rb_tree_node.h>
+#include <ng_rb_tree_node.t.h>
+
 #include <ng_interval.h>
 #include <string.h>
 

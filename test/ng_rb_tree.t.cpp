@@ -2,6 +2,11 @@
 
 #include <stdbool.h>
 #include <ng_rb_tree.h>
+#include <ng_rb_tree.t.h>
+
+#include <ng_rb_tree_node.h>
+#include <ng_rb_tree_node.t.h>
+
 #include <math.h>
 
 const bool do_print = false;

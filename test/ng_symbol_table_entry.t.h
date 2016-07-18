@@ -1,5 +1,5 @@
-#ifndef NG_SYMBOL_TABLE_ENTRY__H
-#define NG_SYMBOL_TABLE_ENTRY__H
+#ifndef NG_SYMBOL_TABLE_ENTRY_T__H
+#define NG_SYMBOL_TABLE_ENTRY_T__H
 
 #include<stdlib.h>
 #include<stdbool.h>
@@ -11,7 +11,7 @@ extern "C" {
   typedef struct ng_symbol_table_entry ng_symbol_table_entry_t;
   
   // debugging
-  void ng_symbol_table_entry_dump(const ng_symbol_table_entry_t* self);
+  void ng_symbol_table_entry_dump(const ng_symbol_table_entry_t* self);
   
 #ifdef __cplusplus
 };

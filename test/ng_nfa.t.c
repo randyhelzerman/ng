@@ -1,6 +1,8 @@
 #include <ng_nfa.h>
 #include <ng_nfa.t.h>
 
+#include<stdio.h>
+
 #include <ng_vector.h>
 #include <ng_nfa_state.t.h>
 

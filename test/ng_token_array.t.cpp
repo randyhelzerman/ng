@@ -11,10 +11,10 @@ const bool do_print = false;
 TEST(NgTokenArrrayTest, Alloc)
 {
   ng_token_array_t* tokens = 0x0;
-  tokens = ng_token_array_new("A -> 'a'B");
+  tokens = ng_token_array_new();
   EXPECT_NE((ng_token_array_t*)0x0, tokens);
   EXPECT_NE((ng_token_array_t*)0x0, tokens);
-  EXPECT_EQ(0, strcmp("A -> 'a'B", tokens->string_));
+  EXPECT_EQ((const char*)0x0, tokens->string_);
   
   ng_token_array_delete(&tokens);
   EXPECT_EQ((ng_token_array_t*)0x0, tokens);
@@ -23,8 +23,10 @@ TEST(NgTokenArrrayTest, Alloc)
 
 TEST(NGTokenArrayTest, Dump)
 {
-  //                                             012345678
-  ng_token_array_t* tokens = ng_token_array_new("A -> 'a'B");
+  ng_token_array_t* tokens = ng_token_array_new();
+  
+  //                           012345678
+  ng_token_array_set_string(tokens, "A -> 'a'B");
   
   ng_token_array_push_back(tokens, 0,1, 10);
   ng_token_array_push_back(tokens, 2,4, 11);

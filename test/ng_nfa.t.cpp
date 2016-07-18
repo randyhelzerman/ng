@@ -2,6 +2,7 @@
 
 // module we are testing
 #include <ng_nfa.h>
+#include <ng_nfa.t.h>
 
 // libraries
 #include<stdio.h>

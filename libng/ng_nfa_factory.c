@@ -1,5 +1,8 @@
 #include <ng_nfa_factory.h>
 
+#include <ng_token_array.h>
+#include <ng_symbol_table.h>
+
 #include <stdlib.h>
 
 // construction
@@ -43,4 +46,5 @@ void ng_nfa_factory_uninit(ng_nfa_factory_t* self)
 // build an nfa from parsing the string spec
 ng_nfa_t* build(const char* string)
 {
+  return 0x0;
 }

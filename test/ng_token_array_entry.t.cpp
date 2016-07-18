@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
 
 #include <ng_token_array_entry.h>
+#include <ng_token_array_entry.t.h>
 
 #include<stdbool.h>
 

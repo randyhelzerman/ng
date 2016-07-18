@@ -2,6 +2,7 @@
 
 #include <stdbool.h>
 #include <ng_interval.h>
+#include <ng_interval.t.h>
 #include <string.h>
 
 static const bool do_print = false;

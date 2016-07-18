@@ -12,8 +12,12 @@ const bool do_dump=true;
 TEST(NgNfaFactoryTest, Alloc)
 {
   ng_nfa_factory_t* factory = 0x0;
+  
+  // allocate it
   factory = ng_nfa_factory_new();
   EXPECT_NE((ng_nfa_factory_t*)0x0, factory);
   
-  
+  // delete it
+  ng_nfa_factory_delete(&factory);
+  EXPECT_EQ((ng_nfa_factory_t*)0x0, factory);
 }

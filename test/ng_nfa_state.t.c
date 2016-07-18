@@ -1,6 +1,11 @@
 #include <ng_nfa_state.h>
 #include <ng_nfa_state.t.h>
 
+#include <stdio.h>
+#include <string.h>
+
+#include <ng_vector.h>
+#include <ng_interval.h>
 
 // debuggingb
 void ng_nfa_state_dump(const ng_nfa_state_t* self, const int indent)

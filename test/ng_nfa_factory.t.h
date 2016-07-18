@@ -11,7 +11,7 @@ typedef struct ng_nfa_factory nf_nfa_factory_t;
 extern "C" {
 #endif
   
-  ng_nfa_factory_dump(ng_nfa_factory_t *self);
+  void ng_nfa_factory_dump(ng_nfa_factory_t *self);
   
 #ifdef __cplusplus
 };

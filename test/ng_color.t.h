@@ -5,7 +5,7 @@
 
 // forward declaratios
 
-typedef struct ng_color ng_color_t
+typedef struct ng_color ng_color_t;
 
 #ifdef __cplusplus
 extern "C" {

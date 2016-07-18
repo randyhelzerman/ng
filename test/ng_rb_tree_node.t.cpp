@@ -4,6 +4,7 @@
 #include <ng_rb_tree_node.t.h>
 
 #include <ng_interval.h>
+#include <ng_interval.t.h>
 #include <string.h>
 
 #include<test_fruit.h>

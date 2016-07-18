@@ -3,6 +3,7 @@
 
 #include <ng_interval.h>
 #include <ng_nfa_state.h>
+#include <ng_nfa_state.t.h>
 
 static const bool do_print = false;
 

@@ -1,5 +1,5 @@
-#ifndef NG_INTERVAL__H
-#define NG_INTERVAL__H
+#ifndef NG_INTERVAL_T__H
+#define NG_INTERVAL_T__H
 
 #include <stdbool.h>
 #include <stdlib.h>
@@ -18,3 +18,5 @@ extern "C" {
 #ifdef __cplusplus
 };
 #endif
+
+#endif // incude guard

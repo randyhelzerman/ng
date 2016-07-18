@@ -6,7 +6,7 @@
 
 #include <stdio.h>
 
-ng_nfa_factory_dump(ng_nfa_factory_t *self)
+void ng_nfa_factory_dump(ng_nfa_factory_t *self)
 {
   printf("nfa factory\n");
   ng_token_array_dump(self->tokens_);

@@ -1,6 +1,8 @@
 #include<ng_vector.h>
 #include<ng_vector.t.h>
 
+#include <stdio.h>
+
 
 // debugging
 void ng_vector_dump(const ng_vector_t* self, const int fruit_size, void(*fruit_dump)(const void*))

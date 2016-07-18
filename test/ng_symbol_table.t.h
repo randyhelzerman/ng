@@ -1,5 +1,5 @@
-#ifndef NG_SYMBOL_TABLE__H
-#define NG_SYMBOL_TABLE__H
+#ifndef NG_SYMBOL_TABLE_T__H
+#define NG_SYMBOL_TABLE_T__H
 
 #include<stdlib.h>
 #include<stdbool.h>

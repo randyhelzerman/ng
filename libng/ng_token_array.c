@@ -7,20 +7,19 @@
 
 
 // construction
-ng_token_array_t* ng_token_array_new(const char* string)
+ng_token_array_t* ng_token_array_new()
 {
   ng_token_array_t* self
     = (ng_token_array_t*)malloc(sizeof(ng_token_array_t));
   
-  return ng_token_array_init(self, string);
+  return ng_token_array_init(self);
 }
 
 
-ng_token_array_t* ng_token_array_init(ng_token_array_t* self,
-				      const char* string)
+ng_token_array_t* ng_token_array_init(ng_token_array_t* self)
 {
   self->tokens_ = ng_vector_new(sizeof(ng_token_array_entry_t), 10);
-  self->string_ = string;
+  self->string_ = 0x0;
   
   return self;
 }
@@ -45,6 +44,13 @@ void ng_token_array_uninit(ng_token_array_t* self)
 
 // accesss
   
+void ng_token_array_set_string(ng_token_array_t* self,
+			       const char* string)
+{
+  self->string_ = string;
+}
+
+
 void ng_token_array_push_back(ng_token_array_t* self,
 			      const int begin,
 			      const int end,

@@ -8,6 +8,7 @@ SET(LIBNG_SRCS
     ng_vector.h                ng_vector.c
     ng_nfa_state.h             ng_nfa_state.c
     ng_nfa.h                   ng_nfa.c
+    ng_nfa_factory.h           ng_nfa_factory.c
     ng_symbol_table_entry.h    ng_symbol_table_entry.c
     ng_symbol_table.h          ng_symbol_table.c
     ng_token_array_entry.h     ng_token_array_entry.c

@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
 
 #include<ng_vector.h>
+#include<ng_vector.t.h>
 
 #include<stdbool.h>
 

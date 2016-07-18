@@ -14,19 +14,21 @@ extern "C" {
   // some tokenization process
   typedef struct ng_token_array {
     ng_vector_t*    tokens_;    // array of tokens
-    const char*           string_;    // string which has beeen tokenized.
+    const char*     string_;    // string which has beeen tokenized.
   } ng_token_array_t;
   
   // construction
-  ng_token_array_t* ng_token_array_new(const char* string);
-  ng_token_array_t* ng_token_array_init(ng_token_array_t* self,
-					const char* string);
+  ng_token_array_t* ng_token_array_new();
+  ng_token_array_t* ng_token_array_init(ng_token_array_t* self);
   
   // destruction
   void ng_token_array_delete(ng_token_array_t** selfp);
   void ng_token_array_uninit(ng_token_array_t* self);
   
   // accesss
+
+  void ng_token_array_set_string(ng_token_array_t* self,
+				 const char* string);
   
   void ng_token_array_push_back(ng_token_array_t* self,
 				const int begin,

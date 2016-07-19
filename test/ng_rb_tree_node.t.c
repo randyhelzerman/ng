@@ -62,7 +62,7 @@ int ng_rb_tree_node_correct(const ng_rb_tree_node_t* node)
      ( ng_rb_tree_node_is_red(ln)
        ||
        ng_rb_tree_node_is_red(rn))){
-    printf("red violation\n");
+    // printf("red violation\n");
     return 0;
   }
   
@@ -70,7 +70,7 @@ int ng_rb_tree_node_correct(const ng_rb_tree_node_t* node)
   const int rh = ng_rb_tree_node_correct(rn);
   
   if(0!=lh && 0!=rh && lh!=rh){
-    printf("Black height mismatch\n");
+    // printf("Black height mismatch\n");
     return 0;
   }
   

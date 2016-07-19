@@ -7,12 +7,12 @@
 // destructor for fruit which is inline c-string
 void test_fruit_deinit(void* fruit)
 {
-  printf("freeing : %s\n", (char*)(fruit));
+  //  printf("freeing : %s\n", (char*)(fruit));
 }
 
 void test_fruit_dump(const void* fruit)
 {
-  printf("%s", (char*)fruit);
+  //printf("%s", (char*)fruit);
 }
 
 int test_fruit_equal(const void* fruit1,

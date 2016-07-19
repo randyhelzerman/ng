@@ -31,11 +31,10 @@ extern "C" {
 				 const char* string);
   
   void ng_token_array_push_back(ng_token_array_t* self,
-				const int begin,
-				const int end,
+				const char* begin,
+				const char* end,
 				const long int type);
 
-  
 #ifdef __cplusplus
 };
 #endif

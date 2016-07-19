@@ -28,10 +28,10 @@ TEST(NGTokenArrayTest, Dump)
   //                           012345678
   ng_token_array_set_string(tokens, "A -> 'a'B");
   
-  ng_token_array_push_back(tokens, 0,1, 10);
-  ng_token_array_push_back(tokens, 2,4, 11);
-  ng_token_array_push_back(tokens, 5,8, 12);
-  ng_token_array_push_back(tokens, 8,9, 10);
+  ng_token_array_push_back(tokens, tokens->string_+0,tokens->string_+1, 10);
+  ng_token_array_push_back(tokens, tokens->string_+2,tokens->string_+4, 11);
+  ng_token_array_push_back(tokens, tokens->string_+5,tokens->string_+8, 12);
+  ng_token_array_push_back(tokens, tokens->string_+8,tokens->string_+9, 10);
   
   if (do_print) ng_token_array_dump(tokens);
   

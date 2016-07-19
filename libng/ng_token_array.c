@@ -28,6 +28,9 @@ ng_token_array_t* ng_token_array_init(ng_token_array_t* self)
 // destruction
 void ng_token_array_delete(ng_token_array_t** selfp)
 {
+  // make it ok to delete a null pointer to one of thse
+  if(0x0==*selfp) return;
+  
   ng_token_array_uninit(*selfp);
   free(*selfp);
   *selfp = 0x0;
@@ -52,15 +55,15 @@ void ng_token_array_set_string(ng_token_array_t* self,
 
 
 void ng_token_array_push_back(ng_token_array_t* self,
-			      const int begin,
-			      const int end,
+			      const char* begin,
+			      const char* end,
 			      const long int type)
 {
   // entry to be added
   ng_token_array_entry_t entry;
   ng_token_array_entry_init(&entry,
-			    self->string_ + begin,
-			    self->string_ + end,
+			    begin,
+			    end,
 			    type);
   
   // push it back.  Since it can be bitcopied

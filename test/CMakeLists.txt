@@ -14,6 +14,7 @@ ADD_EXECUTABLE(ng.t
 	       ng_token_array_entry.t.c      ng_token_array_entry.t.cpp
 	       ng_token_array.t.c            ng_token_array.t.cpp
 	       ng_nfa_factory.t.c            ng_nfa_factory.t.cpp
+	                                     ng_ascii_util.t.cpp
                test_fruit.c
                test_fruit_int.c
 )

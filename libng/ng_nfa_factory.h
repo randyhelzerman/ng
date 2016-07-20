@@ -21,12 +21,12 @@ extern "C" {
   
   
   typedef struct ng_nfa_factory {
-    ng_token_array_t*    tokens_;        // tokenized input
+    ng_token_array_t*   tokens_;        // tokenized input
     
-    const char*          current_;       // points at current char being tokenized
-    const char*          end_;           // points at end of string to be tokenized
+    const char*         current_;       // points at current char being tokenized
+    const char*         end_;           // points at end of string to be tokenized
     
-    ng_symbol_table_t*   symbol_table_;  // symbol table
+    ng_symbol_table_t*  symbol_table_;  // symbol table
   } ng_nfa_factory_t;
   
   
@@ -45,16 +45,14 @@ extern "C" {
   // for the nfa
   ng_nfa_t* build(ng_nfa_factory_t* self,
 		  const char* string);
-
+  
   // tokenize the tokens
   void ng_nfa_factory_tokenize(ng_nfa_factory_t* self);
-
   
   bool ng_nfa_factory_tokenize_white_space(ng_nfa_factory_t* self);
   bool ng_nfa_factory_tokenize_non_terminal(ng_nfa_factory_t* self);
   bool ng_nfa_factory_tokenize_terminal(ng_nfa_factory_t* self);
   
-
   
 #ifdef __cplusplus
 };

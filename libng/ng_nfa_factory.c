@@ -2,6 +2,7 @@
 
 #include <ng_token_array.h>
 #include <ng_symbol_table.h>
+#include <ng_ascii_util.h>
 
 #include <stdlib.h>
 
@@ -64,7 +65,8 @@ ng_nfa_t* build(ng_nfa_factory_t* self,
 
 
 // tokenize the tokens
-void ng_nfa_factory_tokenize(ng_nfa_factory_t* self)
+void
+ng_nfa_factory_tokenize(ng_nfa_factory_t* self)
 {
   self->current_ = self->tokens_->string_;
   
@@ -73,83 +75,92 @@ void ng_nfa_factory_tokenize(ng_nfa_factory_t* self)
 }
 
 
-// always returns true.  Just consumes whitespace
-bool ng_nfa_factory_tokenize_white_space(ng_nfa_factory_t* self)
+// consumes white-space.  Always succeeds.
+bool
+ng_nfa_factory_tokenize_white_space(ng_nfa_factory_t* self)
 {
-  while(ng_nfa_factory_char_is_white_space(*self->current)){
-    self->current_++;
-    if(self->current_ == self->end_) return true;
+  while(ng_ascii_util_is_white_space(*self->current_)) {
+    if(!ng_ascii_util_advance_char(&self->current_)) return true;
   }
   
   return true;
 }
 
 
-// returns true if we can tokenize a non-terminal.
-bool ng_nfa_factory_tokenize_non_terminal(ng_nfa_factory_t* self)
+bool
+ng_nfa_factory_tokenize_non_terminal(ng_nfa_factory_t* self)
 {
   const char* save = self->current_;
   
-  while((*self->current_ >= 'a' && *self->current_ <= 'z')
-	||
-	(*self->current_ >= 'A' && *self->current_ <= 'Z')
-	||
-	(*self->current_ >= '0' && *self->current_ <= '9')){
-    self->current_++;
-    if(self->current_ == self->end_) break;
+  // needs at least one letter to strt
+  if(!ng_ascii_util_is_letter){
+    return false;
   }
   
-  // if we haven't found a non-terminal, return false
-  if(save == self->current_) return false;
+  // advance
+  if(!ng_ascii_util_advance_char(&self->current_, self->end)){
+    // push the token
+    ng_token_array_push_back(self->tokens_,
+			     save, self->current_,
+			     NG_NFA_FACTORY_NON_TERMINAL);
+    return true;
+  }
   
-  // push a non-terminal token on the stack if we've found one
-  ng_token_array_push_back(self->tokens_,save, self->current_, NG_NFA_FACTORY_NON_TERMINAL);
+  while(ng_ascii_util_is_id(*self->current_)){
+    if(!ng_ascii_util_advance_char(&self->current_, self->end)){
+      // push the token
+      ng_token_array_push_back(self->tokens_,
+			       save, self->current_,
+			       NG_NFA_FACTORY_NON_TERMINAL);
+      return true;
+    }
+  }
+  
+  // push the last token
+  ng_token_array_push_back(self->tokens_,
+			   save, self->current_,
+			   NG_NFA_FACTORY_NON_TERMINAL);
   return true;
 }
+  
 
-
-bool ng_nfa_factory_tokenize_terminal(ng_nfa_factory_t* self)
+bool
+ng_nfa_factory_tokenize_terminal(ng_nfa_factory_t* self)
 {
-  // must start with a '
-  if(*self->current_ != '\'') return false;
-  
+  // cache the beginning 
   const char* save = self->current_;
-  self->current_++;
   
-  // ensure we haven't fallen off the edge
-  if(self->current_ == self->end_){
+  // consume first quote
+  if(!ng_ascii_is_single_quote(*self->current_)){
+    return false;
+  }
+  
+  // if we've run out of string, restore position and return false
+  if(!ng_ascii_util_advance_char(&self->current_)){
     self->current_ = save;
     return false;
   }
   
-  while((*self->current_ >= 'a' && *self->current_ <= 'z')
-	||
-	(*self->current_ >= 'A' && *self->current_ <= 'Z')
-	||
-	(*self->current_ >= '0' && *self->current_ <= '9')){
-    self->current_++;
-    
-    // need to find closing '
-    if(self->current_ == self->end_) {
+  // consume name
+  while(!ng_ascii_is_single_quote(*self->current_)){
+    // if we've run out of string, restore position and return false
+    if(!ng_ascii_util_advance_char(&self->current_)){
       self->current_ = save;
       return false;
     }
   }
   
-  if(*self->current_ == '\''){
-    self->current_++;
-  } else {
+  // consume final quote
+  // consume first quote
+  if(!ng_ascii_is_single_quote(*self->current_)){
     self->current_ = save;
     return false;
   }
   
-  // if we haven't found a non-terminal, return false
-  if(save == self->current_) return false;
-  
-  // push a non-terminal token on the stack if we've found one
-  ng_token_array_push_back(self->tokens_,save, self->current_, NG_NFA_FACTORY_TERMINAL);
-  return true;
+  // push token we just recognized
+  ng_token_array_push_back(self->tokens_,
+			   save, self-current_,
+			   NG_NFA_FACTORY_TERMINAL);
 }
-
 
 

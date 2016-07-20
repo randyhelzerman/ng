@@ -49,10 +49,11 @@ extern "C" {
   // tokenize the tokens
   void ng_nfa_factory_tokenize(ng_nfa_factory_t* self);
 
+  
   bool ng_nfa_factory_tokenize_white_space(ng_nfa_factory_t* self);
   bool ng_nfa_factory_tokenize_non_terminal(ng_nfa_factory_t* self);
   bool ng_nfa_factory_tokenize_terminal(ng_nfa_factory_t* self);
-
+  
 
   
 #ifdef __cplusplus

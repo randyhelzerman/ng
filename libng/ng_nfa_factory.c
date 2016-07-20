@@ -76,7 +76,7 @@ void ng_nfa_factory_tokenize(ng_nfa_factory_t* self)
 // always returns true.  Just consumes whitespace
 bool ng_nfa_factory_tokenize_white_space(ng_nfa_factory_t* self)
 {
-  while(*self->current_ != ' ' || *self->current_ != '\t' || *self->current_ != '\n'){
+  while(ng_nfa_factory_char_is_white_space(*self->current)){
     self->current_++;
     if(self->current_ == self->end_) return true;
   }

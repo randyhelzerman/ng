@@ -20,3 +20,9 @@ TEST(NgNfaFactoryTest, Alloc)
   ng_nfa_factory_delete(&factory);
   EXPECT_EQ((ng_nfa_factory_t*)0x0, factory);
 }
+
+
+TEST(NgNfaFactoryTest, tokenizersP)
+{
+  
+}

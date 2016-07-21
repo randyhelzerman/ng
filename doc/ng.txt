@@ -75,3 +75,87 @@
 ****	NDFA gen:
 *****	must look up how standard re parsers do it.
 
+
+
+*	some language studies
+
+
+**	fun (a,b,c) { }
+
+**	fun x.foo(a,b,c) {}
+
+**	fun as a prefix binary or prefix ternary operator?
+
+
+**	what if each function had a self which refered to its scope?
+***	i think it could probably work.  need to dork it tho.
+
+
+**	{  print("h w")  ; x=y+5 }
+
+***	function names as prefix operators?
+	
+****	fun xshift(x y) { x += 5 return (x,y) }
+
+****	() as tuple operator?
+	
+	(x y) =  xshift(x y)
+	
+	man I really want to type a ,
+	
+	fun xshift x,y  { x+=5 return x,y }
+	
+	while x<5 {
+	      print(x)
+	      x = x - 1
+	}
+		
+	for i=0,i<5,i++ {
+	}
+	
+	arr = [0 -> w, x,  y,  z,  "a" -> "b",  "a" => "b",  "c" => "d", ]
+ 	
+	arr.0 == x
+	arr.a == "b"
+	
+	0.5 double
+	0..5 decimal
+	
+	5..0
+
+
+*	operators
+	
+**	, tuple operator
+	
+**      . decimal
+	
+**	..decimal
+
+A -> 'a',B
+
+hmmm........ that might actually not be so bad lol
+
+But really, it is a ternary operator.  And the parse tree should reflect that.
+	
+
+*	Self-reflective grammar
+
+
+
+*       T
+
+**      T   -->  '\'' T1
+***     T1  -->  'X'T2  where X in [a-zA-Z]
+***     T2  -->  'X'T2  where X in [_0-9a-zA-Z]
+***     T2  -->  '\''
+
+**	T   --> '[' T3
+***	T3  --> 'X' T4  where X in [_0-9a-zA-Z]
+***	T4  --> 
+
+*	NT
+
+**	NT  -->  [a-zA-z] NT1
+**      NT1 -->  [a-zA-z_1-9] NT2
+

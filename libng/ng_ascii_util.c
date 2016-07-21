@@ -16,7 +16,7 @@ bool ng_ascii_util_is_lower_case(const char ch)
 bool ng_ascii_util_is_upper_case(const char ch)
 {
   return ('A' <=ch) && (ch <= 'Z');
-v}
+}
 
 
 bool ng_ascii_util_is_letter(const char ch)
@@ -49,9 +49,21 @@ bool ng_ascii_util_is_single_quote(const char ch)
 bool
 ng_ascii_util_is_double_quote(const char ch)
 {
-  return '\'' == ch;
+  return '"' == ch;
 }
 
+
+bool ng_ascii_util_is_minus(const char ch)
+{
+  return '-' == ch;
+}
+
+
+bool ng_ascii_util_is_gt(const char ch)
+{
+  return '>' == ch;
+}
+    
   
 bool
 ng_ascii_util_advance_char(const char**curr,

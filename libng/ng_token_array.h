@@ -7,7 +7,7 @@ extern "C" {
 #endif
 
   // forward declarations
-  typedef struct ng_token_array_entry ng_token_array_entry_t;
+  typedef struct ng_token ng_token_t;
   typedef struct ng_vector ng_vector_t;
   
   // holds an array of tokens e.g. the result of

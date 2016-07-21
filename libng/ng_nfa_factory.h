@@ -17,6 +17,7 @@ extern "C" {
     NG_NFA_FACTORY_NON_TERMINAL,
     NG_NFA_FACTORY_TERMINAL,
     NG_NFA_FACTORY_END_OF_INPUT,
+    NG_NFA_FACTORY_ARROW
   };
   
   
@@ -43,8 +44,8 @@ extern "C" {
   // build an nfa from parsing the string spec
   // caller takes over ownership of memory allocted
   // for the nfa
-  ng_nfa_t* build(ng_nfa_factory_t* self,
-		  const char* string);
+  ng_nfa_t* ng_nfa_factory_build(ng_nfa_factory_t* self,
+				 const char* string);
   
   // tokenize the tokens
   void ng_nfa_factory_tokenize(ng_nfa_factory_t* self);
@@ -52,6 +53,7 @@ extern "C" {
   bool ng_nfa_factory_tokenize_white_space(ng_nfa_factory_t* self);
   bool ng_nfa_factory_tokenize_non_terminal(ng_nfa_factory_t* self);
   bool ng_nfa_factory_tokenize_terminal(ng_nfa_factory_t* self);
+  bool ng_nfa_factory_tokenize_arrow(ng_nfa_factory_t* self);
   
   
 #ifdef __cplusplus

@@ -3,7 +3,7 @@
 #include<stdlib.h>
 
 #include <ng_vector.h>
-#include <ng_token_array_entry.h>
+#include <ng_token.h>
 
 
 // construction
@@ -18,7 +18,7 @@ ng_token_array_t* ng_token_array_new()
 
 ng_token_array_t* ng_token_array_init(ng_token_array_t* self)
 {
-  self->tokens_ = ng_vector_new(sizeof(ng_token_array_entry_t), 10);
+  self->tokens_ = ng_vector_new(sizeof(ng_token_t), 10);
   self->string_ = 0x0;
   
   return self;
@@ -40,8 +40,8 @@ void ng_token_array_delete(ng_token_array_t** selfp)
 void ng_token_array_uninit(ng_token_array_t* self)
 {
   ng_vector_delete(&self->tokens_,
-		   sizeof(ng_token_array_entry_t),
-		   (void(*)(void*))ng_token_array_entry_uninit);
+		   sizeof(ng_token_t),
+		   (void(*)(void*))ng_token_uninit);
 }
 
 
@@ -60,8 +60,8 @@ void ng_token_array_push_back(ng_token_array_t* self,
 			      const long int type)
 {
   // entry to be added
-  ng_token_array_entry_t entry;
-  ng_token_array_entry_init(&entry,
+  ng_token_t entry;
+  ng_token_init(&entry,
 			    begin,
 			    end,
 			    type);
@@ -70,7 +70,7 @@ void ng_token_array_push_back(ng_token_array_t* self,
   // and doesn't need a destructor, we can just
   // pass nulls in for the functions
   ng_vector_push_back(&self->tokens_,
-		      sizeof(ng_token_array_entry_t),
+		      sizeof(ng_token_t),
 		      &entry,
 		      0x0,0x0);
 }

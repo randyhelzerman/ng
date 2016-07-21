@@ -5,6 +5,8 @@
 #include <ng_ascii_util.h>
 
 #include <stdlib.h>
+#include <string.h>
+
 
 // construction
 ng_nfa_factory_t* ng_nfa_factory_new()
@@ -49,8 +51,8 @@ void ng_nfa_factory_uninit(ng_nfa_factory_t* self)
 // access
 
 // build an nfa from parsing the string spec
-ng_nfa_t* build(ng_nfa_factory_t* self,
-		const char* string)
+ng_nfa_t* ng_nfa_factory_build(ng_nfa_factory_t* self,
+			       const char* string)
 {
   // refresh the tokens stuffs
   ng_token_array_delete(&self->tokens_);
@@ -69,9 +71,19 @@ void
 ng_nfa_factory_tokenize(ng_nfa_factory_t* self)
 {
   self->current_ = self->tokens_->string_;
+  self->end_ = self->tokens_->string_ + strlen(self->tokens_->string_);
   
-  ng_nfa_factory_tokenize_white_space(self);
-  ng_nfa_factory_tokenize_non_terminal(self);
+  bool gogo = true;
+  while(gogo){
+    ng_nfa_factory_tokenize_white_space(self);
+    
+    gogo = (ng_nfa_factory_tokenize_non_terminal(self)
+	    ||
+	    ng_nfa_factory_tokenize_terminal(self)
+	    ||
+	    ng_nfa_factory_tokenize_arrow(self) )
+      && self->current_ < self->end_;
+  }
 }
 
 
@@ -80,7 +92,7 @@ bool
 ng_nfa_factory_tokenize_white_space(ng_nfa_factory_t* self)
 {
   while(ng_ascii_util_is_white_space(*self->current_)) {
-    if(!ng_ascii_util_advance_char(&self->current_)) return true;
+    if(!ng_ascii_util_advance_char(&self->current_, self->end_)) return true;
   }
   
   return true;
@@ -93,12 +105,12 @@ ng_nfa_factory_tokenize_non_terminal(ng_nfa_factory_t* self)
   const char* save = self->current_;
   
   // needs at least one letter to strt
-  if(!ng_ascii_util_is_letter){
+  if(!ng_ascii_util_is_letter(*self->current_)){
     return false;
   }
   
   // advance
-  if(!ng_ascii_util_advance_char(&self->current_, self->end)){
+  if(!ng_ascii_util_advance_char(&self->current_, self->end_)){
     // push the token
     ng_token_array_push_back(self->tokens_,
 			     save, self->current_,
@@ -107,7 +119,7 @@ ng_nfa_factory_tokenize_non_terminal(ng_nfa_factory_t* self)
   }
   
   while(ng_ascii_util_is_id(*self->current_)){
-    if(!ng_ascii_util_advance_char(&self->current_, self->end)){
+    if(!ng_ascii_util_advance_char(&self->current_, self->end_)){
       // push the token
       ng_token_array_push_back(self->tokens_,
 			       save, self->current_,
@@ -122,7 +134,7 @@ ng_nfa_factory_tokenize_non_terminal(ng_nfa_factory_t* self)
 			   NG_NFA_FACTORY_NON_TERMINAL);
   return true;
 }
-  
+
 
 bool
 ng_nfa_factory_tokenize_terminal(ng_nfa_factory_t* self)
@@ -131,20 +143,20 @@ ng_nfa_factory_tokenize_terminal(ng_nfa_factory_t* self)
   const char* save = self->current_;
   
   // consume first quote
-  if(!ng_ascii_is_single_quote(*self->current_)){
+  if(!ng_ascii_util_is_single_quote(*self->current_)){
     return false;
   }
   
   // if we've run out of string, restore position and return false
-  if(!ng_ascii_util_advance_char(&self->current_)){
+  if(!ng_ascii_util_advance_char(&self->current_, self->end_)){
     self->current_ = save;
     return false;
   }
   
   // consume name
-  while(!ng_ascii_is_single_quote(*self->current_)){
+  while(!ng_ascii_util_is_single_quote(*self->current_)){
     // if we've run out of string, restore position and return false
-    if(!ng_ascii_util_advance_char(&self->current_)){
+    if(!ng_ascii_util_advance_char(&self->current_, self->end_)){
       self->current_ = save;
       return false;
     }
@@ -152,15 +164,46 @@ ng_nfa_factory_tokenize_terminal(ng_nfa_factory_t* self)
   
   // consume final quote
   // consume first quote
-  if(!ng_ascii_is_single_quote(*self->current_)){
+  if(!ng_ascii_util_is_single_quote(*self->current_)){
+    self->current_ = save;
+    return false;
+  }
+  ng_ascii_util_advance_char(&self->current_, self->end_);
+  
+  // push token we just recognized
+  ng_token_array_push_back(self->tokens_,
+			   save, self->current_,
+			   NG_NFA_FACTORY_TERMINAL);
+  
+  return true;
+}
+
+
+bool
+ng_nfa_factory_tokenize_arrow(ng_nfa_factory_t* self)
+{
+  const char* save = self->current_;
+  
+  // consume -
+  if(!ng_ascii_util_is_minus(*self->current_)){
+    return false;
+  }
+  if(!ng_ascii_util_advance_char(&self->current_, self->end_)){
     self->current_ = save;
     return false;
   }
   
+  // consume >
+  if(!ng_ascii_util_is_gt(*self->current_)){
+    self->current_ = save;
+    return false;
+  }
+  ng_ascii_util_advance_char(&self->current_, self->end_);
+  
   // push token we just recognized
   ng_token_array_push_back(self->tokens_,
-			   save, self-current_,
-			   NG_NFA_FACTORY_TERMINAL);
+			   save, self->current_,
+			   NG_NFA_FACTORY_ARROW);
+  
+  return true;
 }
-
-

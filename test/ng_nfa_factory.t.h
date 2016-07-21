@@ -1,5 +1,5 @@
-#ifndef NG_NFA_FACTORY__H
-#define NG_NFA_FACTORY__H
+#ifndef NG_NFA_FACTORY_T__H
+#define NG_NFA_FACTORY_T__H
 
 #include<stdlib.h>
 #include<stdbool.h>

@@ -16,6 +16,10 @@ extern "C" {
   bool ng_ascii_util_is_letter(const char);
   bool ng_ascii_util_is_digit(const char);
   bool ng_ascii_util_is_id(const char);
+  bool ng_ascii_util_is_single_quote(const char ch);
+  bool ng_ascii_util_is_double_quote(const char ch);
+  bool ng_ascii_util_is_minus(const char);
+  bool ng_ascii_util_is_gt(const char);
   
   bool ng_ascii_util_advance_char(const char**curr, const char*end);
   

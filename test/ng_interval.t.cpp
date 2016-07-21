@@ -84,9 +84,9 @@ TEST(NgIntervalAccessTest, Equality)
   EXPECT_TRUE(ng_interval_equal(int1,int3));
   if(do_print) printf("\n");
   
-  ng_interval_dump(int2);
+  if(do_print) ng_interval_dump(int2);
   if(do_print) printf("\n");
-  ng_interval_dump(int3);
+  if(do_print) ng_interval_dump(int3);
   if(do_print) printf("\n");
   EXPECT_FALSE(ng_interval_equal(int2,int3));
   if(do_print) printf("\n");
@@ -114,7 +114,7 @@ TEST(NgIntervalAccessTest, Equality)
   if(do_print) ng_interval_dump(int1);
   if(do_print) printf("\n");
   if(do_print) ng_interval_dump(int3);
-  printf("\n");
+  if(do_print) printf("\n");
   EXPECT_FALSE(ng_interval_equal(int1,int3));
   
   ng_interval_delete(&int1);

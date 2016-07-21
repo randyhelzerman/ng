@@ -7,7 +7,7 @@
 
 #include<test_fruit_int.h>
 
-const bool do_dump=true;
+const bool do_dump=false;
 
 
 // Just test with basic integers types

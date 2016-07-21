@@ -33,16 +33,16 @@ TEST(NgAsciiUtilTest, lower_case)
 
 TEST(NgAsciiUtilTest, upper_case)
 {
-  EXPECT_EQ(false, ng_ascii_util_is_lower_case('a'));
-  EXPECT_EQ(false, ng_ascii_util_is_lower_case('m'));
-  EXPECT_EQ(false, ng_ascii_util_is_lower_case('z'));
+  EXPECT_EQ(true, ng_ascii_util_is_lower_case('a'));
+  EXPECT_EQ(true, ng_ascii_util_is_lower_case('m'));
+  EXPECT_EQ(true, ng_ascii_util_is_lower_case('z'));
   
-  EXPECT_NE(false, ng_ascii_util_is_lower_case('A'));
-  EXPECT_NE(false, ng_ascii_util_is_lower_case('N'));
-  EXPECT_NE(false, ng_ascii_util_is_lower_case('Z'));
-  EXPECT_NE(false, ng_ascii_util_is_lower_case('1'));
-  EXPECT_NE(false, ng_ascii_util_is_lower_case(' '));
-  EXPECT_NE(false, ng_ascii_util_is_lower_case('\n'));
+  EXPECT_EQ(false, ng_ascii_util_is_lower_case('A'));
+  EXPECT_EQ(false, ng_ascii_util_is_lower_case('N'));
+  EXPECT_EQ(false, ng_ascii_util_is_lower_case('Z'));
+  EXPECT_EQ(false, ng_ascii_util_is_lower_case('1'));
+  EXPECT_EQ(false, ng_ascii_util_is_lower_case(' '));
+  EXPECT_EQ(false, ng_ascii_util_is_lower_case('\n'));
 }
 
 
@@ -86,36 +86,37 @@ TEST(NgAsciUtilTest, id_char)
   EXPECT_EQ(true, ng_ascii_util_is_id('a'));
   EXPECT_EQ(true, ng_ascii_util_is_id('Z'));
   
-  EXPECT_EQ(false, ng_ascii_util_is_id('_'));
+  EXPECT_EQ(false, ng_ascii_util_is_id('/'));
   EXPECT_EQ(false, ng_ascii_util_is_id('+'));
   EXPECT_EQ(false, ng_ascii_util_is_id('-'));
   EXPECT_EQ(false, ng_ascii_util_is_id('*'));
 }
 
+
 TEST(NgAsciUtilTest, single_quote)
 {
   EXPECT_EQ(true,  ng_ascii_util_is_single_quote('\''));
-  EXPECT_NE(false, ng_ascii_util_is_single_quote('"'));
-  EXPECT_NE(false, ng_ascii_util_is_single_quote(' '));
-  EXPECT_NE(false, ng_ascii_util_is_single_quote('1'));
-  EXPECT_NE(false, ng_ascii_util_is_single_quote('a'));
+  EXPECT_EQ(false, ng_ascii_util_is_single_quote('"'));
+  EXPECT_EQ(false, ng_ascii_util_is_single_quote(' '));
+  EXPECT_EQ(false, ng_ascii_util_is_single_quote('1'));
+  EXPECT_EQ(false, ng_ascii_util_is_single_quote('a'));
 }
 
 
 TEST(NgAsciUtilTest, double_quote)
 {
-  EXPECT_EQ(true,  ng_ascii_util_is_single_quote('"'));
-  EXPECT_NE(false, ng_ascii_util_is_single_quote('\;'));
-  EXPECT_NE(false, ng_ascii_util_is_single_quote(' '));
-  EXPECT_NE(false, ng_ascii_util_is_single_quote('1'));
-  EXPECT_NE(false, ng_ascii_util_is_single_quote('a'));
+  EXPECT_EQ(true,  ng_ascii_util_is_double_quote('"'));
+  EXPECT_EQ(false, ng_ascii_util_is_double_quote('\''));
+  EXPECT_EQ(false, ng_ascii_util_is_double_quote(' '));
+  EXPECT_EQ(false, ng_ascii_util_is_double_quote('1'));
+  EXPECT_EQ(false, ng_ascii_util_is_double_quote('a'));
 }
 
 
 TEST(NgAsciUtilTest, advance_char)
 {
   // string to be tokenized
-  const char* sring = "A -> 'a'B";
+  const char* string = "A -> 'a'B";
   
   // set up begin/end iterators
   const char* curr = string;

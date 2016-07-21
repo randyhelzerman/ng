@@ -11,7 +11,7 @@ ADD_EXECUTABLE(ng.t
 	       ng_nfa_state.t.c              ng_nfa_state.t.cpp
 	       ng_symbol_table_entry.t.c     ng_symbol_table_entry.t.cpp
 	       ng_symbol_table.t.c	     ng_symbol_table.t.cpp
-	       ng_token_array_entry.t.c      ng_token_array_entry.t.cpp
+	       ng_token.t.c                  ng_token.t.cpp
 	       ng_token_array.t.c            ng_token_array.t.cpp
 	       ng_nfa_factory.t.c            ng_nfa_factory.t.cpp
 	                                     ng_ascii_util.t.cpp

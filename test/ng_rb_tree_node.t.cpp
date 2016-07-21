@@ -9,6 +9,10 @@
 
 #include<test_fruit.h>
 
+#include<stdbool.h>
+
+const bool do_print = false;
+
 
 TEST(NgRBAllocTest, Alloc)
 {
@@ -30,7 +34,7 @@ TEST(NgRBAllocTest, Alloc)
   EXPECT_NE(node,(ng_rb_tree_node_t*)(0x0));
   
   // test dumpage...not really a test; have to verify on the screen...
-  ng_rb_tree_node_dump(node, (void(*)(const void*))ng_interval_dump);
+  if(do_print) ng_rb_tree_node_dump(node, (void(*)(const void*))ng_interval_dump);
   
   // test that its initialized ok
   EXPECT_EQ(node->kids_[0], (ng_rb_tree_node_t*)2);

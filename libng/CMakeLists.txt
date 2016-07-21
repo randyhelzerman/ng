@@ -11,7 +11,7 @@ SET(LIBNG_SRCS
     ng_nfa_factory.h           ng_nfa_factory.c
     ng_symbol_table_entry.h    ng_symbol_table_entry.c
     ng_symbol_table.h          ng_symbol_table.c
-    ng_token_array_entry.h     ng_token_array_entry.c
+    ng_token.h                 ng_token.c
     ng_token_array.h           ng_token_array.c
     ng_ascii_util.h            ng_ascii_util.c
 )

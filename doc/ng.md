@@ -241,7 +241,7 @@ Priority     Specifier      Operators
   50          xfx           :
 
 
-Terms which are no operators have priority 0
+Terms which are not operators have priority 0
 
 To avoid the need for unlimited lookahed, the same atom cannot be both
 an infix operator and a postfix operator.
@@ -266,6 +266,52 @@ DIV -> "/"  :  E <- (E / E) / E     # Division
 EXP -> "^"  :  E <- E ^ (E ^ E)     # Exponentiation
 
 NEG -> "-"  :  E <- -(-E)           # unary minus
+</PRE>
 
+
+<PRE>
+
+COLON   --> ':'   :   E\E/E            # :
+
+AT      --> '@'   :   E\E/E            # @
+
+UMINUS  --> '-'   :   E/E              # -
+BSLASH  --> '\'   :   E/E              # \
+BNEG    --> '~'   :   E/E              # bitwise negation
+LNEG    --> '!'   :   E/E              # logical negation
+EXP     --> "^"   :  E\(E/E)           # Exponentiation
+SSTAR 	--> "**"  :  E\(E/E)           # Star Star
+
+MUL     --> "*"   :  (E\E)/E           # Multiplication
+DIV     --> "/"   :  (E\E)/E           # Division
+FFSLASH --> "//"  :  (E\E)/E           # two forward slashes
+REM     --> "rem" :  (E\E)/E           # Remainder
+MOD     --> "mod" :  (E\E)/E           # modulo
+MOD     --> "%"   :  (E\E)/E           # modulo
+LSHIFT  --> "<<"  :  (E\E)/E           # bitwise left shift
+RSHIFT  --> ">>"  :  (E\E)/E           # bitwise right shift
+AND     --> "&"   :  (E\E)/E           # bitwise AND
+
+ADD     --> "+"   :  (E\E)/E           # Addition
+SUB     --> "-"   :  (E\E)/E           # Subtraction
+OR      --> "|"   :  (E\E)/E           # bitwise OR
+
+GT      --> ">"   :  E\E/E             # greater than
+LT      --> "<"   :  E\E/E             # less than
+GE      --> "=>"  :  E\E/E             # greater than
+LE      --> "<="  :  E\E/E             # less than
+ 
+ASN     --> "="   :  E\E/E             # asignment
+EEQ     --> "=="  :  E\E/E             # equal equal
+
+COMMA   --> ","   :  E\(E/E)           # comma
+
+RARROW  --> "->"  :  E\(E/E)           # right arrow
+LARROW  --> "<-"  :  E\(E/E)           # right arrow
+
+PROD    --> "-->" :  E\(E/E)           # production
+
+COLON   --> ':'   :   UKV\K/V          #  Unordered key-value pair
+PROD    --> "->"  :   OKVE\K/V         #  ordered key-value pair
 
 </PRE>

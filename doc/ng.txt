@@ -159,3 +159,10 @@ But really, it is a ternary operator.  And the parse tree should reflect that.
 **	NT  -->  [a-zA-z] NT1
 **      NT1 -->  [a-zA-z_1-9] NT2
 
+
+What giveth
+
+
+100     -->    P\NT/T/NT
+
+

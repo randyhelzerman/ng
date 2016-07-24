@@ -1,6 +1,13 @@
 #include <ng_ascii_util.h>
 
 
+bool
+ng_ascii_util_is_horizontal_white_space(const char ch)
+{
+  return  (' '==ch) || ('\t'==ch);
+}
+
+
 bool ng_ascii_util_is_white_space(const char ch)
 {
   return  (' ' ==ch) || ('\t' == ch) || ('\n' ==ch);
@@ -63,7 +70,40 @@ bool ng_ascii_util_is_gt(const char ch)
 {
   return '>' == ch;
 }
-    
+
+
+bool
+ng_ascii_util_is_nl(const char ch)
+{
+  return '\n' == ch;
+}
+
+
+bool
+ng_ascii_util_is_cat_and_dog_sign(const char ch)
+{
+  return '#' == ch;
+}
+
+
+bool
+ng_ascii_util_is_colon(const char ch)
+{
+  return ':' == ch;
+}
+
+
+bool ng_ascii_util_is_forward_slash(const char ch)
+{
+  return '/' == ch;
+}
+
+
+bool ng_ascii_util_is_backward_slash(const char ch)
+{
+  return '\\' == ch;
+}
+
   
 bool
 ng_ascii_util_advance_char(const char**curr,
@@ -74,3 +114,5 @@ ng_ascii_util_advance_char(const char**curr,
   
   return true;
 }
+
+

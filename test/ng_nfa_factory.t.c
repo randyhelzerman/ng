@@ -8,7 +8,4 @@
 
 void ng_nfa_factory_dump(ng_nfa_factory_t *self)
 {
-  printf("nfa factory\n");
-  ng_token_array_dump(self->tokens_);
-  ng_symbol_table_dump(self->symbol_table_);
 }

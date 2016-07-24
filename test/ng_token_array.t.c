@@ -8,11 +8,11 @@
 
 // debugging
 
-void ng_token_array_dump(const ng_token_array_t* self)
+void ng_token_array_dump(const ng_token_array* self)
 {
   for(int i=0;i<self->tokens_->numb_;i++){
     ng_token_dump(ng_vector_at(self->tokens_,
 			       i,
-			       sizeof(ng_token_t)));
+			       sizeof(ng_token)));
   }
 }

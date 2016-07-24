@@ -4,23 +4,23 @@
 #include<stdlib.h>
 
 // construction
-ng_token_t*
+ng_token*
 ng_token_new(const char* begin,
-			 const char* end,
-			 const long int type)
+	     const char* end,
+	     const long int type)
 {
-  ng_token_t*  self
-    = (ng_token_t*)malloc(sizeof(ng_token_t));
-
+  ng_token*  self
+    = (ng_token*)malloc(sizeof(ng_token));
+  
   return ng_token_init(self, begin, end, type);
 }
 
-  
-ng_token_t*
-ng_token_init(ng_token_t* self,
-			  const char* begin,
-			  const char* end,
-			  const long int type)
+
+ng_token*
+ng_token_init(ng_token* self,
+	      const char* begin,
+	      const char* end,
+	      const long int type)
 {
   self->begin_ = begin;
   self->end_   = end;
@@ -28,10 +28,10 @@ ng_token_init(ng_token_t* self,
   
   return self;
 }
-  
+
 
 // destruction
-void ng_token_delete(ng_token_t** selfp)
+void ng_token_delete(ng_token** selfp)
 {
   ng_token_uninit(*selfp);
   free(*selfp);
@@ -39,7 +39,7 @@ void ng_token_delete(ng_token_t** selfp)
 }
 
 
-void ng_token_uninit(ng_token_t* self)
+void ng_token_uninit(ng_token* self)
 {
   self->begin_ = 0x0;
   self->end_ = 0x0;
@@ -51,10 +51,12 @@ void ng_token_uninit(ng_token_t* self)
 //-------
 
 
-int ng_token_strlen(const ng_token_t* self)
+int ng_token_strlen(const ng_token* self)
 {
   // The number of chars in the range, plus 1 for the 0x0 terminator
   return 1 + (self->end_ - self->begin_);
 }
+
+
 
 

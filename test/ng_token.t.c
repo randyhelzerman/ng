@@ -4,7 +4,7 @@
 #include<stdio.h>
 
 void
-ng_token_cp_to_buf(const ng_token_t* self,
+ng_token_cp_to_buf(const ng_token* self,
 			       char* buf,
 			       const int max)
 {
@@ -17,7 +17,7 @@ ng_token_cp_to_buf(const ng_token_t* self,
 }
 
 
-void ng_token_dump(const ng_token_t* self)
+void ng_token_dump(const ng_token* self)
 {
   // make a buffer to hold the token name
   char bluf[100];

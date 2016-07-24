@@ -14,14 +14,17 @@ ADD_EXECUTABLE(ng.t
 	       ng_token.t.c                  ng_token.t.cpp
 	       ng_token_array.t.c            ng_token_array.t.cpp
 	       ng_nfa_factory.t.c            ng_nfa_factory.t.cpp
+	       ng_parser.t.c                 ng_parser.t.cpp
 	                                     ng_ascii_util.t.cpp
+					     ng_util_io.t.cpp
                test_fruit.c
                test_fruit_int.c
 )
 
 TARGET_LINK_LIBRARIES(ng.t
-                      ng gtest gmock gtest_main)
+                      ng ng_util gtest gmock gtest_main)
 
 TARGET_INCLUDE_DIRECTORIES(ng.t PUBLIC
                            "${CMAKE_CURRENT_SOURCE_DIR}"
-                           "${CMAKE_CURRENT_SOURCE_DIR}/../libng")
+                           "${CMAKE_CURRENT_SOURCE_DIR}/../libng"
+                           "${CMAKE_CURRENT_SOURCE_DIR}/../ng_util")

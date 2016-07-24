@@ -109,7 +109,8 @@ Suppose we have a production like:
      A -> [0-9] B
 
 
-We can add 1 to the last byte of any UTF-8 string, and get a value we can make an open-ended interval with.
+We can add 1 to the last byte of any UTF-8 string, and get a value we can make an
+open-ended interval with.
 
 
     [00------30)[30-----39)[39---------FF)
@@ -290,11 +291,13 @@ MOD     --> "mod" :  (E\E)/E           # modulo
 MOD     --> "%"   :  (E\E)/E           # modulo
 LSHIFT  --> "<<"  :  (E\E)/E           # bitwise left shift
 RSHIFT  --> ">>"  :  (E\E)/E           # bitwise right shift
-AND     --> "&"   :  (E\E)/E           # bitwise AND
+BAND    --> "&"   :  (E\E)/E           # bitwise AND
+LAND    --> "&&"  :  (E\E)/E           # logical AND
 
 ADD     --> "+"   :  (E\E)/E           # Addition
 SUB     --> "-"   :  (E\E)/E           # Subtraction
-OR      --> "|"   :  (E\E)/E           # bitwise OR
+BOR     --> "|"   :  (E\E)/E           # bitwise OR
+LOR     --> "||"  :  (E\E)/E           # logical OR
 
 GT      --> ">"   :  E\E/E             # greater than
 LT      --> "<"   :  E\E/E             # less than
@@ -309,9 +312,25 @@ COMMA   --> ","   :  E\(E/E)           # comma
 RARROW  --> "->"  :  E\(E/E)           # right arrow
 LARROW  --> "<-"  :  E\(E/E)           # right arrow
 
-PROD    --> "-->" :  E\(E/E)           # production
+PROD    --> "-->" :  P\N/T/N           # production
 
 COLON   --> ':'   :   UKV\K/V          #  Unordered key-value pair
 PROD    --> "->"  :   OKVE\K/V         #  ordered key-value pair
 
 </PRE>
+
+
+  (E\E)/E     (E\E)/E
+E          E          E  
+2    +     3    *      5
+
+  (E\E)/E  
+E            E 
+2    +     (3*5)
+
+
+  (E\E)/E      E\(E/E)
+E           E           E  
+2    +      3     ^     2    
+
+

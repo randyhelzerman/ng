@@ -113,6 +113,13 @@ TEST(NgAsciUtilTest, double_quote)
 }
 
 
+TEST(NgAsciUtilTest, nl)
+{
+  EXPECT_EQ(true,  ng_ascii_util_is_nl('\n'));
+  EXPECT_EQ(false, ng_ascii_util_is_nl(' '));
+}
+
+
 TEST(NgAsciUtilTest, advance_char)
 {
   // string to be tokenized

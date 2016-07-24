@@ -1,0 +1,8 @@
+CMAKE_MINIMUM_REQUIRED(VERSION 3.5)
+
+SET(LIBNG_UTIL_SRCS
+    ng_util_io.c
+)
+
+ADD_LIBRARY(ng_util STATIC
+            ${LIBNG_UTIL_SRCS} )

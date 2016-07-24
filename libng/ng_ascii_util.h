@@ -12,6 +12,7 @@ extern "C" {
 
   // single characters.  should be named by their
   // standard names
+  bool ng_ascii_util_is_null_char(const char);
   bool ng_ascii_util_is_lower_case(const char);
   bool ng_ascii_util_is_upper_case(const char);
   bool ng_ascii_util_is_letter(const char);
@@ -26,6 +27,8 @@ extern "C" {
   bool ng_ascii_util_is_colon(const char);
   bool ng_ascii_util_is_forward_slash(const char);
   bool ng_ascii_util_is_backward_slash(const char);
+  bool ng_ascii_util_is_open_paren(const char);
+  bool ng_ascii_util_is_close_paren(const char);
   
   // (potentially) multi-character sequences
   bool ng_ascii_util_is_horizontal_white_space(const char);

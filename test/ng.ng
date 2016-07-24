@@ -6,41 +6,41 @@ UMINUS  --> '-'    :   E/E              # -
 BSLASH  --> '\'    :   E/E              # \
 BNEG    --> '~'    :   E/E              # bitwise negation
 LNEG    --> '!'    :   E/E              # logical negation
-EXP     --> "^"    :  E\(E/E)           # Exponentiation
-SSTAR 	--> "**"   :  E\(E/E)           # Star Star
+EXP     --> '^'    :  E\(E/E)           # Exponentiation
+SSTAR 	--> '**'   :  E\(E/E)           # Star Star
 
-MUL     --> "*"    :  (E\E)/E           # Multiplication
-DIV     --> "/"    :  (E\E)/E           # Division
-FFSLASH --> "//"   :  (E\E)/E           # two forward slashes
-REM     --> "rem"  :  (E\E)/E           # Remainder
-MOD     --> "mod"  :  (E\E)/E           # modulo
-MOD     --> "%"    :  (E\E)/E           # modulo
-LSHIFT  --> "<<"   :  (E\E)/E           # bitwise left shift
-RSHIFT  --> ">>"   :  (E\E)/E           # bitwise right shift
-BAND    --> "&"    :  (E\E)/E           # bitwise AND
-LAND    --> "&&"   :  (E\E)/E           # logical AND
+MUL     --> '*'    :  (E\E)/E           # Multiplication
+DIV     --> '/'    :  (E\E)/E           # Division
+FFSLASH --> '//'   :  (E\E)/E           # two forward slashes
+REM     --> 'rem'  :  (E\E)/E           # Remainder
+MOD     --> 'mod'  :  (E\E)/E           # modulo
+MOD     --> '%'    :  (E\E)/E           # modulo
+LSHIFT  --> '<<'   :  (E\E)/E           # bitwise left shift
+RSHIFT  --> '>>'   :  (E\E)/E           # bitwise right shift
+BAND    --> '&'    :  (E\E)/E           # bitwise AND
+LAND    --> '&&'   :  (E\E)/E           # logical AND
 
-ADD     --> "+"    :  (E\E)/E           # Addition
-SUB     --> "-"    :  (E\E)/E           # Subtraction
-BOR     --> "|"    :  (E\E)/E           # bitwise OR
-LOR     --> "||"   :  (E\E)/E           # logical OR
+ADD     --> '+'    :  (E\E)/E           # Addition
+SUB     --> '-'    :  (E\E)/E           # Subtraction
+BOR     --> '|'    :  (E\E)/E           # bitwise OR
+LOR     --> '||'   :  (E\E)/E           # logical OR
 
-GT      --> ">"    :  E\E/E             # greater than
-LT      --> "<"    :  E\E/E             # less than
-GE      --> "=>"   :  E\E/E             # greater than
-LE      --> "<="   :  E\E/E             # less than
+GT      --> '>'    :  E\E/E             # greater than
+LT      --> '<'    :  E\E/E             # less than
+GE      --> '=>'   :  E\E/E             # greater than
+LE      --> '<='   :  E\E/E             # less than
  
-ASN     --> "="    :  E\E/E             # asignment
-EEQ     --> "=="   :  E\E/E             # equal equal
+ASN     --> '='    :  E\E/E             # asignment
+EEQ     --> '=='   :  E\E/E             # equal equal
 
-COMMA   --> ","    :  E\(E/E)           # comma
+COMMA   --> ','    :  E\(E/E)           # comma
 
-RARROW  --> "->"   :  E\(E/E)           # right arrow
-LARROW  --> "<-"   :  E\(E/E)           # right arrow
+RARROW  --> '->'   :  E\(E/E)           # right arrow
+LARROW  --> '<-'   :  E\(E/E)           # right arrow
 
-PROD    --> "-->"  :  P\N/T/N           # production
+PROD    --> '-->'  :  P\N/T/N           # production
 
 COLON   --> ':'    :  UKV\K/V           #  Unordered key-value pair
-PROD    --> "->"   :  OKVE\K/V          #  ordered key-value pair
+PROD    --> '->'   :  OKVE\K/V          #  ordered key-value pair
 
-PP      --> "\n\n" :  (E\E)/E           #  paragraph break
+PP      --> '\n\n' :  (E\E)/E           #  paragraph break

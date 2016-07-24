@@ -1,6 +1,14 @@
 #include <ng_ascii_util.h>
 
 
+
+bool
+ng_ascii_util_is_null_char(const char ch)
+{
+  return 0x0 == ch;
+}
+
+
 bool
 ng_ascii_util_is_horizontal_white_space(const char ch)
 {
@@ -103,6 +111,19 @@ bool ng_ascii_util_is_backward_slash(const char ch)
 {
   return '\\' == ch;
 }
+
+
+bool ng_ascii_util_is_open_paren(const char ch)
+{
+  return '(' == ch;
+}
+
+
+bool ng_ascii_util_is_close_paren(const char ch)
+{
+  return ')' == ch;
+}
+
 
   
 bool

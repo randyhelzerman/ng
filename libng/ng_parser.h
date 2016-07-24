@@ -24,6 +24,8 @@ extern "C" {
     NG_PARSER_COLON,
     NG_PARSER_DIV,
     NG_PARSER_BSLASH,
+    NG_PARSER_OPEN_PAREN,
+    NG_PARSER_CLOSE_PAREN
   };
   
   // holds an array of tokens e.g. the result of
@@ -63,6 +65,8 @@ extern "C" {
   bool ng_parser_tokenize_COLON(ng_parser* self);
   bool ng_parser_tokenize_DIV(ng_parser* self);
   bool ng_parser_tokenize_BSLASH(ng_parser* self);
+  bool ng_parser_tokenize_open_paren(ng_parser* self);
+  bool ng_parser_tokenize_close_paren(ng_parser* self);
   
   
 #ifdef __cplusplus

@@ -86,6 +86,10 @@ void ng_parser_tokenize(ng_parser* self,
 	    ng_parser_tokenize_DIV(self)
 	    ||
 	    ng_parser_tokenize_BSLASH(self)
+	    ||
+	    ng_parser_tokenize_open_paren(self)
+	    ||
+	    ng_parser_tokenize_close_paren(self)
 	    )
       && self->curr_ < self->end_;
   }
@@ -191,7 +195,11 @@ bool ng_parser_tokenize_PROD(ng_parser* self)
   if(!ng_ascii_util_is_minus(*self->curr_)){
     return false;
   }
-
+  if(!ng_ascii_util_advance_char(&self->curr_, self->end_)){
+    self->curr_ = save;
+    return false;
+  }
+  
   // consome the other -
   if(!ng_ascii_util_is_minus(*self->curr_)){
     self->curr_ = save;
@@ -361,7 +369,43 @@ ng_parser_tokenize_BSLASH(ng_parser* self)
   // push the token we just recognized
   ng_token_array_push_back(self->tokens_,
 			   save, self->curr_,
-			   NG_PARSER_DIV);
+			   NG_PARSER_BSLASH);
+  
+  return true;
+}
+
+
+bool ng_parser_tokenize_open_paren(ng_parser* self)
+{
+  const char* save = self->curr_;
+  
+  if(!ng_ascii_util_is_open_paren(*self->curr_)){
+    return false;
+  }
+  self->curr_++;
+  
+  // push the token we just recognized
+  ng_token_array_push_back(self->tokens_,
+			   save, self->curr_,
+			   NG_PARSER_OPEN_PAREN);
+  
+  return true;
+}
+
+
+bool ng_parser_tokenize_close_paren(ng_parser* self)
+{
+  const char* save = self->curr_;
+  
+  if(!ng_ascii_util_is_close_paren(*self->curr_)){
+    return false;
+  }
+  self->curr_++;
+  
+  // push the token we just recognized
+  ng_token_array_push_back(self->tokens_,
+			   save, self->curr_,
+			   NG_PARSER_CLOSE_PAREN);
   
   return true;
 }

@@ -11,6 +11,9 @@
 #include <ng_token.h>
 #include <ng_token_array.h>
 
+// utility includes
+#include <ng_util_io.h>
+
 const bool do_dump=true;
 
 
@@ -33,7 +36,7 @@ TEST(NgNfaParserTest, tokenizersP)
   
   ng_parser_tokenize(parser, "A -> 'a'B  B -> 'b'C  C->'c'");
   
-  ng_parser_dump(parser);
+  if (do_dump) ng_parser_dump(parser);
   
   ng_parser_delete(&parser);
 }
@@ -102,4 +105,134 @@ TEST(NgNfaParserTest, toksentence4)
   ng_parser_delete(&parser);
 }
 
+
+TEST(NgNfaParserTest, toksentence5)
+{
+  ng_parser* parser = ng_parser_new();
+  
+  ng_parser_tokenize(parser, "# this is a comment\n\n");
+  EXPECT_EQ(2, ng_token_array_size(parser->tokens_));
+  
+  ng_token* token = ng_token_array_at(parser->tokens_,0);
+  EXPECT_EQ(NG_PARSER_COMMENT, token->type_);
+  
+  token = ng_token_array_at(parser->tokens_,1);
+  EXPECT_EQ(NG_PARSER_PP, token->type_);
+  
+  ng_parser_dump(parser);
+  
+  ng_parser_delete(&parser);
+}
+
+TEST(NgNfaParserTest, toksentence6)
+{
+  ng_parser* parser = ng_parser_new();
+  
+  ng_parser_tokenize(parser, ": # this is a comment\n\n");
+  EXPECT_EQ(3, ng_token_array_size(parser->tokens_));
+  
+  ng_token* token;
+  
+  token = ng_token_array_at(parser->tokens_,0);
+  EXPECT_EQ(NG_PARSER_COLON, token->type_);
+  
+  token = ng_token_array_at(parser->tokens_,1);
+  EXPECT_EQ(NG_PARSER_COMMENT, token->type_);
+  
+  token = ng_token_array_at(parser->tokens_,2);
+  EXPECT_EQ(NG_PARSER_PP, token->type_);
+  
+  ng_parser_dump(parser);
+  
+  ng_parser_delete(&parser);
+}
+
+
+TEST(NgNfaParserTest, toksentence7)
+{
+  ng_parser* parser = ng_parser_new();
+  
+  ng_parser_tokenize(parser, "\\ # this is a comment\n\n");
+  EXPECT_EQ(3, ng_token_array_size(parser->tokens_));
+  
+  ng_token* token;
+  
+  token = ng_token_array_at(parser->tokens_,0);
+  EXPECT_EQ(NG_PARSER_BSLASH, token->type_);
+  
+  token = ng_token_array_at(parser->tokens_,1);
+  EXPECT_EQ(NG_PARSER_COMMENT, token->type_);
+  
+  token = ng_token_array_at(parser->tokens_,2);
+  EXPECT_EQ(NG_PARSER_PP, token->type_);
+  
+  ng_parser_dump(parser);
+  
+  ng_parser_delete(&parser);
+}
+
+
+TEST(NgNfaParserTest, toksentence8)
+{
+  ng_parser* parser = ng_parser_new();
+  
+  ng_parser_tokenize(parser, "/ # this is a comment\n");
+  EXPECT_EQ(3, ng_token_array_size(parser->tokens_));
+  
+  ng_token* token;
+  
+  token = ng_token_array_at(parser->tokens_,0);
+  EXPECT_EQ(NG_PARSER_DIV, token->type_);
+  
+  token = ng_token_array_at(parser->tokens_,1);
+  EXPECT_EQ(NG_PARSER_COMMENT, token->type_);
+  
+  token = ng_token_array_at(parser->tokens_,2);
+  EXPECT_EQ(NG_PARSER_SENTENCE, token->type_);
+  
+  ng_parser_dump(parser);
+  
+  ng_parser_delete(&parser);
+}
+
+
+TEST(NgNfaParserTest, toksentence9)
+{
+  ng_parser* parser = ng_parser_new();
+  
+  ng_parser_tokenize(parser, "--> # this is a comment\n");
+  EXPECT_EQ(3, ng_token_array_size(parser->tokens_));
+  
+  ng_token* token;
+  
+  token = ng_token_array_at(parser->tokens_,0);
+  EXPECT_EQ(NG_PARSER_PROD, token->type_);
+  
+  token = ng_token_array_at(parser->tokens_,1);
+  EXPECT_EQ(NG_PARSER_COMMENT, token->type_);
+  
+  token = ng_token_array_at(parser->tokens_,2);
+  EXPECT_EQ(NG_PARSER_SENTENCE, token->type_);
+  
+  ng_parser_dump(parser);
+  
+  ng_parser_delete(&parser);
+}
+
+
+TEST(NgNfaParserTest, tokfile1)
+{
+  // read in file
+  char* buf=0x0;
+  loadFileIntoBuffer("../test/ng.ng", &buf);
+
+  // create parser to tokenize it
+  ng_parser* parser = ng_parser_new();
+  
+  ng_parser_tokenize(parser, buf);
+  
+  ng_parser_dump(parser);
+  
+  ng_parser_delete(&parser);
+}
 

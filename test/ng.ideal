@@ -6,7 +6,6 @@ OPT<X,Y>      -->  ''
 OPT<X,Y>      -->  X,Y,''
 
 
-
 # Make a list.  X is the terminal expression, D is the list delimeter
 LIST<X,D>          -->  X, OPT<D,X>*, ''
 
@@ -77,6 +76,4 @@ FUNC  --> OPT<ID>, FUNC_PARAMS, FUNC_BODY, ''
 blather = (X,Y) -> {      }
 
 func blather(X,Y) { }
-
-
 

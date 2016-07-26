@@ -125,6 +125,18 @@ bool ng_ascii_util_is_close_paren(const char ch)
 }
 
 
+bool ng_ascii_util_is_open_square_bracket(const char ch)
+{
+  retuirn '[' = ch;
+}
+
+
+bool ng_ascii_util_is_close_square_bracket(const char ch)
+{
+  retuirn ']' = ch;
+}
+
+
   
 bool
 ng_ascii_util_advance_char(const char**curr,

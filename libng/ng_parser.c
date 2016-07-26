@@ -3,9 +3,9 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include <ng_ascii_util.h>
 #include <ng_token_array.h>
 #include <ng_symbol_table.h>
-#include <ng_ascii_util.h>
 
 
 // construction
@@ -406,6 +406,39 @@ bool ng_parser_tokenize_close_paren(ng_parser* self)
   ng_token_array_push_back(self->tokens_,
 			   save, self->curr_,
 			   NG_PARSER_CLOSE_PAREN);
+  
+  return true;
+}
+
+
+bool
+ng_parser_tokenize_character_range(ng_parser* self)
+{
+  const char* save = self->curr_;
+  
+  // consume opening square bracket
+  if(!ng_ascii_util_is_open_square_bracket(*self->curr_)){
+    return false;
+  }
+  if(!ng_ascii_util_advance_char(&self->curr_,self->end_)){
+    self->curr_ = save;
+    return false;
+  }
+  
+  while(!ng_ascii_util_is_close_square_bracket(*self->curr_)){
+    if(!ng_ascii_util_advance_char(&self->curr_,self->end_)){
+      self->curr_ = save;
+      return false;
+    }
+  }
+  
+  // consume closing brace
+  ng_ascii_util_advance_char(&self->curr_,self->end_);
+  
+  // push the token we just recognized
+  ng_token_array_push_back(self->tokens_,
+			   save, self->curr_,
+			   NG_PARSER_CHARACTER_RANGE);
   
   return true;
 }

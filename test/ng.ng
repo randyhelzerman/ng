@@ -1,3 +1,42 @@
+# Non terminal.  Type the start states. Final states implicit in productions with
+# only a terminal oin the  RHS
+NTERM      --> [_a-zA-Z]     NTERM1 : E           # starts with a-zA-Z or _
+NTERM1     --> [_a-zA-Z0-9]  NTERM1               # followed by alphanumeric or _
+NTERM1     --> ''
+       
+       
+# string literal
+STRING     --> "'"  STRING_Q1       : E           # Can use single quote to delimit
+STRING_Q1  --> [^'] STRING_Q1
+TERM_Q1    --> "'" 
+	 	 
+
+STRING      --> '"'  STRING_QQ1     : E           # Can use single quote to delimit
+STRING_QQ1  --> [^"] STRING_QQ1
+STRING_QQ1  --> '"' 
+
+
+RANGE         --> '['           RANGE_IS_NEG  :  E
+RANGE_IS_NEG  --> '^'           RANGE_LIST          # negative ranges
+RANGE1        --> @[^^]         RANGE_LIST          # positive ranges
+
+RANGE_LIST    --> RANGE_KIND    RANGE_LIST          # sends crepy-crwlies up your spine
+RANGE_LIST    --> ''
+
+RANGE_KIND  --> [^'-'"'"'"']  RANGE_IS_EX         # first kind of range; single, non special character
+
+RANGE_KIND  --> STRING        RANGE_IS_EX         # can be a string
+
+RANGE_IS_EX --> '-'           RANGE_EX            # parse the other side of the a-b thingy
+RANGE_IS_EX --> @[^-]         RANGE_LIST          # see if there is another
+
+RANGE_EX    --> RANGE_KIND    RANGE_LIST
+
+
+
+# string starting with '
+RANGE
+
 COLON   --> ':'    :   E\E/E            # :
 
 AT      --> '@'    :   E\E/E            # @

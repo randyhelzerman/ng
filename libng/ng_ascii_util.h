@@ -29,6 +29,8 @@ extern "C" {
   bool ng_ascii_util_is_backward_slash(const char);
   bool ng_ascii_util_is_open_paren(const char);
   bool ng_ascii_util_is_close_paren(const char);
+  bool ng_ascii_util_is_open_square_bracket(const char);
+  bool ng_ascii_util_is_close_square_bracket(const char);
   
   // (potentially) multi-character sequences
   bool ng_ascii_util_is_horizontal_white_space(const char);

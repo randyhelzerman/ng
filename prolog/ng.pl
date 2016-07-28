@@ -2,15 +2,14 @@
  				  
 % Make a terminal expresion optional
 
+opt( X)  --> X.
 opt(_X) --> [].
-opt(X)  --> X.
 
-opt(_X,_Y) --> [].
-opt(X,Y)   --> X,Y.
+opt( X, Y)  --> X,Y.
+opt(_X,_Y)  --> [].
 
-star(_X) --> [].
 star(X) --> X, star(X).
-
+star(_X) --> [].
 
 % make a list.
 list(X,D) -->  X, opt(D,star(X)).
@@ -54,17 +53,18 @@ id --> alpha, star(alphanumeric_).
 
 alpha --> lowercase ; uppercase.
 
-alphanumeric_ --> alpha ; digit; [_].
+alphanumeric_ --> alpha ; digit; `_`.
 
 lowercase --> [X], { [A]=`a`, [Z]=`z`,  A=<X,  X=<Z }.
 uppercase --> [X], { [A]=`A`, [Z]=`Z`,  A=<X,  X=<Z }.
 digit     --> [X], { [Z]=`0`, [N]=`9`,  Z=<X,  X=<N }.
 
+%nonterminal --> id, opt(template_params), opt(type_spec).
 nonterminal --> id, opt(template_params), opt(type_spec).
 
 template_params --> `<`, list(id,comma), `>` .
 
-type_spec --> id.
+type_spec --> digit.
 
 
 % testing
@@ -80,7 +80,7 @@ double_quote     -->  `"`   .   make_it_stop     -->  `"`  .
 left_big_paren   -->  `--[` .
 right_big_paren  -->  `]--` .
 
-
+    
 test :-
     test_string,
     test_nonterminal.
@@ -110,3 +110,5 @@ test_some_strings :-
 
 
 	
+test_nonterminal :-
+    nonterminal(`NONTERMINAL`,[]).

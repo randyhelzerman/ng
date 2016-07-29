@@ -1,5 +1,4 @@
 #  use RB-tree based interval tree to store arrays.
-
 [----------)           [---)
 
             [----------)    [----------)

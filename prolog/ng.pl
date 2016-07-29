@@ -4,13 +4,13 @@
 
 % true means the option was taken. 
 opt(F,I,O,   P) -->
-    { PX =.. [P,X] },
+    { P =.. [Op|A], append([Op|A],[X], PX) },
     PX,
     { call(F,I,X, O) }.
 
-opt(F,I,O,  P) --> [], { call(F,I,[], O) }.
+opt(F,I,O,  _P) --> [], { call(F,I,[], O) }.
 
-opt(F,I,O,  P1, P2)  -->
+opt(F,I,O,  P1,P2)  -->
     { PX1 =.. [P1, X1],
       PX2 =.. [P2, X2] },
     
@@ -21,15 +21,15 @@ opt(F,I,O,  P1, P2)  -->
 opt(F,I,O, _P1,_P2)  --> [], { call(F,I,[],[], O) }.
 
 
-star(F,I,O2,   P)  -->
-    { PX =.. [P,X] },
+star(F,I,O2,   P1)  -->
+    { P1 =.. [Op|A], append([Op|A],[X],P2), PX=..P2 },
     PX,
-
-    % combine input with P's output
+    
+    % combine input with Ps output
     { call(F,I,X, O1) },
-
+    
     % and recurse
-    star(F,O1,O2, P).
+    star(F,O1,O2, P1).
 
 star(F,I,O,  _X)  --> [],         { call(F,I,[], O) }.
 
@@ -37,27 +37,42 @@ star(F,I,O,  _X)  --> [],         { call(F,I,[], O) }.
 %list(F,I,O, L) -->  X, opt(O, D,star(X)).
 
 
-% Strings
-string_form(L,R) --> L, star(nd(L,R)), R.
-nd(L,R) --> [X], { X \= L, X \= R }.
+ap(P, X, PX) --> [], { P =..L, append(L,[X],PXL), PX =.. PXL }.
 
-string() --> string_form(single_quote,   single_quote).
-string() --> string_form(double_quote,   double_quote).
-string() --> string_form(left_big_paren, right_big_paren).
+% Strings
+string_form(L,R, O) -->
+    ap(L, LX, LXX),
+    LXX,
+    { OL = [LX|T1] },
+    
+    star(list_op,T1,T2, nd(L,R)),
+    
+    ap(R,RX, RXX),
+    RXX,
+    { T2 = [RX] },
+    
+    { string_to_list(O,OL) }.
+
+
+nd(L,R, O) --> [O], { O \= L, O \= R }.
+
+string(O) --> string_form(single_quote,   single_quote,    O).
+string(O) --> string_form(double_quote,   double_quote,    O).
+string(O) --> string_form(left_big_paren, right_big_paren, O).
 
 
 % Terminal
-terminal() --> list(terminal_atom_q, comma).
+terminal(O) --> list(terminal_atom_q, comma).
 
 terminal_atom_q() --> terminal_atom(), opt(quant).
- 
+
 terminal_atom() --> string().
 terminal_atom() --> range().
 terminal_atom() --> nonterminal().
 
-quant() --> `*` .
-quant() --> `+` .
-quant() --> `?` .
+quant(O) --> [O], { [O]=`*` }.
+quant(O) --> [O], { [O]=`+` }.
+quant(O) --> [O], { [O]=`?` }.
 
 
 range()--> `[`, opt(range_neg), star(range_spec), `]` .
@@ -72,7 +87,7 @@ range_bound() --> string.
 range_spec_ex() --> `,`, range_bound().
 
 id(O) -->
-    alpha(O1),                          { L = [O1|T1] },
+    alpha(O1),                          { L = [O1|T1]         },
     star(list_op,T1,[], alphanumeric_), { string_to_list(O,L) }.
 
 alpha(O) --> lowercase(O) ; uppercase(O).
@@ -117,8 +132,8 @@ b --> `b` .
 	      
 comma()         -->  `,` .
 
-single_quote()     -->  `'`   .   make_it_stop     -->  `'`  .
-double_quote()     -->  `"`   .   make_it_stop     -->  `"`  .
+single_quote(O)     -->  [O], { [O] =`'`}   .   make_it_stop     -->  `'`  .
+double_quote(O)     -->  [O], { [O] =`"`}   .   make_it_stop     -->  `"`  .
 
 
 left_big_paren()   -->  `--[` .

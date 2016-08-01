@@ -1,79 +1,98 @@
 :- discontiguous(make_it_stop/2).
 
+%  dirt poor man's lambda calculs substitue.  Lame.
+
+% apply arguments to a function and execute it
+apf(F,I, O)        --> [], { F=..FL1, append(FL1,[I,        O],  FL2),  FX=..FL2,   FX  }.
+apf(F,I1,I2, O)    --> [], { F=..FL1, append(FL1,[I1,I2,    O],  FL2),  FX=..FL2,   FX  }.
+apf(F,I1,I2,I3, O) --> [], { F=..FL1, append(FL1,[I1,I2,I3, O],  FL2),  FX=..FL2,   FX  }.
+
+
+% apply arguments to a parser and parse with it
+app(P,          O)  --> { P=..PL1, append(PL1, [          O], PL2), PX=..PL2 },  PX.
+app(P,I,        O)  --> { P=..PL1, append(PL1, [I,        O], PL2), PX=..PL2 },  PX.
+app(P,I1,I2,    O)  --> { P=..PL1, append(PL1, [I1,I2,    O], PL2), PX=..PL2 },  PX.
+app(P,I1,I2,I3, O)  --> { P=..PL1, append(PL1, [I1,I2,I3, O], PL2), PX=..PL2 },  PX.
+
+
 % Make a terminal expresion optional
 
-% true means the option was taken. 
-opt(F,I,O,   P) -->
-    { PX =.. [P,X] },
-    PX,
-    { call(F,I,X, O) }.
 
-opt(F,I,O,  P) --> [], { call(F,I,[], O) }.
-
-opt(F,I,O,  P1, P2)  -->
-    { PX1 =.. [P1, X1],
-      PX2 =.. [P2, X2] },
-    
-    PX1,PX2,
-    
-    { call(F,I,X1,X2, O) }.
-
-opt(F,I,O, _P1,_P2)  --> [], { call(F,I,[],[], O) }.
+% Pass up the return value of the parser if it was choosen, otherwise
+% pass up the default value
+opt( P, _V, O)  -->  app(P, O).
+opt(_P,  O, O)  -->  [].
 
 
-star(F,I,O2,   P)  -->
-    { PX =.. [P,X] },
-    PX,
+% use F to combine results of individual parsers; return D on empy
+star( P,  F,D,  O)   -->   app(P, O1),  star(P, F,D, O2),  apf(F,O1,O2, O). 
+star(_P, _F,O,  O)   -->   [].
 
-    % combine input with P's output
-    { call(F,I,X, O1) },
-
-    % and recurse
-    star(F,O1,O2, P).
-
-star(F,I,O,  _X)  --> [],         { call(F,I,[], O) }.
+% plus
+plus( P,  F,D,  O)   -->   app(P, O1),  star(P, F,D, O2),  apf(F,O1,O2, O). 
 
 % make a list.
-%list(F,I,O, L) -->  X, opt(O, D,star(X)).
+% P -- parser for the thing we're making a list of
+% D -- delimiter of the list
+
+list(P,D, F, O)      -->  app(P,PO),   opt(list_ex(P,D, F,PO), PO, O).
+
+list_ex(P,D, F,I, O) -->  app(D,O1),   list(P,D, F, O2), apf(F,O1,I,O2, O).
 
 
-% Strings
-string_form(L,R) --> L, star(nd(L,R)), R.
-nd(L,R) --> [X], { X \= L, X \= R }.
+func_op(F,D, X,T, O)  :-  O =.. [F,D,X,T].
 
-string() --> string_form(single_quote,   single_quote).
-string() --> string_form(double_quote,   double_quote).
-string() --> string_form(left_big_paren, right_big_paren).
+list_op(I, L, [I|L]).
 
+
+% ----------------------------------------------------------------------
+
+
+
+% strings
+
+string_form(L,R, string_form(S,LO,RO)) -->
+    app(L, LO),
+    star(nd(L,R), string_form_list_op,[],  SLO),  apf(string_to_list, S, SLO),
+    app(R, RO).
+
+nd(L,R, O) --> \+ app(L,_), \+app(R,_), [O].
+
+string_form_list_op(I, L, [I|L]).
+
+string(O) --> string_form(single_quote,   single_quote,    O).
+string(O) --> string_form(double_quote,   double_quote,    O).
+string(O) --> string_form(left_big_paren, right_big_paren, O).
 
 % Terminal
-terminal() --> list(terminal_atom_q, comma).
+terminal(O) --> list(terminal_atom_q,comma, func_op(terminal_exp), O).
 
-terminal_atom_q() --> terminal_atom(), opt(quant).
- 
-terminal_atom() --> string().
-terminal_atom() --> range().
-terminal_atom() --> nonterminal().
+terminal_atom_q(quant(OQ,OT)) --> terminal_atom(OT), opt(quant,no_quantifier, OQ).
 
-quant() --> `*` .
-quant() --> `+` .
-quant() --> `?` .
+terminal_atom(O) --> string(O).
+terminal_atom(O) --> range(O).
+% terminal_atom(O) --> nonterminal(O).  % with caveat that it can't be recursive.
+
+quant(O) --> [O], {[O]=`*`} .
+quant(O) --> [O], {[O]=`+`} .
+quant(O) --> [O], {[O]=`?`} .
 
 
-range()--> `[`, opt(range_neg), star(range_spec), `]` .
+range(range(RT, Rs)) --> `[`, opt(range_neg, positive_range, RT), plus(range_spec, list_op,[], Rs), `]` .
 
-range_neg() --> `^` .
+range_neg(negative_range) --> `^` .
 
-range_spec() --> range_bound, opt(range_spec_ex).
+range_spec(range_spec(L,H)) --> range_bound(L), { DH is L+1 }, opt(range_spec_ex,DH, H).
 
-range_bound() --> [X], {[X] \= `-`, [X] \= `]`, [X] \= `]`, [X] \= `,`}.
-range_bound() --> string.
+range_bound(X) --> [X], {[X] \= `-`, [X] \= `]`, [X] \= `]`, [X] \= `,`, [X] \= `^`}.
+range_bound(S) --> string(S).
 
-range_spec_ex() --> `,`, range_bound().
+range_spec_ex(S2) --> `-`, range_bound(S1), { S2 is S1+1 }.
+
 
 id(O) -->
-    alpha(O1),                          { L = [O1|T1] },
-    star(list_op,T1,[], alphanumeric_), { string_to_list(O,L) }.
+    alpha(C), apf(list_op, C,T, LO),
+    star(alphanumeric_, list_op,[], T), apf(string_to_list,O,LO).
 
 alpha(O) --> lowercase(O) ; uppercase(O).
 
@@ -85,9 +104,9 @@ lowercase(O) --> [O], { [A]=`a`, [Z]=`z`,  A=<O,  O=<Z }.
 uppercase(O) --> [O], { [A]=`A`, [Z]=`Z`,  A=<O,  O=<Z }.
 digit(O)     --> [O], { [Z]=`0`, [N]=`9`,  Z=<O,  O=<N }.
 
-nonterminal() --> id, opt(template_params), opt(type_spec).
+nonterminal(nonterminal(S,Ps)) --> id(S), opt(template_params,[],Ps).  %, opt(type_spec,[],TS).
 
-template_params() --> `<`, list(id,comma), `>` .
+template_params(O) --> `<`, list(id,comma, func_op(param), O), `>` .
 
 %type_spec() --> id(L), opt(application(Op), id(R)).
 %type_spec() --> `(`, type_spec, `)` .
@@ -100,29 +119,21 @@ backward_ap('/') --> `/` .
 
 % useful combining functions
 
-no_op( I,_X, I).
+up_op(X, X).
 
-up_op(_I, X, X).
-
-list_op(T1,X,  T2) :-
-    ( []=X
-     -> T2 = T1
-     ;
-     T1=[X|T2]
-    ).
 
 % testing
 a --> `a` .
 b --> `b` .
 	      
-comma()         -->  `,` .
+comma(O)         -->  [O], {[O]=`,`} .
 
-single_quote()     -->  `'`   .   make_it_stop     -->  `'`  .
-double_quote()     -->  `"`   .   make_it_stop     -->  `"`  .
+single_quote(O)     -->  [O], {[O]=`'`}   .   make_it_stop     -->  `'`  .
+double_quote(O)     -->  [O], {[O]=`"`}   .   make_it_stop     -->  `"`  .
 
 
-left_big_paren()   -->  `--[` .
-right_big_paren()  -->  `]--` .
+left_big_paren( `--[` )  -->  `--[` .
+right_big_paren(`]--`)   -->  `]--` .
 
     
 test :-

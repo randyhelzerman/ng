@@ -2,8 +2,9 @@
 OPT<X>        -->   ''
 OPT<X>        -->   X, ''
 
-OPT<X,Y>      -->  ''
-OPT<X,Y>      -->  X,Y,''
+OPT<X>        -->   ''
+OPT<X>        -->   X, ''
+
 
 
 # Make a list.  X is the terminal expression, D is the list delimeter
@@ -76,4 +77,11 @@ FUNC  --> OPT<ID>, FUNC_PARAMS, FUNC_BODY, ''
 blather = (X,Y) -> {      }
 
 func blather(X,Y) { }
+
+
+# minimum langauge
+
+MIN_LANG --> MIN_PROD, '\n'
+MIN_PROD -->  ID '-->' MIN_RANGE OPT<ID> nl
+MIN_RANGE --> '['  string, '--', string, ']'
 

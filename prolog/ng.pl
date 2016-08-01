@@ -1,6 +1,7 @@
 :- discontiguous(make_it_stop/2).
 
-%  dirt poor man's lambda calculs substitue.  Lame.
+%  dirt poor man's lambda calculs substitue.  Lame.  Come on prolog, in
+%  45 years you couldn't do better than this??
 
 % apply arguments to a function and execute it
 apf(F,I, O)        --> [], { F=..FL1, append(FL1,[I,        O],  FL2),  FX=..FL2,   FX  }.
@@ -22,6 +23,11 @@ app(P,I1,I2,I3, O)  --> { P=..PL1, append(PL1, [I1,I2,I3, O], PL2), PX=..PL2 }, 
 % pass up the default value
 opt( P, _V, O)  -->  app(P, O).
 opt(_P,  O, O)  -->  [].
+
+
+% return one or the other
+alt(P,_Q, O)  --> app(P,O).
+alt(_P,Q, O)  --> app(Q,O).
 
 
 % use F to combine results of individual parsers; return D on empy
@@ -64,8 +70,18 @@ string(O) --> string_form(single_quote,   single_quote,    O).
 string(O) --> string_form(double_quote,   double_quote,    O).
 string(O) --> string_form(left_big_paren, right_big_paren, O).
 
+single_quote(O)     -->  [O], {[O]=`'`}   .   make_it_stop     -->  `'`  .
+double_quote(O)     -->  [O], {[O]=`"`}   .   make_it_stop     -->  `"`  .
+
+left_big_paren( `--[` )  -->  `--[` .
+right_big_paren(`]--`)   -->  `]--` .
+
+
+
 % Terminal
 terminal(O) --> list(terminal_atom_q,comma, func_op(terminal_exp), O).
+comma(O)         -->  [O], {[O]=`,`} .
+
 
 terminal_atom_q(quant(OQ,OT)) --> terminal_atom(OT), opt(quant,no_quantifier, OQ).
 
@@ -73,9 +89,9 @@ terminal_atom(O) --> string(O).
 terminal_atom(O) --> range(O).
 % terminal_atom(O) --> nonterminal(O).  % with caveat that it can't be recursive.
 
-quant(O) --> [O], {[O]=`*`} .
-quant(O) --> [O], {[O]=`+`} .
-quant(O) --> [O], {[O]=`?`} .
+quant(O) --> [O], { [O]=`*` } .
+quant(O) --> [O], { [O]=`+` } .
+quant(O) --> [O], { [O]=`?` } .
 
 
 range(range(RT, Rs)) --> `[`, opt(range_neg, positive_range, RT), plus(range_spec, list_op,[], Rs), `]` .
@@ -87,7 +103,13 @@ range_spec(range_spec(L,H)) --> range_bound(L), { DH is L+1 }, opt(range_spec_ex
 range_bound(X) --> [X], {[X] \= `-`, [X] \= `]`, [X] \= `]`, [X] \= `,`, [X] \= `^`}.
 range_bound(S) --> string(S).
 
-range_spec_ex(S2) --> `-`, range_bound(S1), { S2 is S1+1 }.
+range_spec_ex(S2) -->
+    alt(close_range_op, open_range_op,D),
+    range_bound(S1), { S2 is S1+D }.
+
+close_range_op(1) --> `-` .
+open_range_op(0)  --> `--` .
+
 
 
 id(O) -->
@@ -104,6 +126,9 @@ lowercase(O) --> [O], { [A]=`a`, [Z]=`z`,  A=<O,  O=<Z }.
 uppercase(O) --> [O], { [A]=`A`, [Z]=`Z`,  A=<O,  O=<Z }.
 digit(O)     --> [O], { [Z]=`0`, [N]=`9`,  Z=<O,  O=<N }.
 
+
+% nonterminal -- tbd when we get the expression parser
+
 nonterminal(nonterminal(S,Ps)) --> id(S), opt(template_params,[],Ps).  %, opt(type_spec,[],TS).
 
 template_params(O) --> `<`, list(id,comma, func_op(param), O), `>` .
@@ -112,30 +137,25 @@ template_params(O) --> `<`, list(id,comma, func_op(param), O), `>` .
 %type_spec() --> `(`, type_spec, `)` .
     
 application() --> foreward_ap.
-    application() --> backward_ap.
+application() --> backward_ap.
     
 foreward_ap('\\') --> `\\` .
 backward_ap('/') --> `/` .
 
-% useful combining functions
-
-up_op(X, X).
 
 
+% productions
+
+prod(prod(N,T,R)) --> nonterminal(N), `-->`, terminal(T), opt(nonterminal, [], R).
+
+
+
+%------------------------------------------------------------------------
+    
 % testing
 a --> `a` .
 b --> `b` .
 	      
-comma(O)         -->  [O], {[O]=`,`} .
-
-single_quote(O)     -->  [O], {[O]=`'`}   .   make_it_stop     -->  `'`  .
-double_quote(O)     -->  [O], {[O]=`"`}   .   make_it_stop     -->  `"`  .
-
-
-left_big_paren( `--[` )  -->  `--[` .
-right_big_paren(`]--`)   -->  `]--` .
-
-    
 test :-
     test_string,
     test_nonterminal.

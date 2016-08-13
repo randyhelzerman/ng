@@ -40,6 +40,12 @@ extern "C" {
   // returns the back ("top") of th stack...
   void* ng_vector_back(ng_vector_t* self, const int fruit_size);
   
+  ng_vector_t* ng_vector_enlarge(ng_vector_t** selfp,
+				 const size_t fruit_size,
+				 void*(*fruit_cp_init)(const void*,
+						       void*),
+				 void(*fruit_deinit)(void*));
+  
   // add an element to the end of the vector
   void
   ng_vector_push_back(ng_vector_t** selfp,

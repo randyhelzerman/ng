@@ -1,5 +1,5 @@
 # Non terminal.  Type the start states. Final states implicit in productions with
-# only a terminal oin the  RHS
+# only a terminal in the  RHS
 NTERM      --> [_a-zA-Z]     NTERM1 : E           # starts with a-zA-Z or _
 NTERM1     --> [_a-zA-Z0-9]  NTERM1               # followed by alphanumeric or _
 NTERM1     --> ''
@@ -83,3 +83,9 @@ COLON   --> ':'    :  UKV\K/V           #  Unordered key-value pair
 PROD    --> '->'   :  OKVE\K/V          #  ordered key-value pair
 
 PP      --> '\n\n' :  (E\E)/E           #  paragraph break
+
+
+
+#  The minimal language
+
+NONTERM  -- > positive_range, 

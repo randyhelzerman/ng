@@ -8,8 +8,9 @@ extern "C" {
 #endif
   
   // forward declarations
-  typedef struct  ng_symbol_table  ng_symbol_table_t;
-  typedef struct  ng_token_array_struct ng_token_array;
+  typedef struct ng_symbol_table_entry ng_symbol_table_entry_t;
+  typedef struct ng_symbol_table  ng_symbol_table_t;
+  typedef struct ng_token_array_struct ng_token_array;
   
   
   enum NG_PARSER_TYPES {
@@ -34,6 +35,7 @@ extern "C" {
   typedef struct ng_parser_struct {
     // hold lexical spec info
     ng_symbol_table_t*  symbol_table_;  // symbol table
+    int symbol_id_numb;                 // used to number fhte symbols
     
     // related to tokenization
     ng_token_array*  tokens_;          // tokenized input
@@ -51,6 +53,10 @@ extern "C" {
   
   // access
   
+  const ng_symbol_table_entry_t*
+  ng_parser_get_symbol_table_entry(ng_parser* self,
+				   const char* name,
+				   const int type);
   // tokenize the tokens
   void ng_parser_tokenize(ng_parser* self,
 			  const char* string);
@@ -69,6 +75,9 @@ extern "C" {
   bool ng_parser_tokenize_close_paren(ng_parser* self);
   bool ng_parser_tokenize_character_range(ng_parser* self);
 
+
+  void ng_parser_parse(ng_parser* self,
+		       const char* string);
   
   
 #ifdef __cplusplus

@@ -11,6 +11,7 @@ extern "C" {
   typedef struct ng_symbol_table_entry {
     long int   type_;      //  The type this symbol is
     int        id_;        //  integer id for this
+    
     char       name_[];    //  name thereof
   } ng_symbol_table_entry_t;
   
@@ -18,12 +19,12 @@ extern "C" {
   // construction
   ng_symbol_table_entry_t *
   ng_symbol_table_entry_new(const char* name,
-			    long int type);
+			    const long int type);
   
   ng_symbol_table_entry_t *
   ng_symbol_table_entry_init(ng_symbol_table_entry_t*self,
 			     const char* name,
-			     long int type);
+			     const long int type);
   
   ng_symbol_table_entry_t*
   ng_symbol_table_entry_cp_init(const ng_symbol_table_entry_t* src,
@@ -45,7 +46,7 @@ extern "C" {
   // as a map.
   bool ng_symbol_table_entry_equal(const ng_symbol_table_entry_t* e1,
 				   const ng_symbol_table_entry_t* e2);
-
+  
 #ifdef __cplusplus
 };
 #endif

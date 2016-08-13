@@ -66,9 +66,9 @@ nd(L,R, O) --> \+ app(L,_), \+app(R,_), [O].
 
 string_form_list_op(I, L, [I|L]).
 
-string(O) --> string_form(single_quote,   single_quote,    O).
-string(O) --> string_form(double_quote,   double_quote,    O).
-string(O) --> string_form(left_big_paren, right_big_paren, O).
+string(O) --> string_form(single_quote,   single_quote,     O).
+string(O) --> string_form(double_quote,   double_quote,     O).
+string(O) --> string_form(left_big_paren, right_big_paren,  O).
 
 single_quote(O)     -->  [O], {[O]=`'`}   .   make_it_stop     -->  `'`  .
 double_quote(O)     -->  [O], {[O]=`"`}   .   make_it_stop     -->  `"`  .
@@ -80,7 +80,7 @@ right_big_paren(`]--`)   -->  `]--` .
 
 % Terminal
 terminal(O) --> list(terminal_atom_q,comma, func_op(terminal_exp), O).
-comma(O)         -->  [O], {[O]=`,`} .
+comma(O)    -->  [O], {[O]=`,`} .
 
 
 terminal_atom_q(quant(OQ,OT)) --> terminal_atom(OT), opt(quant,no_quantifier, OQ).
@@ -138,16 +138,16 @@ template_params(O) --> `<`, list(id,comma, func_op(param), O), `>` .
     
 application() --> foreward_ap.
 application() --> backward_ap.
-    
-foreward_ap('\\') --> `\\` .
-backward_ap('/') --> `/` .
 
+foreward_ap('\\') --> `\\` .
+backward_ap('/')  --> `/`  .
 
 
 % productions
 
 prod(prod(N,T,R)) --> nonterminal(N), `-->`, terminal(T), opt(nonterminal, [], R).
 
+prog(S) --> star(prod, list_op,[], S).
 
 
 %------------------------------------------------------------------------
@@ -182,7 +182,7 @@ test_some_strings :-
     
     string(`--[yeah this is a lot of stuffs
 	      whihc just keeps going on]--`,[]).
-
+ 
 
 	
 test_nonterminal :-

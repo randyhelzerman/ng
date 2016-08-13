@@ -35,7 +35,7 @@ void ng_symbol_table_uninit(ng_symbol_table_t* self)
 
 
 // access
-int
+ng_symbol_table_entry_t*
 ng_symbol_table_insert(ng_symbol_table_t* self,
 		       const char* name,
 		       const int type)
@@ -55,26 +55,21 @@ ng_symbol_table_insert(ng_symbol_table_t* self,
 			      const void*)
 		       )ng_symbol_table_entry_compare)->fruit_;
   
-  // ensure that the entries are equal to each other
-  bool returner
-    = ng_symbol_table_entry_equal(entry1, entry2)
-    ? 0
-    : NG_SYMBOL_TABLE_WRONG_TYPE;
-  
   // free memory of temporary entry
   ng_symbol_table_entry_delete(&entry1);
   
-  return returner;
+  return entry2;
 }
 
 
 const ng_symbol_table_entry_t*
 ng_symbol_table_lookup(ng_symbol_table_t* self,
-		       const char* name)
+		       const char* name,
+		       const int type)
 {
   // make a temporary entry to look up
   ng_symbol_table_entry_t* entry1
-    = ng_symbol_table_entry_new(name, 0);
+    = ng_symbol_table_entry_new(name, type);
   
   const ng_symbol_table_entry_t* entry2
     = ng_rb_tree_lookup(self->tree_,

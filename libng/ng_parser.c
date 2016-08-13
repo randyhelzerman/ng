@@ -6,6 +6,7 @@
 #include <ng_ascii_util.h>
 #include <ng_token_array.h>
 #include <ng_symbol_table.h>
+#include <ng_symbol_table_entry.h>
 
 
 // construction
@@ -442,3 +443,50 @@ ng_parser_tokenize_character_range(ng_parser* self)
   
   return true;
 }
+
+
+const ng_symbol_table_entry_t*
+ng_parser_get_symbol_table_entry(ng_parser*  self,
+				 const char* name,
+				 const int   type)
+{
+  // first see if it is already there
+  const ng_symbol_table_entry_t* returner
+    = ng_symbol_table_lookup((void*)self, name, type);
+  
+  if(0x0==returner){
+    returner = ng_symbol_table_insert(self->symbol_table_, name, type);
+    ((ng_symbol_table_entry_t*)(returner))->id_ = self->symbol_id_numb;
+    self->symbol_id_numb++;
+  }
+  
+  return returner;
+}
+
+
+void ng_parser_parse(ng_parser* self,
+		     const char* string)
+{
+  // prep for new round of parsing
+  self->symbol_id_numb = 0;
+  
+  // using strtok, so duplicate perhaps constant string
+  char *input = strdup(string);
+  
+  char* token=0x0;
+  char *p = input;
+  while((token = strtok(p, " \t\n"))){
+    p=0x0; // strtok expects next calls to be passed in a null
+    
+    // get the symbol table entry for this
+    const ng_symbol_table_entry_t* entry
+      = ng_parser_get_symbol_table_entry(self,
+					 token,
+					 NG_PARSER_NON_TERMINAL);
+  }
+  
+  
+  // release string memory
+  free(input);
+}
+  

@@ -19,12 +19,15 @@ ADD_EXECUTABLE(ng.t
 					     ng_util_io.t.cpp
                test_fruit.c
                test_fruit_int.c
+
+	       Parser.t.cpp
 )
 
 TARGET_LINK_LIBRARIES(ng.t
-                      ng ng_util gtest gmock gtest_main)
+                      ng ngpp ng_util gtest gmock gtest_main)
 
 TARGET_INCLUDE_DIRECTORIES(ng.t PUBLIC
                            "${CMAKE_CURRENT_SOURCE_DIR}"
                            "${CMAKE_CURRENT_SOURCE_DIR}/../libng"
+                           "${CMAKE_CURRENT_SOURCE_DIR}/../ngpp"
                            "${CMAKE_CURRENT_SOURCE_DIR}/../ng_util")

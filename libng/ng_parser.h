@@ -68,7 +68,9 @@ extern "C" {
   bool ng_parser_tokenize_open_paren(ng_parser* self);
   bool ng_parser_tokenize_close_paren(ng_parser* self);
   bool ng_parser_tokenize_character_range(ng_parser* self);
-
+  
+  bool ng_parser_min_parse(ng_parser* self,
+			   const char* in_string);
   
   
 #ifdef __cplusplus

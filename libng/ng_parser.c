@@ -444,15 +444,18 @@ ng_parser_tokenize_character_range(ng_parser* self)
 }
 
 
-bool min_parse(ng_parser* self,
-	       const char* in_string)
+bool ng_parser_min_parse(ng_parser* self,
+			 const char* in_string)
 {
+  // init parser state
+  self->tokens_ = 0x0;
+
   // we want to be able to parse read only strings
   // so we'll have top copy this
   char* input = strdup(in_string);
   
   char* p = input;
-
+  
   char* token = 0x0;
   while((token = strtok(p, " \n\t"))){
     p = 0x0;
@@ -476,8 +479,6 @@ bool min_parse(ng_parser* self,
     // get lower bound
     token = strtok(p, "-");
     if(!token) return false;
-    
-    
   }
   
   // free the duplicated input

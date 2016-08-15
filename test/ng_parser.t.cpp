@@ -225,13 +225,34 @@ TEST(NgNfaParserTest, tokfile1)
   // read in file
   char* buf=0x0;
   loadFileIntoBuffer("../test/ng.ng", &buf);
-
+  
   // create parser to tokenize it
   ng_parser* parser = ng_parser_new();
   
   ng_parser_tokenize(parser, buf);
   
+  printf("dumping parser\n");
   ng_parser_dump(parser);
+  printf("done dumping parser\n");
+  
+  ng_parser_delete(&parser);
+}
+
+
+TEST(NgNfaParserTest, min_parse_1)
+{
+  // read in file
+  char* buf=0x0;
+  loadFileIntoBuffer("../test/ng.ng", &buf);
+  
+  // create parser to tokenize it
+  ng_parser* parser = ng_parser_new();
+  
+  ng_parser_min_parse(parser, buf);
+  
+  printf("dumping parser\n");
+  ng_parser_dump(parser);
+  printf("done dumping parser\n");
   
   ng_parser_delete(&parser);
 }

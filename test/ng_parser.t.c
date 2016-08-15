@@ -9,7 +9,6 @@
 
 void ng_parser_dump(ng_parser *self)
 {
-  printf("pahser\n");
   ng_token_array_dump(self->tokens_);
   ng_symbol_table_dump(self->symbol_table_);
 }

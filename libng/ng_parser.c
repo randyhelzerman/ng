@@ -442,3 +442,46 @@ ng_parser_tokenize_character_range(ng_parser* self)
   
   return true;
 }
+
+
+bool min_parse(ng_parser* self,
+	       const char* in_string)
+{
+  // we want to be able to parse read only strings
+  // so we'll have top copy this
+  char* input = strdup(in_string);
+  
+  char* p = input;
+
+  char* token = 0x0;
+  while((token = strtok(p, " \n\t"))){
+    p = 0x0;
+    // insert non terminal--we know its there.
+    ng_symbol_table_insert(self->symbol_table_,
+			   token, NG_PARSER_NON_TERMINAL);
+    
+    // eat the production symbol
+    if(!strtok(p, " \n\t")){
+      // we were expecting '-->'
+      return false;
+    }
+    
+    // read the range
+    
+    // eat opening bracket
+    if(!strtok(p, " \n\t[")){
+      // we were expecting '['
+    }
+    
+    // get lower bound
+    token = strtok(p, "-");
+    if(!token) return false;
+    
+    
+  }
+  
+  // free the duplicated input
+  free(input);
+
+  return true;
+}

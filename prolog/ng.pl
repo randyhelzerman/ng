@@ -53,7 +53,15 @@ list_op(I, L, [I|L]).
 
 % ----------------------------------------------------------------------
 
+% whitespace
 
+ws --> opt(ws_chars,[],_), !.
+
+ws_chars(_) -->  star(ws_char, list_op,[], _).
+
+ws_char(_) --> ` `  .
+ws_char(_) --> `\t` .
+ws_char(_) --> `\n` .
 
 % strings
 
@@ -80,7 +88,7 @@ right_big_paren(`]--`)   -->  `]--` .
 
 % Terminal
 terminal(O) --> list(terminal_atom_q,comma, func_op(terminal_exp), O).
-comma(O)         -->  [O], {[O]=`,`} .
+comma(O)    -->  [O], {[O]=`,`} .
 
 
 terminal_atom_q(quant(OQ,OT)) --> terminal_atom(OT), opt(quant,no_quantifier, OQ).
@@ -143,12 +151,22 @@ foreward_ap('\\') --> `\\` .
 backward_ap('/') --> `/` .
 
 
-
 % productions
 
-prod(prod(N,T,R)) --> nonterminal(N), `-->`, terminal(T), opt(nonterminal, [], R).
+prod(prod(H,T,R)) -->
+    ws, prod_head(H),
+    ws, `-->` ,
+    ws, prod_tail(prod_tail(T,R)).
+
+prod_head(H) -->
+    nonterminal(H).  % add type spec here.
+
+prod_tail(prod_tail(T,R)) -->
+    terminal(T), ws, opt(nonterminal, [], R).
 
 
+% program
+prog(S) --> star(prod, list_op,[], S), ws.
 
 %------------------------------------------------------------------------
     
@@ -177,7 +195,7 @@ test_empty_string :-
 	
 test_some_strings :-
     string(`'a'`,[]),
-
+    
     string(`"'"`,[]),
     
     string(`--[yeah this is a lot of stuffs

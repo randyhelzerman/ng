@@ -68,6 +68,9 @@ size_t ng_symbol_table_entry_size(const ng_symbol_table_entry_t* self)
 int ng_symbol_table_entry_compare(const ng_symbol_table_entry_t* e1,
 				  const ng_symbol_table_entry_t* e2)
 {
+  const long int res = e1->type_ - e2->type_;
+  if(0 != res) return res;
+  
   return strcmp(e1->name_, e2->name_);
 }
 

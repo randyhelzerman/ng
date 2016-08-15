@@ -70,11 +70,12 @@ ng_symbol_table_insert(ng_symbol_table_t* self,
 
 const ng_symbol_table_entry_t*
 ng_symbol_table_lookup(ng_symbol_table_t* self,
-		       const char* name)
+		       const char* name,
+		       const int type)
 {
   // make a temporary entry to look up
   ng_symbol_table_entry_t* entry1
-    = ng_symbol_table_entry_new(name, 0);
+    = ng_symbol_table_entry_new(name, type);
   
   const ng_symbol_table_entry_t* entry2
     = ng_rb_tree_lookup(self->tree_,

@@ -38,7 +38,8 @@ extern "C" {
   
   const ng_symbol_table_entry_t*
   ng_symbol_table_lookup(ng_symbol_table_t* self,
-			 const char* name);
+			 const char* name,
+			 const int type);
   
 #ifdef __cplusplus
 };

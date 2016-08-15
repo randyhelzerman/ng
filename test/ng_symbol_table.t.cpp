@@ -32,7 +32,8 @@ TEST(NgSymbolTableTest, TestInsertLookup)
   
   // test that we can look it back up again
   {
-    const ng_symbol_table_entry_t* entry = ng_symbol_table_lookup(symbol_table, "foo");
+    const ng_symbol_table_entry_t* entry
+      = ng_symbol_table_lookup(symbol_table, "foo",1);
     EXPECT_EQ(0, strcmp("foo", entry->name_));
     EXPECT_EQ(1, entry->type_);
   }
@@ -42,7 +43,8 @@ TEST(NgSymbolTableTest, TestInsertLookup)
     EXPECT_EQ(1,0);
   }
   {
-    const ng_symbol_table_entry_t* entry = ng_symbol_table_lookup(symbol_table, "foo");
+    const ng_symbol_table_entry_t* entry
+      = ng_symbol_table_lookup(symbol_table, "foo",1);
     EXPECT_EQ(0, strcmp("foo", entry->name_));
     EXPECT_EQ(1, entry->type_);
   }
@@ -50,9 +52,9 @@ TEST(NgSymbolTableTest, TestInsertLookup)
   // test that we get an error when trying to enter it
   // with inconsitent information
   if(ng_symbol_table_insert(symbol_table,"foo", 2)){
-    EXPECT_EQ(1,1);
-  } else {
     EXPECT_EQ(1,0);
+  } else {
+    EXPECT_EQ(1,1);
   }
   
   // test we can do another one with different type
@@ -60,14 +62,13 @@ TEST(NgSymbolTableTest, TestInsertLookup)
     EXPECT_EQ(1,0);
   }
   {
-    const ng_symbol_table_entry_t* entry = ng_symbol_table_lookup(symbol_table, "bar");
+    const ng_symbol_table_entry_t* entry
+      = ng_symbol_table_lookup(symbol_table, "bar",2);
     EXPECT_EQ(0, strcmp("bar", entry->name_));
     EXPECT_EQ(2, entry->type_);
   }
   
   if (do_print) ng_symbol_table_dump(symbol_table);
-  
-  const ng_symbol_table_entry_t* entry = ng_symbol_table_lookup(symbol_table, "foo");
   
   ng_symbol_table_delete(&symbol_table);
 }

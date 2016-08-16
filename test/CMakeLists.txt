@@ -1,5 +1,6 @@
 CMAKE_MINIMUM_REQUIRED(VERSION 3.5)
 
+
 ADD_EXECUTABLE(ng.t
                ng_c_tricks.t.cpp
                ng_vector.t.c                 ng_vector.t.cpp
@@ -20,7 +21,8 @@ ADD_EXECUTABLE(ng.t
                test_fruit.c
                test_fruit_int.c
 
-	       Parser.t.cpp
+               Parser.d.cpp
+	       Parser.t.cpp    
 )
 
 TARGET_LINK_LIBRARIES(ng.t
@@ -31,3 +33,7 @@ TARGET_INCLUDE_DIRECTORIES(ng.t PUBLIC
                            "${CMAKE_CURRENT_SOURCE_DIR}/../libng"
                            "${CMAKE_CURRENT_SOURCE_DIR}/../ngpp"
                            "${CMAKE_CURRENT_SOURCE_DIR}/../ng_util")
+
+
+set_property(TARGET ng.t PROPERTY CXX_STANDARD 11)
+set_property(TARGET ng.t PROPERTY CXX_STANDARD_REQUIRED ON)

@@ -9,4 +9,5 @@ TEST(ParserTest, test1)
 {
   Parser parser;
   parser.parse("../test/ng.min");
+  parser.dump();
 }

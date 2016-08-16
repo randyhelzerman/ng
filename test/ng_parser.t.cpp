@@ -243,7 +243,7 @@ TEST(NgNfaParserTest, min_parse_1)
 {
   // read in file
   char* buf=0x0;
-  loadFileIntoBuffer("../test/ng.ng", &buf);
+  loadFileIntoBuffer("../test/ng.min", &buf);
   
   // create parser to tokenize it
   ng_parser* parser = ng_parser_new();

@@ -6,7 +6,7 @@
 // construction
 ng_symbol_table_entry_t *
 ng_symbol_table_entry_new(const char* name,
-			  long int type)
+			  const long int type)
 {
   const size_t size = sizeof(ng_symbol_table_entry_t) + strlen(name);
   ng_symbol_table_entry_t *self = (ng_symbol_table_entry_t *)malloc(size);
@@ -17,7 +17,7 @@ ng_symbol_table_entry_new(const char* name,
 ng_symbol_table_entry_t *
 ng_symbol_table_entry_init(ng_symbol_table_entry_t*self,
 			   const char* name,
-			   long int type)
+			   const long int type)
 {
   self->type_ = type;
   self->id_ = 0;
@@ -63,7 +63,7 @@ size_t ng_symbol_table_entry_size(const ng_symbol_table_entry_t* self)
   const size_t size = sizeof(ng_symbol_table_entry_t) + strlen(self->name_);
   return size;
 }
-  
+
 
 int ng_symbol_table_entry_compare(const ng_symbol_table_entry_t* e1,
 				  const ng_symbol_table_entry_t* e2)

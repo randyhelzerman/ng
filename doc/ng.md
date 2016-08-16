@@ -334,3 +334,19 @@ E           E           E
 2    +      3     ^     2    
 
 
+#  Can I just jump to one for each interval?
+
+
+A --> 'a'B
+A --> 'a'C
+
+Can I merge B and C?  well, if nobody feeds into B and C, sure.
+
+But if we do, we could 
+
+D --> 'x'B
+E --> 'y'C
+
+
+We don't want 
+

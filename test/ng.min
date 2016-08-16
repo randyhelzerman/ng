@@ -1,4 +1,3 @@
-A --> [a-a] B
-B --> [b-b] B
-C --> [c-c]
-
+A   a a B
+B   b b C
+C   c c

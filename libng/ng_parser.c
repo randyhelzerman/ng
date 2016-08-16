@@ -6,6 +6,7 @@
 #include <ng_ascii_util.h>
 #include <ng_token_array.h>
 #include <ng_symbol_table.h>
+#include <ng_symbol_table_entry.h>
 
 
 // construction
@@ -494,3 +495,24 @@ ng_parser_min_parse(ng_parser* self,
 
   return true;
 }
+
+
+const ng_symbol_table_entry_t*
+ng_parser_get_symbol_table_entry(ng_parser*  self,
+				 const char* name,
+				 const int   type)
+{
+  // first see if it is already there
+  const ng_symbol_table_entry_t* returner
+    = ng_symbol_table_lookup((void*)self, name, type);
+  
+  if(0x0==returner){
+    returner = ng_symbol_table_insert(self->symbol_table_, name, type);
+    ((ng_symbol_table_entry_t*)(returner))->id_ = self->symbol_id_numb;
+    self->symbol_id_numb++;
+  }
+  
+  return returner;
+}
+
+

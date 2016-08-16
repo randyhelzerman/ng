@@ -74,9 +74,9 @@ nd(L,R, O) --> \+ app(L,_), \+app(R,_), [O].
 
 string_form_list_op(I, L, [I|L]).
 
-string(O) --> string_form(single_quote,   single_quote,    O).
-string(O) --> string_form(double_quote,   double_quote,    O).
-string(O) --> string_form(left_big_paren, right_big_paren, O).
+string(O) --> string_form(single_quote,   single_quote,     O).
+string(O) --> string_form(double_quote,   double_quote,     O).
+string(O) --> string_form(left_big_paren, right_big_paren,  O).
 
 single_quote(O)     -->  [O], {[O]=`'`}   .   make_it_stop     -->  `'`  .
 double_quote(O)     -->  [O], {[O]=`"`}   .   make_it_stop     -->  `"`  .
@@ -146,10 +146,9 @@ template_params(O) --> `<`, list(id,comma, func_op(param), O), `>` .
     
 application() --> foreward_ap.
 application() --> backward_ap.
-    
-foreward_ap('\\') --> `\\` .
-backward_ap('/') --> `/` .
 
+foreward_ap('\\') --> `\\` .
+backward_ap('/')  --> `/`  .
 
 % productions
 
@@ -161,8 +160,12 @@ prod(prod(H,T,R)) -->
 prod_head(H) -->
     nonterminal(H).  % add type spec here.
 
+<<<<<<< HEAD
 prod_tail(prod_tail(T,R)) -->
     terminal(T), ws, opt(nonterminal, [], R).
+=======
+prog(S) --> star(prod, list_op,[], S).
+>>>>>>> b843425709cffdc7f5354f8cdd0096549c2f2904
 
 
 % program
@@ -200,7 +203,7 @@ test_some_strings :-
     
     string(`--[yeah this is a lot of stuffs
 	      whihc just keeps going on]--`,[]).
-
+ 
 
 	
 test_nonterminal :-

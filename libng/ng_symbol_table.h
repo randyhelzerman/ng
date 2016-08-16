@@ -32,9 +32,10 @@ extern "C" {
   void ng_symbol_table_uninit(ng_symbol_table_t* self);
   
   // access
-  int ng_symbol_table_insert(ng_symbol_table_t* self,
-			     const char* name,
-			     const int type);
+  ng_symbol_table_entry_t*
+  ng_symbol_table_insert(ng_symbol_table_t* self,
+			 const char* name,
+			 const int type);
   
   const ng_symbol_table_entry_t*
   ng_symbol_table_lookup(ng_symbol_table_t* self,

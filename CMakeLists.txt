@@ -12,7 +12,7 @@ SET(CMAKE_C_FLAGS, "-Wall -Wextra -Wpedantic -Wformat=2 -Wno-unused-parameter -W
 ####################################
 # DOWNLOAD GOOGLE TEST FROM GITHUB #
 ####################################
-CONFIGURE_FILE(gtest-download/CMakeLists.txt.in
+configure_FILE(gtest-download/CMakeLists.txt.in
                gtest-download/CMakeLists.txt)
 EXECUTE_PROCESS(COMMAND ${CMAKE_COMMAND} -G "${CMAKE_GENERATOR}" .
                 WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/gtest-download )

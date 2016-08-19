@@ -8,6 +8,9 @@
 
 namespace ng {
   
+  // forward declarations
+  class Nfa;
+  
   class Parser {
     
     struct StateInfo {
@@ -21,17 +24,17 @@ namespace ng {
 	// 
 	const int nextState_;
 	
-      Transition(const std::string& l,
-		 const std::string& h,
-		 // defaults to stop state
-		 const int nextState = 0)
-      : l_(l), h_(h), nextState_(nextState) {}
+        Transition(const std::string& l,
+		   const std::string& h,
+		   // defaults to stop state
+		   const int nextState = 0)
+	: l_(l), h_(h), nextState_(nextState) {}
       };
-      
+	
       std::string name_;
       std::vector<Transition> transitions_;
       
-    StateInfo(const std::string name) : name_(name) {}
+      StateInfo(const std::string name) : name_(name) {}
       
     };
     
@@ -48,8 +51,14 @@ namespace ng {
 			const std::string& h,
 			const std::string& nextState);
     
+    void buildState(Nfa& nfa,
+		    const StateInfo& stateInfo);
+    
   public:
+    
     void parse(const std::string filename);
+    
+    void build(Nfa& nfa);
     
     // debugging
     

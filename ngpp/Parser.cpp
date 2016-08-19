@@ -1,14 +1,17 @@
 #include <Parser.h>
 
-#include <sstream>
-#include <iostream>
-#include <fstream>
-#include <string>
-
-
 using namespace std;
 using namespace ng;
 
+#include <set>
+#include <map>
+#include <string>
+#include <fstream>
+#include <sstream>
+#include <iostream>
+#include <algorithm>
+
+#include <Nfa.h>
 
 void
 Parser::initParsing_()
@@ -48,9 +51,10 @@ Parser::addTransition_(const std::string& head,
 {
   const int headIndex = nonTerminals_[head];
   const int nextIndex = nonTerminals_[nextState];
-  stateInfos_[headIndex].transitions_.push_back(StateInfo::Transition(l,h,nextIndex));
+  stateInfos_[headIndex]
+    .transitions_
+    .push_back(StateInfo::Transition(l,h,nextIndex));
 }
-
 
 
 void
@@ -81,3 +85,74 @@ Parser::parse(const std::string filename)
     addTransition_(head,l,h,nextState);
   }
 }
+
+
+void
+Parser::build(Nfa& nfa){
+  for(auto& stateInfo : stateInfos_){
+    buildState(nfa, stateInfo);
+  }  
+}
+
+
+void
+Parser::buildState(Nfa& nfa,
+		   const StateInfo& stateInfo)
+{
+  // create a new nfa state for this
+  const int stateIndex = nfa.addState(stateInfo.name_);
+  
+  // prepair the carrier array
+  std::map<std::string, std::set<int> > carriers;
+  for(auto& transition : stateInfo.transitions_){
+    // add low
+    carriers[transition.l_] = std::set<int>();
+    carriers[transition.h_] = std::set<int>();
+  }
+  
+  // now color the carriers
+  for(auto& transition : stateInfo.transitions_){
+    
+    auto il = carriers.lower_bound(transition.l_);
+    auto ih = carriers.upper_bound(transition.h_);
+    
+    for(auto i = il; i!=ih; ++i){
+      i->second.insert(transition.nextState_);
+    }
+  }
+  
+  // now merge intervals of same color
+  for(auto p =carriers.begin();
+      p != carriers.end(); ++p){
+    auto n = p;  n++;
+    if(carriers.end() == p) break;
+    
+    if(p->second.size() == n->second.size()){
+      if(std::equal(p->second.begin(), p->second.end(),
+		    n->second.begin())) {
+	carriers.erase(p);
+	continue;
+      }
+    }
+  }
+  
+  // now emit merged intervals
+  for(auto il =carriers.begin();
+      il != carriers.end(); ++il){
+    auto ih = il; ih++;
+    
+    if(carriers.end() == ih) break;
+    
+    const int transitionIndex
+      = nfa.addTransition(stateIndex,il->first,ih->first);
+    
+    for(int nextState : il->second){
+      nfa.addNextStateToTransition(stateIndex,
+				   transitionIndex,
+				   nextState);
+    }
+  }
+}
+
+
+

@@ -107,7 +107,9 @@ Parser::buildState(Nfa& nfa,
   for(auto& transition : stateInfo.transitions_){
     // add low
     carriers[transition.l_] = std::set<int>();
-    carriers[transition.h_] = std::set<int>();
+    std::string incH = transition.h_;
+    incH.back()++;
+    carriers[incH] = std::set<int>();
   }
   
   // now color the carriers
@@ -125,7 +127,7 @@ Parser::buildState(Nfa& nfa,
   for(auto p =carriers.begin();
       p != carriers.end(); ++p){
     auto n = p;  n++;
-    if(carriers.end() == p) break;
+    if(carriers.end() == n) break;
     
     if(p->second.size() == n->second.size()){
       if(std::equal(p->second.begin(), p->second.end(),
@@ -141,7 +143,8 @@ Parser::buildState(Nfa& nfa,
       il != carriers.end(); ++il){
     auto ih = il; ih++;
     
-    if(carriers.end() == ih) break;
+    // don't add transitions which don't have next states
+    if(il->second.empty()) continue;
     
     const int transitionIndex
       = nfa.addTransition(stateIndex,il->first,ih->first);

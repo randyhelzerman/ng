@@ -15,6 +15,8 @@ Nfa::dump()
     for(auto& transition : stateInfo.transitions_){
       std::cout << "\t--> ";
       
+      std::cout << "[" << transition.l_ << "-" << transition.h_ << ") ";
+      
       for(auto& nextState : transition.nextStates_) {
 	std::cout << stateInfos_[nextState].name_  << " ";
       }

@@ -5,6 +5,8 @@
 #include <vector>
 #include <unordered_map>
 
+#include<gtest/gtest_prod.h>
+
 
 namespace ng {
   
@@ -12,6 +14,7 @@ namespace ng {
   class Nfa;
   
   class Parser {
+    FRIEND_TEST(ParserTest, test3);
     
     struct StateInfo {
       
@@ -30,12 +33,11 @@ namespace ng {
 		   const int nextState = 0)
 	: l_(l), h_(h), nextState_(nextState) {}
       };
-	
+      
       std::string name_;
       std::vector<Transition> transitions_;
       
       StateInfo(const std::string name) : name_(name) {}
-      
     };
     
     int nonTerminalCount_;

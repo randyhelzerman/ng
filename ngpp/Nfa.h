@@ -4,9 +4,14 @@
 #include <vector>
 #include <string>
 
+#include <gtest/gtest_prod.h>
+
 namespace ng {
   
   class Nfa {
+    FRIEND_TEST(ParserTest, test3);
+    
+    
     // builds this
     friend class Parser;
     

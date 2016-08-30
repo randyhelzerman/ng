@@ -10,6 +10,7 @@ namespace ng {
   
   class Nfa {
     FRIEND_TEST(ParserTest, test3);
+    FRIEND_TEST(ParserTest, test4);
     
     
     // builds this
@@ -17,6 +18,9 @@ namespace ng {
     
     // hold info for arc between state(s)(es)
     struct Transition {
+      FRIEND_TEST(ParserTest, test3);
+      FRIEND_TEST(ParserTest, test4);
+      
       std::string l_;
       std::string h_;
       std::vector<int> nextStates_;
@@ -29,6 +33,9 @@ namespace ng {
     
     // holds info for each state
     struct StateInfo {
+      FRIEND_TEST(ParserTest, test3);
+      FRIEND_TEST(ParserTest, test4);
+      
       std::string name_;
       std::vector<Transition> transitions_;
       

@@ -9,11 +9,12 @@ Parser::dump()
 {
   // dump symbol table
   for(auto& i : nonTerminals_){
-    std::cout << i.first << ":" << i.second << std::endl;
+    std::cout << "[" << i.first << "] : [" << i.second << "] "
+	      << std::endl;
   }
   
   for(auto& stateInfo : stateInfos_){
-    std::cout << "State:" << stateInfo.name_ << std::endl;
+    std::cout << "State: [" << stateInfo.name_ << "]" << std::endl;
     for(auto& transition : stateInfo.transitions_){
       std::cout << "\t--> [" << transition.l_ << "-" << transition.h_ << "]\n";
     }

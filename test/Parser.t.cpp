@@ -4,7 +4,7 @@
 
 #include <Nfa.h>
 
-using namespace ng;
+namespace ng {
 
 TEST(ParserTest, test1)
 {
@@ -35,12 +35,12 @@ TEST(ParserTest, test3)
   parser.parse("../test/edge_cases.ng/empty.ng");
   parser.dump();
   
-  EXPECT_EQ(0, parser.nonTerminals_.size());
-  EXPECT_EQ(0, parser.stateInfos_.size());
+  EXPECT_EQ(1, parser.nonTerminals_.size());
+  EXPECT_EQ(1, parser.stateInfos_.size());
   
   Nfa nfa;
   parser.build(nfa);
-  EXPECT_EQ(0, nfa.stateInfos_.size());
+  EXPECT_EQ(1, nfa.stateInfos_.size());
   nfa.dump();
 }
 
@@ -51,11 +51,12 @@ TEST(ParserTest, test4)
   parser.parse("../test/edge_cases.ng/1_lang.ng");
   parser.dump();
   
-  EXPECT_EQ(0, parser.nonTerminals_.size());
-  EXPECT_EQ(0, parser.stateInfos_.size());
+  EXPECT_EQ(2, parser.nonTerminals_.size());
+  EXPECT_EQ(2, parser.stateInfos_.size());
   
   Nfa nfa;
   parser.build(nfa);
-  EXPECT_EQ(0, nfa.stateInfos_.size());
+  EXPECT_EQ(2, nfa.stateInfos_.size());
   nfa.dump();
+}
 }

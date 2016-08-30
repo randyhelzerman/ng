@@ -468,6 +468,7 @@ ng_parser_min_parse(ng_parser* self,
     // eat the production symbol
     if(!(token = strtok(p, " \n\t"))){
       // we were expecting '-->'
+      free(input);
       return false;
     }
     
@@ -475,11 +476,13 @@ ng_parser_min_parse(ng_parser* self,
     
     // read lower bound
     if(!(token=strtok(p, " \n\t[-"))){
+      free(input);
       return false;
     }
     
     // get lower bound
     if(!(token=strtok(p, " \n\t]-"))){
+      free(input);
       return false;
     }
     

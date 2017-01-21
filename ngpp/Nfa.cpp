@@ -13,10 +13,9 @@ Nfa::addState(const std::string& name)
 
 const int
 Nfa::addTransition(const int state,
-		   const std::string& l,
-		   const std::string& h)
+		   const std::string& l)
 {
-  stateInfos_[state].transitions_.push_back(Transition(l,h));
+  stateInfos_[state].transitions_.push_back(Transition(l));
   return stateInfos_[state].transitions_.size()-1;
 }
 

@@ -104,6 +104,11 @@ Parser::buildState(Nfa& nfa,
   
   // prepair the carrier array
   std::map<std::string, std::set<int> > carriers;
+  
+  // add end cases
+  carriers[""] = std::set<int>();
+  carriers["~"] = std::set<int>();
+  
   for(auto& transition : stateInfo.transitions_){
     // add low
     carriers[transition.l_] = std::set<int>();
@@ -143,11 +148,8 @@ Parser::buildState(Nfa& nfa,
       il != carriers.end(); ++il){
     auto ih = il; ih++;
     
-    // don't add transitions which don't have next states
-    if(il->second.empty()) continue;
-    
     const int transitionIndex
-      = nfa.addTransition(stateIndex,il->first,ih->first);
+      = nfa.addTransition(stateIndex,il->first);
     
     for(int nextState : il->second){
       nfa.addNextStateToTransition(stateIndex,

@@ -9,6 +9,7 @@
 namespace ng {
   
   class Nfa {
+  public:
     FRIEND_TEST(ParserTest, test3);
     
     
@@ -18,12 +19,10 @@ namespace ng {
     // hold info for arc between state(s)(es)
     struct Transition {
       std::string l_;
-      std::string h_;
       std::vector<int> nextStates_;
       
-      Transition(const std::string& l,
-		 const std::string& h)
-      : l_(l), h_(h) {}
+      Transition(const std::string& l)
+      : l_(l) {}
     };
     
     
@@ -40,8 +39,7 @@ namespace ng {
     const int addState(const std::string& name);
     
     const int addTransition(const int state,
-			    const std::string& l,
-			    const std::string& h);
+			    const std::string& l);
     
     
     void addNextStateToTransition(const int state,

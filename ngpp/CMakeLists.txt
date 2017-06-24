@@ -13,6 +13,7 @@ ADD_LIBRARY(ngpp STATIC
 TARGET_INCLUDE_DIRECTORIES(ng.t PUBLIC
                            "${CMAKE_CURRENT_SOURCE_DIR}/../ng_util_hpp")
 
+
 TARGET_LINK_LIBRARIES(ngpp
 	gtest_main)
 

@@ -16,10 +16,15 @@ namespace ng {
   class Parser {
   public:
     FRIEND_TEST(ParserTest, test3);
+    FRIEND_TEST(ParserTest, test4);
     
     struct StateInfo {
+    FRIEND_TEST(ParserTest, test3);
+    FRIEND_TEST(ParserTest, test4);
       
       struct Transition {
+	FRIEND_TEST(ParserTest, test3);
+	FRIEND_TEST(ParserTest, test4);
 	// closed interval
 	std::string l_;
 	std::string h_;

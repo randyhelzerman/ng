@@ -234,7 +234,8 @@ TEST(NgNfaParserTest, tokfile1)
   printf("dumping parser\n");
   ng_parser_dump(parser);
   printf("done dumping parser\n");
-  
+
+  free(buf);
   ng_parser_delete(&parser);
 }
 
@@ -253,7 +254,8 @@ TEST(NgNfaParserTest, min_parse_1)
   printf("dumping parser\n");
   ng_parser_dump(parser);
   printf("done dumping parser\n");
-  
+
+  free(buf);
   ng_parser_delete(&parser);
 }
 

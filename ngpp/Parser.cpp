@@ -113,7 +113,11 @@ Parser::buildState(Nfa& nfa,
     // add low
     carriers[transition.l_] = std::set<int>();
     std::string incH = transition.h_;
-    incH.back()++;
+    if(incH == ""){
+      incH.push_back(0x00);
+    } else {
+      incH.back()++;
+    }
     carriers[incH] = std::set<int>();
   }
   

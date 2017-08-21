@@ -14,6 +14,7 @@ namespace ng {
   class Nfa;
   
   class Parser {
+  public:
     FRIEND_TEST(ParserTest, test3);
     FRIEND_TEST(ParserTest, test4);
     

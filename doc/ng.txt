@@ -1,3 +1,8 @@
+* Basic idea:
+** Limit grammer to regular grammar
+** plus prolog parser operator style.
+
+
 *	regular grammars
 **	A ->,  A->a, A->aB,  distinguished S symbol
 
@@ -19,10 +24,11 @@
 **	.  Any single character
 
 ***	A->a1,  A->a2, ....  A->a1B, A->a2B, ....
+****	problem is we don't want a new production for each nonterminsl!!
 
-***	Obvious fix:
+****	Obvious fix:
 
-***	A->., A->.B  Syntactic Sutar for the above.
+*****	A->., A->.B  Syntactic sugar for the above.
 
 ***	NDFA gen:
 ****	For each production of the form A->., generate an arc from A to Z, which consumes any single terminal
@@ -56,7 +62,7 @@
 ****	for each production of the form A->^, add an arc from A to Z which consumes the pseudo-nonterminal ^
 ****	for each production of the form A->^B, add an arc from A to B which consumes the pseudo-nonterminal ^
 
-**	$  Match beginning of line
+**	$  Match ending of line
 ***	honetsly, I don't know how to do this
 ***	but I'm guessing A->$, A->$B would work just fine...
 ***	NDFA gen:
@@ -137,11 +143,8 @@ A -> 'a',B
 hmmm........ that might actually not be so bad lol
 
 But really, it is a ternary operator.  And the parse tree should reflect that.
-	
 
 *	Self-reflective grammar
-
-
 
 *       T
 
@@ -165,4 +168,9 @@ What giveth
 
 100     -->    P\NT/T/NT
 
+
+
+* memory layout
+
+**  
 

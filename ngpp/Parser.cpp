@@ -17,7 +17,7 @@ using namespace ng;
 // just clear out nonterminals and terminals
 // from last time parsing, and insert the stop
 // state
-Parser::initParsing_()
+void Parser::initParsing_()
 {
   nonTerminalCount_ = 0;
   nonTerminals_.clear();

@@ -1,7 +1,7 @@
 :- discontiguous(make_it_stop/2).
 
-%  dirt poor man's lambda calculs substitue.  Lame.  Come on prolog, in
-%  45 years you couldn't do better than this??
+%  dirt poor man's lambda calculs substitue.  Lame.  Come on prolog,
+%  in 45 years you couldn't do better than this??
 
 % apply arguments to a function and execute it
 apf(F,I, O)        --> [], { F=..FL1, append(FL1,[I,        O],  FL2),  FX=..FL2,   FX  }.
@@ -17,11 +17,9 @@ app(P,I1,I2,I3, O)  --> { P=..PL1, append(PL1, [I1,I2,I3, O], PL2), PX=..PL2 }, 
 
 
 % Make a terminal expresion optional
-
-
-% Pass up the return value of the parser if it was choosen, otherwise
-% pass up the default value
+% Pass up the return value of the parser if it was choosen,
 opt( P, _V, O)  -->  app(P, O).
+%  otherwise pass up the default value
 opt(_P,  O, O)  -->  [].
 
 
@@ -38,7 +36,7 @@ star(_P, _F,O,  O)   -->   [].
 plus( P,  F,D,  O)   -->   app(P, O1),  star(P, F,D, O2),  apf(F,O1,O2, O). 
 
 % make a list.
-% P -- parser for the thing we're making a list of
+% P -- parser for the thing we are re making a list of
 % D -- delimiter of the list
 
 list(P,D, F, O)      -->  app(P,PO),   opt(list_ex(P,D, F,PO), PO, O).
@@ -160,12 +158,11 @@ prod(prod(H,T,R)) -->
 prod_head(H) -->
     nonterminal(H).  % add type spec here.
 
-<<<<<<< HEAD
 prod_tail(prod_tail(T,R)) -->
     terminal(T), ws, opt(nonterminal, [], R).
-=======
+
 prog(S) --> star(prod, list_op,[], S).
->>>>>>> b843425709cffdc7f5354f8cdd0096549c2f2904
+
 
 
 % program

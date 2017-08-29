@@ -160,13 +160,9 @@ prod(prod(H,T,R)) -->
 prod_head(H) -->
     nonterminal(H).  % add type spec here.
 
-<<<<<<< HEAD
+
 prod_tail(prod_tail(T,R)) -->
     terminal(T), ws, opt(nonterminal, [], R).
-=======
-prog(S) --> star(prod, list_op,[], S).
->>>>>>> b843425709cffdc7f5354f8cdd0096549c2f2904
-
 
 % program
 prog(S) --> star(prod, list_op,[], S), ws.

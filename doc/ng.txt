@@ -166,3 +166,9 @@ What giveth
 100     -->    P\NT/T/NT
 
 
+*    Memory layout
+
+**   character array
+**   interval array
+
+

@@ -92,8 +92,6 @@ but we might be able to make it even faster than that.
    Honestly, I don't know if I can assimilate this or not.  Is it really needed?
    
 
-
-
 #  Super-ultra-fast implementation of nondeterministic state transitions!
 
 
@@ -157,9 +155,9 @@ pull them off only when the string position is reached, that will work.
 ##  Probably faster alternative -- rule normalization
 
 Its probably faster just t pre-process the rules.
-
+    
      A->""B
-
+     
      B->"c"C
      B->"d"D
      B->"e"E       

@@ -1,7 +1,5 @@
 #include <ng_ascii_util.h>
 
-
-
 bool
 ng_ascii_util_is_null_char(const char ch)
 {

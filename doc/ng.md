@@ -85,12 +85,6 @@ We can have a string of non-terminals instead of just one non-terminal.  This ca
 but we might be able to make it even faster than that.  
 
 
-##  Accepting any single character.
-
-    S -> .
-
-   Honestly, I don't know if I can assimilate this or not.  Is it really needed?
-   
 
 #  Super-ultra-fast implementation of nondeterministic state transitions!
 
@@ -101,10 +95,13 @@ the transition out of one state to the other with an interval tree.
 
     [00 ------------- FF)  represents the entire space
 
+## e.g. using . to match any single character,
+
+      A -> . B
+      
+
 
 Suppose we have a production like:
-
-     A -> [0-9] B
 
 
 We can add 1 to the last byte of any UTF-8 string, and get a value we can make an
@@ -131,6 +128,13 @@ Now say we do:
                     B-1          B-1             B-1
                                  C-2
 
+# negated bracket expressions:
+
+A -> [^abc] B
+
+   [00---'a')['d'----FF)
+
+
 
 ##  null transitions
 
@@ -151,6 +155,9 @@ How to handle producitons with an empty string of nonterminals?
 Well, I can do it.  If the markers get pushed into a priority queue, and we
 pull them off only when the string position is reached, that will work.
 
+Represent them as an interval with FF as the first boundary?
+
+[FF-----FF)
 
 ##  Probably faster alternative -- rule normalization
 
@@ -171,9 +178,70 @@ just becomes
 This seems a lot better.  Then there is just one char in the interval, one state as the
 color, etc.  
 
-Nah, fork it.  I'm going for the full glory.  This way automatically generalizes to 
-UTF-8, so lets do it.
+Problem is that when we annotate the rule for extractig substrings, callimg
+proceedures, etc, it might be problematic.
 
+
+
+#  Extracting substrings
+
+
+What would a syntax look like?
+
+
+##  For base language, normalized rule form:
+
+A -> a A
+A ->
+
+The only string we can extract from a rule would be its non terminal, if any.
+
+A -> a A  { print a }
+A -> a B
+
+B -> b B
+B -> 
+
+once we allow non-recursive subrules, things could get more interesting.
+
+A -> a A
+A ->
+
+B -> A C
+
+C -> b C
+C ->
+
+we could annnotate the rule as follows:
+
+B -> A>the_as  C  { print the_as }
+
+##  When do we extract the string?  When do we execute the print?"
+
+There can be many differnt threads working at once here.
+
+
+One idea: postpone exrtraction of strings and callig of actions
+until the entire string is parsed.
+
+Amother idea: postpone them until there is only one 
+thread still active.
+
+If we are using this nfa to process an event loop, for example,
+the latter could be the right thing to do.
+
+B -> A>the_as  C  { yield the_as }
+
+
+Yield makes it easy to make grammars which parse the
+output of other grammars.
+
+B -> A>the_as  C  { yield ('A from B', the_as) }
+
+put a little type on it to tell the upper parser what it is.
+
+I want theske to be flow coetrol statememts, like 
+while.
 
 
 **  Next ultra-cool idea
@@ -346,5 +414,18 @@ D --> 'x'B
 E --> 'y'C
 
 
-We don't want 
+
+
+* Memory layout
+
+
+a-1 : 35
+b-3 : 10
+c-2 : 6
+
+
+
+
+
+
 

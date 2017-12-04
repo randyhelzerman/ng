@@ -41,7 +41,9 @@ same set of languages as regular expressions do.
     "termination") which does not not figure in the productions.
 
 3.  For each production of the form:
-    A -> "a" B
+
+     A -> "a" B
+
     We introduce an arc from state A to state B which consumes "a"
     when traversing it.
 
@@ -190,46 +192,46 @@ What would a syntax look like?
 
 ##  For base language, normalized rule form:
 
-  A -> a A
-  A ->
+    A -> a A
+    A ->
 
 The only string we can extract from a rule would be its non terminal, if any.
 
-  A -> a A  { print a }
-  A -> a B
+    A -> a A  { print a }
+    A -> a B
 
-  B -> b B
-  B ->
+    B -> b B
+    B ->
 
 once we allow non-recursive subrules, things could get more interesting.
 
-  A -> a A
-A ->
+    A -> a A
+    A ->
 
-B -> A C
+    B -> A C
 
-C -> b C
-C ->
+    C -> b C
+    C ->
 
 we could annnotate the rule as follows:
 
-B -> A>the_as  C  { print the_as }
+    B -> A>the_as  C  { print the_as }
 
 ##  When do we extract the string?  When do we execute the print?"
 
-There can be many differnt threads working at once here.
+There can be many differnt threads working at once here. A couple of
+alternatives here:
 
+1. postpone exrtraction of strings and callig of actions until the
+   entire string is parsed.
 
-One idea: postpone exrtraction of strings and callig of actions
-until the entire string is parsed.
-
-Amother idea: postpone them until there is only one
-thread still active.
+2. Amother idea: postpone them until there is only one thread still
+   active.
 
 If we are using this nfa to process an event loop, for example,
 the latter could be the right thing to do.
 
-B -> A>the_as  C  { yield the_as }
+   B -> A>the_as  C  { yield the_as }
 
 
 Yield makes it easy to make grammars which parse the
@@ -239,8 +241,12 @@ B -> A>the_as  C  { yield ('A from B', the_as) }
 
 put a little type on it to tell the upper parser what it is.
 
-I want theske to be flow coetrol statememts, like
-while.
+## Rules as control flow statements
+
+I want these to be just another control flow statement,
+like for, while, etc.
+
+
 
 
 **  Next ultra-cool idea

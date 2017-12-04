@@ -24,12 +24,12 @@ same set of languages as regular expressions do.
     works as in shell quotation, e.g. '"' is the nonterminal ", "'" is
     the nonterminal ', etc.  The empty string ("" or '') is also
     terminal symbol.
-    
+
 3.  Set of productions of the forms:
     a.  Nonterminal -> "terminal"
     b.  Nonterminal1 -> "terminal" Nonterminal2
 
-4.  A distinguished Nonterminal, S -- for "start".  
+4.  A distinguished Nonterminal, S -- for "start".
 
 
 ### Implementation as a NFA:
@@ -62,7 +62,7 @@ the expressivity of the grammar at all.
 One interesting first step would be to observe that we could use any r.e.
 instead of a nonterminal in the productions.
 
-Easy proof: just construct the nfa corresponding to the r.e., and then 
+Easy proof: just construct the nfa corresponding to the r.e., and then
 paste it into the NFA you are construcitng.
 
 
@@ -75,14 +75,14 @@ consideirng special cases of the above first....
 
 ##  Recognizing a literal.
 
-    S -> "foobar"  
+    S -> "foobar"
 
 
 We can have a string of non-terminals instead of just one non-terminal.  This can be translated to:
 
    S -> "f"A1,  A1->"o"A2, A2 -> "o"A3, etc
 
-but we might be able to make it even faster than that.  
+but we might be able to make it even faster than that.
 
 
 
@@ -98,7 +98,7 @@ the transition out of one state to the other with an interval tree.
 ## e.g. using . to match any single character,
 
       A -> . B
-      
+
 
 
 Suppose we have a production like:
@@ -130,7 +130,7 @@ Now say we do:
 
 # negated bracket expressions:
 
-A -> [^abc] B
+    A -> [^abc] B
 
    [00---'a')['d'----FF)
 
@@ -157,26 +157,26 @@ pull them off only when the string position is reached, that will work.
 
 Represent them as an interval with FF as the first boundary?
 
-[FF-----FF)
+    [FF-----FF)
 
 ##  Probably faster alternative -- rule normalization
 
-Its probably faster just t pre-process the rules.
-    
+Its probably faster just to pre-process the rules.
+
      A->""B
-     
+
      B->"c"C
      B->"d"D
-     B->"e"E       
+     B->"e"E
 
 just becomes
 
      A->"c"C
      A->"d"D
-     A->"e"E       
+     A->"e"E
 
 This seems a lot better.  Then there is just one char in the interval, one state as the
-color, etc.  
+color, etc.
 
 Problem is that when we annotate the rule for extractig substrings, callimg
 proceedures, etc, it might be problematic.
@@ -185,26 +185,25 @@ proceedures, etc, it might be problematic.
 
 #  Extracting substrings
 
-
 What would a syntax look like?
 
 
 ##  For base language, normalized rule form:
 
-A -> a A
-A ->
+  A -> a A
+  A ->
 
 The only string we can extract from a rule would be its non terminal, if any.
 
-A -> a A  { print a }
-A -> a B
+  A -> a A  { print a }
+  A -> a B
 
-B -> b B
-B -> 
+  B -> b B
+  B ->
 
 once we allow non-recursive subrules, things could get more interesting.
 
-A -> a A
+  A -> a A
 A ->
 
 B -> A C
@@ -224,7 +223,7 @@ There can be many differnt threads working at once here.
 One idea: postpone exrtraction of strings and callig of actions
 until the entire string is parsed.
 
-Amother idea: postpone them until there is only one 
+Amother idea: postpone them until there is only one
 thread still active.
 
 If we are using this nfa to process an event loop, for example,
@@ -240,7 +239,7 @@ B -> A>the_as  C  { yield ('A from B', the_as) }
 
 put a little type on it to tell the upper parser what it is.
 
-I want theske to be flow coetrol statememts, like 
+I want theske to be flow coetrol statememts, like
 while.
 
 
@@ -323,10 +322,10 @@ But I don't like it.  I've been programming in prolog for 30 years
 and I still have to look up what yfx means.
 
 <PRE>
-	
-ADD -> "+"  :  E <- (E + E) + E     # Addition 
+
+ADD -> "+"  :  E <- (E + E) + E     # Addition
 SUB -> "-"  :  E <- (E - E) - E     # Subtraction
- 
+
 MUL -> "*"  :  E <- (E * E) * E     # Multiplication
 DIV -> "/"  :  E <- (E / E) / E     # Division
 
@@ -369,7 +368,7 @@ GT      --> ">"   :  E\E/E             # greater than
 LT      --> "<"   :  E\E/E             # less than
 GE      --> "=>"  :  E\E/E             # greater than
 LE      --> "<="  :  E\E/E             # less than
- 
+
 ASN     --> "="   :  E\E/E             # asignment
 EEQ     --> "=="  :  E\E/E             # equal equal
 
@@ -387,17 +386,17 @@ PROD    --> "->"  :   OKVE\K/V         #  ordered key-value pair
 
 
   (E\E)/E     (E\E)/E
-E          E          E  
+E          E          E
 2    +     3    *      5
 
-  (E\E)/E  
-E            E 
+  (E\E)/E
+E            E
 2    +     (3*5)
 
 
   (E\E)/E      E\(E/E)
-E           E           E  
-2    +      3     ^     2    
+E           E           E
+2    +      3     ^     2
 
 
 #  Can I just jump to one for each interval?
@@ -408,24 +407,10 @@ A --> 'a'C
 
 Can I merge B and C?  well, if nobody feeds into B and C, sure.
 
-But if we do, we could 
+But if we do, we could
 
 D --> 'x'B
 E --> 'y'C
 
 
-
-
-* Memory layout
-
-
-a-1 : 35
-b-3 : 10
-c-2 : 6
-
-
-
-
-
-
-
+------------------------------------

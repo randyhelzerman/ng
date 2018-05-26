@@ -68,7 +68,7 @@ Easy proof: just construct the nfa corresponding to the r.e., and then
 paste it into the NFA you are construcitng.
 
 
-A -> /[a-z]+[a-z0-9_]*/ B
+    A -> /[a-z]+[a-z0-9_]*/ B
 
 
 However, we might could get some implementation ease and efficienty by
@@ -165,17 +165,17 @@ Represent them as an interval with FF as the first boundary?
 
 Its probably faster just to pre-process the rules.
 
-     A->""B
+    A->""B
 
-     B->"c"C
-     B->"d"D
-     B->"e"E
+    B->"c"C
+    B->"d"D
+    B->"e"E
 
 just becomes
 
-     A->"c"C
-     A->"d"D
-     A->"e"E
+    A->"c"C
+    A->"d"D
+    A->"e"E
 
 This seems a lot better.  Then there is just one char in the interval, one state as the
 color, etc.
@@ -225,19 +225,19 @@ alternatives here:
 1. postpone exrtraction of strings and callig of actions until the
    entire string is parsed.
 
-2. Amother idea: postpone them until there is only one thread still
+2. postpone them until there is only one thread still
    active.
 
 If we are using this nfa to process an event loop, for example,
 the latter could be the right thing to do.
 
-   B -> A>the_as  C  { yield the_as }
+    B -> A>the_as  C  { yield the_as }
 
 
 Yield makes it easy to make grammars which parse the
 output of other grammars.
 
-B -> A>the_as  C  { yield ('A from B', the_as) }
+    B -> A>the_as  C  { yield ('A from B', the_as) }
 
 put a little type on it to tell the upper parser what it is.
 
@@ -246,6 +246,58 @@ put a little type on it to tell the upper parser what it is.
 I want these to be just another control flow statement,
 like for, while, etc.
 
+This introduces a host of prolems tho.
+
+Example:  a function to parse csv files
+
+
+    fun parseCsv(delimiter, terminator, stream) {
+
+       lines --> (line)*
+
+       line --> field (delimiter field)* terminator
+
+       field --> (^delimiter & ^terminator)*
+
+    }
+
+
+Great, how do we extract the values?
+
+
+    fun parseCsv(delimiter, terminator, stream) {
+
+       lines --> (@line)*
+
+       line --> @field (delimiter @field)* terminator
+
+       field --> (@(^delimiter & ^terminator))*
+
+    }
+
+
+Another example:  parsing points
+
+    fun parsePoint(stream) {
+
+        int --> [0-9]+
+
+        point --> "(" int "," int ")"
+
+    }
+
+
+    fun parsePoint(stream) {
+
+        int --> [0-9]+
+
+        x --> int
+
+        y --> int
+
+        point --> "(" x "," y ")"
+
+    }
 
 
 

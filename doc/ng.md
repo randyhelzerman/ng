@@ -4,7 +4,8 @@ Just researching around, seeing if I can come up with some extention
 to RE's which is faster to parse than PEGs, but is as useful.
 
 
-##  A subset of context free grammars which is equivalent to regular expressions
+## A subset of context free grammars which is equivalent to regular
+    expressions
 
 Our goal is to have something which has efficiency as close as
 possible to regular languages, but with expressivity as close as
@@ -16,7 +17,11 @@ same set of languages as regular expressions do.
 ###  Here is a handy set:
 
 1.  Set of Nonterminal Symbols.  We denote these using strings which
-    could be C variables, e.g. S, T, expr.  We will usually start
+    could be C variables, e.g.:
+
+        "S", "T", "expr".
+
+    We will usually start
     these with an upper-case letter to make them stand out as
     nonterminals.
 
@@ -29,7 +34,6 @@ same set of languages as regular expressions do.
     a.  Nonterminal -> "terminal"
     b.  Nonterminal1 -> "terminal" Nonterminal2
 
-4.  A distinguished Nonterminal, S -- for "start".  
 
 
 ### Implementation as a NFA:
@@ -37,8 +41,9 @@ same set of languages as regular expressions do.
 1.  For each non-terminal which figures in the productions, there is a
     state.
 
-2.  In addition, there is a distinguished state called T (for
-    "termination") which does not not figure in the productions.
+2.  In addition, there is a distinguished termination state
+    which does not not figure in the productions.  Don't need an
+    explicit name for this; can be implicit
 
 3.  For each production of the form:
     A -> "a" B
@@ -55,7 +60,6 @@ same set of languages as regular expressions do.
 
 First some easy extensions which are very useful, but don't increase
 the expressivity of the grammar at all.
-
 
 ### using a r.e. instead of a single non-terminal
 
@@ -182,9 +186,7 @@ Problem is that when we annotate the rule for extractig substrings, callimg
 proceedures, etc, it might be problematic.
 
 
-
 #  Extracting substrings
-
 
 What would a syntax look like?
 
@@ -243,6 +245,53 @@ put a little type on it to tell the upper parser what it is.
 I want theske to be flow coetrol statememts, like 
 while.
 
+the_as << B  -> A >> the_as  C 
+
+
+int(i)<<B -> [1-9][0-9]>>i  C
+
+for x,y in B<<stdin {
+    t[x]=y
+}
+
+*  basically, this is the ultimate
+   iterator functions 
+
+**   read file byte by byte
+     
+     A >> ch -> .>ch A
+     A -> 
+     
+
+** read file line by line
+
+    L>>line -> [^\n]*\n>>line L
+    L -> 
+
+** split a line
+
+   S --> W* \n
+
+   W>>word -> [^ \n]+
+
+
+* should we make this whole thing lazy????
+
+
+* if its a control strucrture, then the whole concept of 
+  lazy vs eager goes out the window.
+
+The problem then is that fuck me tehre's no wy to
+parametrize it.
+
+Other than the wa of parametering control trugure rgualarly, i.e. just
+putting them in a function.
+
+
+what should we be able to do here.... anyways?
+
+
+perhaps
 
 **  Next ultra-cool idea
 
@@ -416,16 +465,43 @@ E --> 'y'C
 
 
 
-* Memory layout
+
+# language
 
 
-a-1 : 35
-b-3 : 10
-c-2 : 6
+##  functions
 
 
+  fun x y z
+
+  fun(x,y,q){}
+
+##  tables
+
+only way to get changing variables
 
 
+##  write once/assign only variables
 
+
+##  Can we use success and fail to replace
+    boolean data types, a-la icon?
+
+if x > 5 then{
+}
+else {
+}
+
+A rudimentary backtracking....
+
+while x > 5 {
+}
+
+star operator
+
+The thing is that we are actually punning on success and logical truth.
+
+This is ok as long as you stay within the zone in which they are actually
+isomorphic.
 
 

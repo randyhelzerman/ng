@@ -1,4 +1,4 @@
-#/usr/local/bin/python3
+#!/usr/local/bin/python3
 
 """
 operator precidence parser using precidence parsing
@@ -43,9 +43,6 @@ class Opp(object):
         self._parse_expression(tokenIterator, 0)
 
 
-    def _parse_expression(
-            self,
-            tokenIterator
 
 
     def t_read_operator_file(

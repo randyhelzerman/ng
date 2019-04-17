@@ -1,4 +1,4 @@
-a#!/usr/bin/python
+#!/usr/bin/python
 
 import argparse
 
@@ -6,15 +6,15 @@ def main():
     # find the file to read
     args = parseArguments()
     print args
-    
+
     returner = parseFile(args.input)
-    
+
     print returner
-    
+
     if args.start and args.string:
         stringIterator = iterateString(args.string)
         success = execute(returner, args.start, stringIterator)
-        
+
         if success:
             print "Success"
         else:
@@ -23,24 +23,24 @@ def main():
 def parseFile(fileName):
     with open(fileName) as fileStream:
         return parseStream(fileStream)
-    
+
 
 def parseStream(stream):
     # initialize parse results with distincguisted end state
     returner = {
         'END' : []
     }
-    
+
     for line in stream:
         parseLine(line, returner)
-        
+
     return returner
-        
+
 def parseLine(
         line,
         returner):
     tokens = line.strip().split()
-    
+
     if len(tokens) < 3:
         return
 
@@ -64,20 +64,20 @@ def parseLine(
 
 def parseArguments():
     parser = argparse.ArgumentParser()
-    
+
     parser.add_argument(
         "--input",
         help="input file",
         required=True)
-    
+
     parser.add_argument(
         "--start",
         help="start symbol--start the parsing from here")
-    
+
     parser.add_argument(
         "--string",
         help="string to parse")
-    
+
     args = parser.parse_args()
 
     return args
@@ -88,12 +88,12 @@ def execute(
         stringIterator):
 
     states= set(startState)
-    
+
     for character in stringIterator:
         states = executeStep(nfa, states, character)
         if "END" in states:
             return True
-        
+
         if len(states) == 0:
             return False
 
@@ -107,14 +107,11 @@ def executeStep(nfa, states, character):
             if arc[0] == character:
                 returner.add(arc[1])
     return returner
-    
-    
+
+
 def iterateString(string):
     for character in string:
         yield character
 
 if __name__ == "__main__":
     main()
-
-    
-    

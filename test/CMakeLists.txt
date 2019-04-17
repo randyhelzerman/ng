@@ -20,7 +20,7 @@ ADD_EXECUTABLE(ng.t
 					     ng_util_io.t.cpp
                test_fruit.c
                test_fruit_int.c
-	       
+
                Parser.d.cpp
 	       Parser.t.cpp
 	       Nfa.t.cpp

@@ -11,31 +11,31 @@ TEST(NgTokenArrayEntryTest, Alloc0)
 {
   //                  0123456789012345678901234567890
   const char* bluf = "A -> 'a'B   B->'b'C   C->'c'";
-  
+
   // create some entries to represent tokens in the above string
-  
+
   // "A"
   ng_token* t0 = ng_token_new(bluf+0,bluf+1, 10);
   char bluf0[100];
   ng_token_cp_to_buf(t0, bluf0, 100);
   EXPECT_EQ(0, strcmp(bluf0, "A"));
-  
+
   // "->"
   ng_token* t1 = ng_token_new(bluf+2,bluf+4, 11);
   char bluf1[100];
   ng_token_cp_to_buf(t1, bluf1, 100);
   EXPECT_EQ(0, strcmp(bluf1, "->"));
-  
+
   // 'a'
   ng_token* t2 = ng_token_new(bluf+5, bluf+8, 12);
   char bluf2[100];
   ng_token_cp_to_buf(t2, bluf2,100);
   EXPECT_EQ(0, strcmp(bluf2, "'a'"));
-  
+
   if (do_print) ng_token_dump(t0);
   if (do_print) ng_token_dump(t1);
   if (do_print) ng_token_dump(t2);
-  
+
   ng_token_delete(&t0);
   ng_token_delete(&t1);
   ng_token_delete(&t2);
